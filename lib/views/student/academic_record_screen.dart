@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 import '../../core/theme/app_colors.dart';
 import '../../data/mock/mock_data.dart';
+import '../../data/models/student_model.dart';
 import '../../widgets/common/page_header.dart';
 import '../../widgets/common/stat_card.dart';
 
@@ -27,7 +31,7 @@ class AcademicRecordScreen extends StatelessWidget {
             title: 'Récord Académico (Kardex)',
             subtitle: 'Historial completo de calificaciones',
             action: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () => _generatePdf(context, s, semesters, totalCredits),
               icon: const Icon(LucideIcons.download, size: 16),
               label: const Text('PDF'),
               style: ElevatedButton.styleFrom(
@@ -208,74 +212,78 @@ class AcademicRecordScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // Table
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: DataTable(
-                      columnSpacing: 20,
-                      headingRowHeight: 36,
-                      dataRowMinHeight: 40,
-                      dataRowMaxHeight: 40,
-                      headingTextStyle: const TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textSecondary,
-                      ),
-                      dataTextStyle: const TextStyle(fontSize: 12),
-                      columns: const [
-                        DataColumn(label: Text('Código')),
-                        DataColumn(label: Text('Materia')),
-                        DataColumn(label: Text('Cr.'), numeric: true),
-                        DataColumn(label: Text('Nota'), numeric: true),
-                      ],
-                      rows: courses.map<DataRow>((c) {
-                        final grade = c.finalGrade ?? 0.0;
-                        return DataRow(
-                          cells: [
-                            DataCell(
-                              Text(
-                                c.courseId,
-                                style: const TextStyle(
-                                  fontFamily: 'monospace',
-                                  fontSize: 11,
-                                  color: AppColors.textSecondary,
-                                ),
+                  // Mobile-friendly List
+                  Column(
+                    children: courses.map((c) {
+                      final grade = c.finalGrade ?? 0.0;
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                        decoration: BoxDecoration(
+                          border: Border(bottom: BorderSide(color: AppColors.border.withValues(alpha: 0.5))),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 36,
+                              height: 36,
+                              decoration: BoxDecoration(
+                                color: AppColors.background,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: AppColors.border),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '${c.credits}',
+                                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textPrimary, height: 1.0),
+                                  ),
+                                  const Text(
+                                    'CR',
+                                    style: TextStyle(fontSize: 8, fontWeight: FontWeight.w600, color: AppColors.textTertiary),
+                                  ),
+                                ],
                               ),
                             ),
-                            DataCell(
-                              Text(
-                                c.courseName,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.textPrimary,
-                                ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    c.courseName,
+                                    style: const TextStyle(fontWeight: FontWeight.w600, color: AppColors.textPrimary, fontSize: 13),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    c.courseId,
+                                    style: const TextStyle(fontFamily: 'monospace', fontSize: 11, color: AppColors.textSecondary),
+                                  ),
+                                ],
                               ),
                             ),
-                            DataCell(
-                              Text(
-                                '${c.credits}',
-                                style: const TextStyle(
-                                  color: AppColors.textSecondary,
-                                ),
+                            const SizedBox(width: 12),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: grade >= 90 ? AppColors.successSurface : grade >= 70 ? AppColors.infoSurface : AppColors.errorSurface,
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                            ),
-                            DataCell(
-                              Text(
+                              child: Text(
                                 '${grade.toStringAsFixed(0)}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
-                                  color: grade >= 90
-                                      ? AppColors.success
-                                      : grade >= 80
-                                      ? AppColors.info
-                                      : AppColors.warning,
+                                  fontSize: 14,
+                                  color: grade >= 90 ? AppColors.success : grade >= 70 ? AppColors.info : AppColors.error,
                                 ),
                               ),
                             ),
                           ],
-                        );
-                      }).toList(),
-                    ),
+                        ),
+                      );
+                    }).toList(),
                   ),
                   // Footer
                   Container(
@@ -317,6 +325,95 @@ class AcademicRecordScreen extends StatelessWidget {
           }),
         ],
       ),
+    );
+  }
+
+  Future<void> _generatePdf(
+    BuildContext context,
+    StudentModel s,
+    Map<String, List<dynamic>> semesters,
+    int totalCredits,
+  ) async {
+    final pdf = pw.Document();
+
+    pdf.addPage(
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.letter,
+        build: (pw.Context context) {
+          return [
+            pw.Header(
+              level: 0,
+              child: pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Text('Récord Académico', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+                  pw.Text('UNAD', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold, color: PdfColors.blue800)),
+                ],
+              ),
+            ),
+            pw.SizedBox(height: 20),
+            pw.Container(
+              padding: const pw.EdgeInsets.all(10),
+              decoration: pw.BoxDecoration(
+                border: pw.Border.all(color: PdfColors.grey400),
+                borderRadius: const pw.BorderRadius.all(pw.Radius.circular(8)),
+              ),
+              child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.Text('Estudiante: ${s.name}', style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold)),
+                  pw.SizedBox(height: 4),
+                  pw.Text('Matrícula: ${s.id}'),
+                  pw.Text('Programa: ${s.program}'),
+                  pw.Text('Estado: ${s.status}'),
+                  pw.SizedBox(height: 4),
+                  pw.Text('Índice General: ${(s.gpa / 4.0 * 100).toStringAsFixed(1)} | Créditos Aprobados: $totalCredits'),
+                ],
+              ),
+            ),
+            pw.SizedBox(height: 20),
+            ...semesters.entries.map((entry) {
+              final courses = entry.value;
+              final semCredits = courses.fold<int>(0, (a, c) => a + (c.credits as int));
+              final avgGrade = courses.fold<double>(0, (a, c) => a + (c.finalGrade ?? 0)) / courses.length;
+
+              return pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.Text('Período ${entry.key}', style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold)),
+                  pw.SizedBox(height: 8),
+                  pw.TableHelper.fromTextArray(
+                    headers: ['Código', 'Materia', 'Créditos', 'Nota'],
+                    data: courses.map((c) => [
+                      c.courseId,
+                      c.courseName,
+                      '${c.credits}',
+                      '${(c.finalGrade ?? 0.0).toStringAsFixed(0)}',
+                    ]).toList(),
+                    headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.white),
+                    headerDecoration: const pw.BoxDecoration(color: PdfColors.blue800),
+                    rowDecoration: const pw.BoxDecoration(
+                      border: pw.Border(bottom: pw.BorderSide(color: PdfColors.grey300, width: 0.5)),
+                    ),
+                    cellAlignment: pw.Alignment.centerLeft,
+                  ),
+                  pw.SizedBox(height: 8),
+                  pw.Text(
+                    'Total Período: $semCredits créditos | Índice: ${avgGrade.toStringAsFixed(0)}',
+                    style: const pw.TextStyle(fontSize: 12),
+                  ),
+                  pw.SizedBox(height: 20),
+                ],
+              );
+            }),
+          ];
+        },
+      ),
+    );
+
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdf.save(),
+      name: 'Record_Academico_${s.id}.pdf',
     );
   }
 }
