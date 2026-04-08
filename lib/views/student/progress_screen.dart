@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
 import '../../data/mock/mock_data.dart';
@@ -43,7 +44,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
           Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: AppColors.background,
+              color: const Color(0xFFF3F4F6),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -190,7 +191,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Credit Distribution
+            // Distribución de Créditos Chart
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -209,12 +210,57 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       color: AppColors.textPrimary,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    height: 180,
+                    child: PieChart(
+                      PieChartData(
+                        sectionsSpace: 4,
+                        centerSpaceRadius: 60,
+                        startDegreeOffset: -90,
+                        sections: [
+                          PieChartSectionData(color: AppColors.primary, value: _completedCredits.toDouble(), title: '', radius: 24),
+                          PieChartSectionData(color: const Color(0xFF2563EB), value: _inProgressCredits.toDouble(), title: '', radius: 24),
+                          PieChartSectionData(color: const Color(0xFFE5E7EB), value: _pendingCredits.toDouble(), title: '', radius: 24),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
                   _distBar('Completados', _completedCredits, AppColors.primary),
                   const SizedBox(height: 10),
-                  _distBar('En curso', _inProgressCredits, AppColors.info),
+                  _distBar('En curso', _inProgressCredits, const Color(0xFF2563EB)),
                   const SizedBox(height: 10),
-                  _distBar('Pendientes', _pendingCredits, AppColors.border),
+                  _distBar('Pendientes', _pendingCredits, const Color(0xFFE5E7EB)),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Índice Académico por Período
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Índice Académico por Período',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    height: 180,
+                    child: _buildGpaBarChart(),
+                  ),
                 ],
               ),
             ),
@@ -222,6 +268,47 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
           // ═══ Por Período ═══
           if (_view == 'semesters') ...[
+            // Créditos Cursados por Período
+            Container(
+              padding: const EdgeInsets.all(20),
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Créditos Cursados por Período',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    height: 180,
+                    child: _buildCreditsBarChart(),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(width: 12, height: 12, decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(4))),
+                      const SizedBox(width: 8),
+                      const Text('Completado', style: TextStyle(fontSize: 12, color: AppColors.textPrimary)),
+                      const SizedBox(width: 20),
+                      Container(width: 12, height: 12, decoration: BoxDecoration(color: const Color(0xFF2563EB), borderRadius: BorderRadius.circular(4))),
+                      const SizedBox(width: 8),
+                      const Text('En curso', style: TextStyle(fontSize: 12, color: AppColors.textPrimary)),
+                    ],
+                  )
+                ],
+              ),
+            ),
             ...gradeHistory
                 .fold<Map<String, List<dynamic>>>({}, (map, g) {
                   map.putIfAbsent(g.semester, () => []).add(g);
@@ -287,69 +374,78 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        Wrap(
-                          spacing: 6,
-                          runSpacing: 6,
-                          children: courses.map<Widget>((c) {
-                            final grade = (c.finalGrade ?? 0).round();
-                            final color = grade >= 90
-                                ? AppColors.success
-                                : grade >= 80
-                                ? AppColors.info
-                                : grade >= 70
-                                ? AppColors.warning
-                                : AppColors.error;
-                            final bgColor = grade >= 90
-                                ? const Color(0xFFF0FDF4)
-                                : grade >= 80
-                                ? const Color(0xFFEFF6FF)
-                                : grade >= 70
-                                ? const Color(0xFFFFFBEB)
-                                : const Color(0xFFFEF2F2);
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 8,
-                              ),
-                              decoration: BoxDecoration(
-                                color: bgColor,
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: color.withValues(alpha: 0.2),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    c.courseName,
-                                    style: const TextStyle(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.textPrimary,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
+                        LayoutBuilder(
+                          builder: (context, constraints) {
+                            final itemWidth = (constraints.maxWidth - 6) / 2;
+                            return Wrap(
+                              spacing: 6,
+                              runSpacing: 6,
+                              children: List.generate(courses.length, (index) {
+                                final c = courses[index];
+                                final isLastOdd = (courses.length % 2 != 0) && (index == courses.length - 1);
+                                final width = isLastOdd ? constraints.maxWidth : itemWidth;
+                                final grade = (c.finalGrade ?? 0).round();
+                                final color = grade >= 90
+                                    ? AppColors.success
+                                    : grade >= 80
+                                    ? AppColors.info
+                                    : grade >= 70
+                                    ? AppColors.warning
+                                    : AppColors.error;
+                                final bgColor = grade >= 90
+                                    ? const Color(0xFFF0FDF4)
+                                    : grade >= 80
+                                    ? const Color(0xFFEFF6FF)
+                                    : grade >= 70
+                                    ? const Color(0xFFFFFBEB)
+                                    : const Color(0xFFFEF2F2);
+                                return Container(
+                                  width: width,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 8,
                                   ),
-                                  Text(
-                                    '${c.credits} cr.',
-                                    style: const TextStyle(
-                                      fontSize: 10,
-                                      color: AppColors.textTertiary,
+                                  decoration: BoxDecoration(
+                                    color: bgColor,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: color.withValues(alpha: 0.2),
                                     ),
                                   ),
-                                  Text(
-                                    '$grade',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w800,
-                                      color: color,
-                                    ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        c.courseName,
+                                        style: const TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.textPrimary,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Text(
+                                        '${c.credits} cr.',
+                                        style: const TextStyle(
+                                          fontSize: 10,
+                                          color: AppColors.textTertiary,
+                                        ),
+                                      ),
+                                      Text(
+                                        '$grade',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w800,
+                                          color: color,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                );
+                              }),
                             );
-                          }).toList(),
+                          },
                         ),
                       ],
                     ),
@@ -359,6 +455,65 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
           // ═══ Materias ═══
           if (_view == 'materias') ...[
+            Container(
+              padding: const EdgeInsets.all(20),
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Materias por Estado',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 140,
+                        height: 140,
+                        child: PieChart(
+                          PieChartData(
+                            sectionsSpace: 3,
+                            centerSpaceRadius: 40,
+                            startDegreeOffset: -90,
+                            sections: [
+                              PieChartSectionData(color: AppColors.primary, value: 11, title: '', radius: 20),
+                              PieChartSectionData(color: const Color(0xFF2563EB), value: 5, title: '', radius: 20),
+                              PieChartSectionData(color: const Color(0xFFFBBF24), value: 4, title: '', radius: 20),
+                              PieChartSectionData(color: const Color(0xFFE5E7EB), value: 5, title: '', radius: 20),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 24),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _distBar('Obligatorias', 11, AppColors.primary),
+                            const SizedBox(height: 8),
+                            _distBar('En curso', 5, const Color(0xFF2563EB)),
+                            const SizedBox(height: 8),
+                            _distBar('Generales (ok)', 4, const Color(0xFFFBBF24)),
+                            const SizedBox(height: 8),
+                            _distBar('Pendientes', 5, const Color(0xFFE5E7EB)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
             ..._groupBySemester().entries.map((entry) {
               final semNum = entry.key;
               final courses = entry.value;
@@ -626,6 +781,121 @@ class _ProgressScreenState extends State<ProgressScreen> {
       ),
     ],
   );
+
+  Widget _buildGpaBarChart() {
+    return BarChart(
+      BarChartData(
+        alignment: BarChartAlignment.spaceEvenly,
+        maxY: 100, // GPA max index scale to 100
+        minY: 0,
+        barTouchData: BarTouchData(enabled: false),
+        titlesData: FlTitlesData(
+          show: true,
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: (val, meta) {
+                const labels = ['2023 1', '2023 2', '2024 1'];
+                if (val.toInt() >= 0 && val.toInt() < labels.length) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(labels[val.toInt()], style: const TextStyle(fontSize: 10, color: AppColors.textSecondary)),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+          ),
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              interval: 25,
+              reservedSize: 30,
+              getTitlesWidget: (val, meta) => Text('${val.toInt()}', style: const TextStyle(fontSize: 10, color: AppColors.textSecondary)),
+            ),
+          ),
+          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        ),
+        gridData: FlGridData(
+          show: true,
+          drawVerticalLine: false,
+          horizontalInterval: 25,
+          getDrawingHorizontalLine: (value) => FlLine(color: AppColors.border, strokeWidth: 1, dashArray: [4, 4]),
+        ),
+        borderData: FlBorderData(
+          show: true,
+          border: const Border(
+            bottom: BorderSide(color: AppColors.textSecondary, width: 1),
+            left: BorderSide(color: AppColors.textSecondary, width: 1),
+          ),
+        ),
+        barGroups: [
+          BarChartGroupData(x: 0, barRods: [BarChartRodData(toY: 95, color: AppColors.primary, width: 44, borderRadius: const BorderRadius.vertical(top: Radius.circular(4)))]),
+          BarChartGroupData(x: 1, barRods: [BarChartRodData(toY: 88, color: AppColors.primary, width: 44, borderRadius: const BorderRadius.vertical(top: Radius.circular(4)))]),
+          BarChartGroupData(x: 2, barRods: [BarChartRodData(toY: 92, color: AppColors.primary, width: 44, borderRadius: const BorderRadius.vertical(top: Radius.circular(4)))]),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCreditsBarChart() {
+    return BarChart(
+      BarChartData(
+        alignment: BarChartAlignment.spaceEvenly,
+        maxY: 20,
+        minY: 0,
+        barTouchData: BarTouchData(enabled: false),
+        titlesData: FlTitlesData(
+          show: true,
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: (val, meta) {
+                const labels = ['2023 1', '2023 2', '2024 1', '2024-2 (actual)'];
+                if (val.toInt() >= 0 && val.toInt() < labels.length) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(labels[val.toInt()], style: const TextStyle(fontSize: 9, color: AppColors.textSecondary)),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+          ),
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              interval: 5,
+              reservedSize: 24,
+              getTitlesWidget: (val, meta) => Text('${val.toInt()}', style: const TextStyle(fontSize: 10, color: AppColors.textSecondary)),
+            ),
+          ),
+          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        ),
+        gridData: FlGridData(
+          show: true,
+          drawVerticalLine: false,
+          horizontalInterval: 5,
+          getDrawingHorizontalLine: (value) => FlLine(color: AppColors.border, strokeWidth: 1, dashArray: [4, 4]),
+        ),
+        borderData: FlBorderData(
+          show: true,
+          border: const Border(
+            bottom: BorderSide(color: AppColors.textSecondary, width: 1),
+            left: BorderSide(color: AppColors.textSecondary, width: 1),
+          ),
+        ),
+        barGroups: [
+          BarChartGroupData(x: 0, barRods: [BarChartRodData(toY: 14, color: AppColors.primary, width: 34, borderRadius: const BorderRadius.vertical(top: Radius.circular(4)))]),
+          BarChartGroupData(x: 1, barRods: [BarChartRodData(toY: 17, color: AppColors.primary, width: 34, borderRadius: const BorderRadius.vertical(top: Radius.circular(4)))]),
+          BarChartGroupData(x: 2, barRods: [BarChartRodData(toY: 17, color: AppColors.primary, width: 34, borderRadius: const BorderRadius.vertical(top: Radius.circular(4)))]),
+          BarChartGroupData(x: 3, barRods: [BarChartRodData(toY: 16, color: const Color(0xFF2563EB), width: 34, borderRadius: const BorderRadius.vertical(top: Radius.circular(4)))]),
+        ],
+      ),
+    );
+  }
 
   Widget _distBar(String label, int value, Color color) {
     return Row(
