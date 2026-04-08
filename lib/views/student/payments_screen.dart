@@ -1269,11 +1269,12 @@ class CurrencyInputFormatter extends TextInputFormatter {
     if (newValue.text.isEmpty) return newValue;
 
     String digits = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
-    if (digits.isEmpty)
+    if (digits.isEmpty) {
       return const TextEditingValue(
         text: 'RD\$0',
         selection: TextSelection.collapsed(offset: 4),
       );
+    }
 
     double value = double.parse(digits);
     final formatter = NumberFormat.currency(

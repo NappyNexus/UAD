@@ -75,8 +75,9 @@ class Formatters {
     }
     final days = diff.inDays;
     if (days < 7) return 'Hace $days día${days > 1 ? "s" : ""}';
-    if (days < 30)
+    if (days < 30) {
       return 'Hace ${(days / 7).floor()} semana${(days / 7).floor() > 1 ? "s" : ""}';
+    }
     return DateFormat('d MMM yyyy', 'es_DO').format(dateTime);
   }
 

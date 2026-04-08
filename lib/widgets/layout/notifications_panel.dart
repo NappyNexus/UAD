@@ -147,8 +147,9 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
 
   List<NotifItem> get _filtered {
     if (_activeTab == 'Todas') return _notifications;
-    if (_activeTab == 'Sin leer')
+    if (_activeTab == 'Sin leer') {
       return _notifications.where((n) => n.unread).toList();
+    }
     return _notifications
         .where((n) => _typeTabMap[n.type] == _activeTab)
         .toList();

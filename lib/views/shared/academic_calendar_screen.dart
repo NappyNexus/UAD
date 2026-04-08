@@ -291,7 +291,7 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
                                 childAspectRatio: 0.8,
                               ),
                           itemBuilder: (ctx, i) {
-                            if (i < firstDay)
+                            if (i < firstDay) {
                               return Container(
                                 decoration: const BoxDecoration(
                                   border: Border(
@@ -304,6 +304,7 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
                                   ),
                                 ),
                               );
+                            }
                             final day = i - firstDay + 1;
                             final dateStr =
                                 '$_year-${(_month + 1).toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';

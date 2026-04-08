@@ -449,7 +449,7 @@ class StudentDashboardScreen extends ConsumerWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: _mockDeadlines.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 10),
+            separatorBuilder: (_, _) => const SizedBox(height: 10),
             itemBuilder: (context, index) {
               final ev = _mockDeadlines[index];
               final date = DateTime.parse(ev['date'] as String);
@@ -676,7 +676,7 @@ class StudentDashboardScreen extends ConsumerWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: _mockAnnouncements.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 10),
+            separatorBuilder: (_, _) => const SizedBox(height: 10),
             itemBuilder: (context, index) {
               final ann = _mockAnnouncements[index];
               final pinned = ann['pinned'] as bool;

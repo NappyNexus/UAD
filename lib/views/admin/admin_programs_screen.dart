@@ -36,8 +36,9 @@ class _AdminProgramsScreenState extends State<AdminProgramsScreen> {
               final idx = _programList.indexWhere(
                 (p) => p['id'] == updated['id'],
               );
-              if (idx >= 0)
+              if (idx >= 0) {
                 _programList[idx] = {..._programList[idx], ...updated};
+              }
             }
           });
           Navigator.pop(ctx);

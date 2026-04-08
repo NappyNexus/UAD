@@ -69,8 +69,9 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
   }
 
   double? _calcAvg(LocalStudent s) {
-    if (s.midterm1 == null && s.midterm2 == null && s.finalExam == null)
+    if (s.midterm1 == null && s.midterm2 == null && s.finalExam == null) {
       return null;
+    }
     double total = 0, weight = 0;
     if (s.midterm1 != null) {
       total += s.midterm1! * 0.3;
