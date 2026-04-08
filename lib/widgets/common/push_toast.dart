@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uad/core/theme/app_colors.dart';
 
 class PushToast extends StatelessWidget {
   final String message;
@@ -7,6 +8,7 @@ class PushToast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Positioned(
       top: 20,
       left: 0,
@@ -27,8 +29,8 @@ class PushToast extends StatelessWidget {
           ),
           child: Text(
             message,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: AppColors.surface,
               fontSize: 13,
               fontWeight: FontWeight.w500,
             ),

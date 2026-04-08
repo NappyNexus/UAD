@@ -107,7 +107,7 @@ class _AdminPeriodsScreenState extends State<AdminPeriodsScreen> {
       case 'Abierto':
         return const Icon(LucideIcons.play, size: 16, color: AppColors.success);
       case 'Cerrado':
-        return const Icon(
+        return Icon(
           LucideIcons.lock,
           size: 16,
           color: AppColors.textTertiary,
@@ -125,12 +125,13 @@ class _AdminPeriodsScreenState extends State<AdminPeriodsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
           SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -166,9 +167,9 @@ class _AdminPeriodsScreenState extends State<AdminPeriodsScreen> {
                 ..._periods.map((p) {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 12),
-                    padding: const EdgeInsets.all(20),
+                    padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.surface,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: AppColors.border),
                     ),
@@ -187,23 +188,23 @@ class _AdminPeriodsScreenState extends State<AdminPeriodsScreen> {
                               ),
                               child: _getStatusIcon(p['status'] as String),
                             ),
-                            const SizedBox(width: 12),
+                            SizedBox(width: 12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     p['name'] as String,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.textPrimary,
                                     ),
                                   ),
-                                  const SizedBox(height: 2),
+                                  SizedBox(height: 2),
                                   Text(
                                     p['id'] as String,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 13,
                                       color: AppColors.textSecondary,
                                     ),
@@ -214,24 +215,24 @@ class _AdminPeriodsScreenState extends State<AdminPeriodsScreen> {
                             StatusBadge(status: p['status'] as String),
                           ],
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16),
                         Row(
                           children: [
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
+                                  Text(
                                     'Inicio',
                                     style: TextStyle(
                                       fontSize: 11,
                                       color: AppColors.textSecondary,
                                     ),
                                   ),
-                                  const SizedBox(height: 2),
+                                  SizedBox(height: 2),
                                   Text(
                                     p['startDate'],
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.textPrimary,
@@ -244,17 +245,17 @@ class _AdminPeriodsScreenState extends State<AdminPeriodsScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
+                                  Text(
                                     'Fin',
                                     style: TextStyle(
                                       fontSize: 11,
                                       color: AppColors.textSecondary,
                                     ),
                                   ),
-                                  const SizedBox(height: 2),
+                                  SizedBox(height: 2),
                                   Text(
                                     p['endDate'],
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.textPrimary,
@@ -315,7 +316,7 @@ class _AdminPeriodsScreenState extends State<AdminPeriodsScreen> {
                               ),
                             if (p['status'] == 'Planificación' ||
                                 p['status'] == 'Abierto')
-                              const SizedBox(width: 8),
+                              SizedBox(width: 8),
                             Expanded(
                               child: ElevatedButton.icon(
                                 onPressed: () => _showConfigModal(p),
@@ -323,7 +324,7 @@ class _AdminPeriodsScreenState extends State<AdminPeriodsScreen> {
                                   LucideIcons.settings,
                                   size: 12,
                                 ),
-                                label: const Text('Configurar'),
+                                label: Text('Configurar'),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.white,
                                   foregroundColor: AppColors.textSecondary,
@@ -331,10 +332,10 @@ class _AdminPeriodsScreenState extends State<AdminPeriodsScreen> {
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 12,
                                   ),
-                                  minimumSize: const Size(0, 36),
+                                  minimumSize: Size(0, 36),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    side: const BorderSide(
+                                    side: BorderSide(
                                       color: AppColors.borderMedium,
                                     ),
                                   ),
@@ -391,7 +392,7 @@ class _ConfigFormState extends State<_ConfigForm> {
       ),
       child: SafeArea(
         child: Container(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -400,7 +401,7 @@ class _ConfigFormState extends State<_ConfigForm> {
                 isEdit
                     ? 'Configurar: ${widget.initial!['name']}'
                     : 'Nuevo Período Académico',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
@@ -473,33 +474,33 @@ class _ConfigFormState extends State<_ConfigForm> {
     String? placeholder,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: EdgeInsets.only(bottom: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: AppColors.textSecondary,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           TextFormField(
             initialValue: value,
             onChanged: onChanged,
             keyboardType: kbd,
-            style: const TextStyle(fontSize: 13, color: AppColors.textPrimary),
+            style: TextStyle(fontSize: 13, color: AppColors.textPrimary),
             decoration: InputDecoration(
               hintText: placeholder,
-              hintStyle: const TextStyle(
+              hintStyle: TextStyle(
                 fontSize: 13,
                 color: AppColors.textTertiary,
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.borderMedium),
+                borderSide: BorderSide(color: AppColors.borderMedium),
               ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 12,

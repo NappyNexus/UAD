@@ -170,10 +170,10 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 Text(
                   'Notas — ${student.name.split(' ').take(2).join(' ')}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
@@ -239,8 +239,8 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
-                const Text(
+                SizedBox(height: 12),
+                Text(
                   'Pesos: P1 30% · P2 30% · Final 40%. Aprobado ≥ 70.',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 10, color: AppColors.textTertiary),
@@ -303,7 +303,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
           ),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 10,
               color: AppColors.textSecondary,
             ),
@@ -327,21 +327,21 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
           children: [
             Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textSecondary,
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
               decoration: BoxDecoration(
                 color: AppColors.background,
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
                 weight,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 8,
                   color: AppColors.textTertiary,
                 ),
@@ -349,22 +349,22 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
             ),
           ],
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4),
         TextFormField(
           initialValue: value,
           keyboardType: TextInputType.number,
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           decoration: InputDecoration(
             hintText: '—',
-            contentPadding: const EdgeInsets.symmetric(vertical: 12),
+            contentPadding: EdgeInsets.symmetric(vertical: 12),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.borderMedium),
+              borderSide: BorderSide(color: AppColors.borderMedium),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.borderMedium),
+              borderSide: BorderSide(color: AppColors.borderMedium),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
@@ -379,6 +379,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final filtered = _students
         .where((s) => s.name.toLowerCase().contains(_search.toLowerCase()))
         .toList();
@@ -451,7 +452,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                 final id = c['id'] as String;
                 final isSelected = id == _selectedCourse;
                 return Padding(
-                  padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
+                  padding: EdgeInsets.only(right: 8.0, bottom: 8.0),
                   child: ElevatedButton(
                     onPressed: () => setState(() {
                       _selectedCourse = id;
@@ -468,7 +469,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                       elevation: isSelected ? 2 : 0,
                       side: isSelected
                           ? null
-                          : const BorderSide(color: AppColors.borderMedium),
+                          : BorderSide(color: AppColors.borderMedium),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -490,9 +491,9 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(
+                  Icon(
                     LucideIcons.checkCircle2,
-                    color: Colors.white,
+                    color: AppColors.surface,
                     size: 16,
                   ),
                   const SizedBox(width: 8),
@@ -599,11 +600,11 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
               fillColor: Colors.white,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.borderMedium),
+                borderSide: BorderSide(color: AppColors.borderMedium),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.borderMedium),
+                borderSide: BorderSide(color: AppColors.borderMedium),
               ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 12,
@@ -613,10 +614,10 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
           ),
           if (_search.isNotEmpty)
             Padding(
-              padding: const EdgeInsets.only(left: 4, top: 4),
+              padding: EdgeInsets.only(left: 4, top: 4),
               child: Text(
                 '${filtered.length} resultado(s)',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 11,
                   color: AppColors.textTertiary,
                 ),
@@ -626,7 +627,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
 
           // Warning
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: AppColors.background,
               borderRadius: BorderRadius.circular(12),
@@ -639,8 +640,8 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                   size: 14,
                   color: AppColors.warning,
                 ),
-                const SizedBox(width: 8),
-                const Expanded(
+                SizedBox(width: 8),
+                Expanded(
                   child: Text(
                     'Pesos: Parcial 1 (30%) · Parcial 2 (30%) · Final (40%) · Aprobado ≥ 70',
                     style: TextStyle(
@@ -701,14 +702,14 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               s.name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.textPrimary,
@@ -718,7 +719,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                             ),
                             Text(
                               s.id,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 10,
                                 color: AppColors.textTertiary,
                               ),
@@ -728,7 +729,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   Row(
                     children: [
                       Expanded(
@@ -744,7 +745,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                                     : AppColors.textPrimary,
                               ),
                             ),
-                            const Text(
+                            Text(
                               'Prom.',
                               style: TextStyle(
                                 fontSize: 9,
@@ -789,7 +790,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                                     : AppColors.textPrimary,
                               ),
                             ),
-                            const Text(
+                            Text(
                               'Asist.',
                               style: TextStyle(
                                 fontSize: 9,
@@ -856,7 +857,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
           }),
 
           if (filtered.isEmpty)
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(top: 40),
               child: Center(
                 child: Text(
@@ -912,9 +913,9 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
     Color bg,
   ) => Expanded(
     child: Container(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.border),
       ),
@@ -940,7 +941,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
           ),
           Text(
             sub,
-            style: const TextStyle(fontSize: 9, color: AppColors.textTertiary),
+            style: TextStyle(fontSize: 9, color: AppColors.textTertiary),
           ),
         ],
       ),

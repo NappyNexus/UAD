@@ -72,6 +72,7 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final filtered = _resources.where((r) {
       final ms =
           r['title'].toString().toLowerCase().contains(
@@ -88,7 +89,7 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -96,9 +97,9 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
 
             // Filters
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
@@ -123,52 +124,47 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        ..._categories.map(
-                          (c) => Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: ChoiceChip(
-                              label: Text(c['label']),
-                              selected: _categoryFilter == c['key'],
-                              onSelected: (b) =>
-                                  setState(() => _categoryFilter = c['key']),
-                              backgroundColor: AppColors.background,
-                              selectedColor: AppColors.primary,
-                              labelStyle: TextStyle(
-                                color: _categoryFilter == c['key']
-                                    ? Colors.white
-                                    : AppColors.textSecondary,
-                                fontSize: 12,
-                              ),
-                              showCheckmark: false,
-                            ),
-                          ),
-                        ),
-                        ChoiceChip(
-                          avatar: Icon(
-                            LucideIcons.star,
-                            size: 14,
-                            color: _onlyStarred
-                                ? AppColors.warning
-                                : AppColors.textSecondary,
-                          ),
-                          label: const Text('Favoritos'),
-                          selected: _onlyStarred,
-                          onSelected: (b) => setState(() => _onlyStarred = b),
+                  Wrap(
+                    spacing: 8,
+                    children: [
+                      ..._categories.map(
+                        (c) => ChoiceChip(
+                          label: Text(c['label']),
+                          selected: _categoryFilter == c['key'],
+                          onSelected: (b) =>
+                              setState(() => _categoryFilter = c['key']),
                           backgroundColor: AppColors.background,
-                          selectedColor: AppColors.warningLight,
+                          selectedColor: AppColors.primary,
                           labelStyle: TextStyle(
-                            color: _onlyStarred
-                                ? AppColors.warningText
+                            color: _categoryFilter == c['key']
+                                ? Colors.white
                                 : AppColors.textSecondary,
                             fontSize: 12,
                           ),
+                          showCheckmark: false,
                         ),
-                      ],
-                    ),
+                      ),
+                      ChoiceChip(
+                        avatar: Icon(
+                          LucideIcons.star,
+                          size: 14,
+                          color: _onlyStarred
+                              ? AppColors.warning
+                              : AppColors.textSecondary,
+                        ),
+                        label: const Text('Favoritos'),
+                        selected: _onlyStarred,
+                        onSelected: (b) => setState(() => _onlyStarred = b),
+                        backgroundColor: AppColors.background,
+                        selectedColor: AppColors.warningLight,
+                        labelStyle: TextStyle(
+                          color: _onlyStarred
+                              ? AppColors.warningText
+                              : AppColors.textSecondary,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -190,7 +186,7 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                 final r = filtered[i];
                 return Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.surface,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: AppColors.border),
                   ),
@@ -230,7 +226,7 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                                   ),
                                   child: Icon(
                                     LucideIcons.star,
-                                    size: 14,
+                                    size: 18,
                                     color: r['starred']
                                         ? Colors.amber
                                         : Colors.white,
@@ -242,7 +238,7 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(12),
+                        padding: EdgeInsets.all(12),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -255,10 +251,10 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(height: 2),
+                            SizedBox(height: 2),
                             Text(
                               r['author'],
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 10,
                                 color: AppColors.textSecondary,
                               ),

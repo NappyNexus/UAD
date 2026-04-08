@@ -139,6 +139,7 @@ class StudentDashboardScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final s = currentStudent;
     final size = MediaQuery.of(context).size;
 
@@ -188,7 +189,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                 ),
                 // Content
                 Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -216,7 +217,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                                   : _avatarFallback(s.name),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,10 +231,10 @@ class StudentDashboardScreen extends ConsumerWidget {
                                 ),
                                 Text(
                                   s.name.split(' ').take(2).join(' '),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700,
-                                    color: Colors.white,
+                                    color: AppColors.surface,
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -368,7 +369,7 @@ class StudentDashboardScreen extends ConsumerWidget {
           ],
 
           // ═══════════════ Quick Actions ═══════════════
-          const Text(
+          Text(
             'Acceso Rápido',
             style: TextStyle(
               fontSize: 14,
@@ -376,7 +377,7 @@ class StudentDashboardScreen extends ConsumerWidget {
               color: AppColors.textPrimary,
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           GridView.count(
             crossAxisCount: 4,
             shrinkWrap: true,
@@ -389,7 +390,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                 onTap: () => context.go(action['route'] as String),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.surface,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: AppColors.border),
                   ),
@@ -406,13 +407,13 @@ class StudentDashboardScreen extends ConsumerWidget {
                         child: Icon(
                           action['icon'] as IconData,
                           size: 18,
-                          color: Colors.white,
+                          color: AppColors.surface,
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      SizedBox(height: 6),
                       Text(
                         action['label'] as String,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
                           color: AppColors.textSecondary,
@@ -433,8 +434,8 @@ class StudentDashboardScreen extends ConsumerWidget {
           Row(
             children: [
               Icon(LucideIcons.calendar, size: 18, color: AppColors.primary),
-              const SizedBox(width: 8),
-              const Text(
+              SizedBox(width: 8),
+              Text(
                 'Próximas Entregas y Exámenes',
                 style: TextStyle(
                   fontSize: 14,
@@ -493,9 +494,9 @@ class StudentDashboardScreen extends ConsumerWidget {
                   : AppColors.border;
 
               return Container(
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.surface,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: eventBorder),
                 ),
@@ -515,7 +516,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                         children: [
                           Text(
                             '${date.day}',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w800,
                               height: 1.0,
@@ -524,7 +525,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                           ),
                           Text(
                             'OCT',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 8,
                               fontWeight: FontWeight.w600,
                               color: AppColors.textTertiary,
@@ -541,13 +542,13 @@ class StudentDashboardScreen extends ConsumerWidget {
                         children: [
                           Text(
                             ev['title'] as String,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w700,
                               color: AppColors.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          SizedBox(height: 4),
                           Wrap(
                             spacing: 8,
                             runSpacing: 4,
@@ -556,15 +557,15 @@ class StudentDashboardScreen extends ConsumerWidget {
                               Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     LucideIcons.bookOpen,
                                     size: 10,
                                     color: AppColors.textTertiary,
                                   ),
-                                  const SizedBox(width: 4),
+                                  SizedBox(width: 4),
                                   Text(
                                     ev['courseName'] as String,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 10,
                                       color: AppColors.textTertiary,
                                     ),
@@ -574,15 +575,15 @@ class StudentDashboardScreen extends ConsumerWidget {
                               Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     LucideIcons.clock,
                                     size: 10,
                                     color: AppColors.textTertiary,
                                   ),
-                                  const SizedBox(width: 4),
+                                  SizedBox(width: 4),
                                   Text(
                                     ev['time'] as String,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 10,
                                       color: AppColors.textTertiary,
                                     ),
@@ -650,8 +651,8 @@ class StudentDashboardScreen extends ConsumerWidget {
                     size: 18,
                     color: AppColors.primary,
                   ),
-                  const SizedBox(width: 8),
-                  const Text(
+                  SizedBox(width: 8),
+                  Text(
                     'Comunicados de Cursos',
                     style: TextStyle(
                       fontSize: 14,
@@ -709,7 +710,7 @@ class StudentDashboardScreen extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Materias en Curso',
                 style: TextStyle(
                   fontSize: 14,
@@ -740,13 +741,13 @@ class StudentDashboardScreen extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           ...currentCourses.map(
             (course) => Container(
               margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.all(14),
+              padding: EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppColors.border),
               ),
@@ -761,7 +762,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                           children: [
                             Text(
                               course.name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.textPrimary,
@@ -769,10 +770,10 @@ class StudentDashboardScreen extends ConsumerWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(height: 2),
+                            SizedBox(height: 2),
                             Text(
                               '${course.id} · ${course.professor}',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 12,
                                 color: AppColors.textSecondary,
                               ),
@@ -802,7 +803,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Row(
                     children: [
                       Icon(
@@ -810,18 +811,18 @@ class StudentDashboardScreen extends ConsumerWidget {
                         size: 12,
                         color: AppColors.textTertiary,
                       ),
-                      const SizedBox(width: 4),
+                      SizedBox(width: 4),
                       Text(
                         course.schedule,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
                           color: AppColors.textSecondary,
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12),
                       Text(
                         course.room,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
                           color: AppColors.textSecondary,
                         ),
@@ -843,10 +844,10 @@ class StudentDashboardScreen extends ConsumerWidget {
       child: Center(
         child: Text(
           name[0],
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w700,
-            color: Colors.white,
+            color: AppColors.surface,
           ),
         ),
       ),
@@ -901,7 +902,7 @@ class _AnnouncementCardState extends State<_AnnouncementCard> {
       onTap: () => setState(() => _expanded = !_expanded),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: widget.pinned
@@ -913,7 +914,7 @@ class _AnnouncementCardState extends State<_AnnouncementCard> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -934,7 +935,7 @@ class _AnnouncementCardState extends State<_AnnouncementCard> {
                           : AppColors.textSecondary,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -945,7 +946,7 @@ class _AnnouncementCardState extends State<_AnnouncementCard> {
                           children: [
                             Text(
                               ann['title'] as String,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.textPrimary,
@@ -972,7 +973,7 @@ class _AnnouncementCardState extends State<_AnnouncementCard> {
                               ),
                           ],
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4),
                         Wrap(
                           spacing: 8,
                           runSpacing: 4,
@@ -981,15 +982,15 @@ class _AnnouncementCardState extends State<_AnnouncementCard> {
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(
+                                Icon(
                                   LucideIcons.bookOpen,
                                   size: 10,
                                   color: AppColors.textTertiary,
                                 ),
-                                const SizedBox(width: 4),
+                                SizedBox(width: 4),
                                 Text(
                                   ann['courseName'] as String,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 10,
                                     color: AppColors.textTertiary,
                                   ),
@@ -999,15 +1000,15 @@ class _AnnouncementCardState extends State<_AnnouncementCard> {
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(
+                                Icon(
                                   LucideIcons.clock,
                                   size: 10,
                                   color: AppColors.textTertiary,
                                 ),
-                                const SizedBox(width: 4),
+                                SizedBox(width: 4),
                                 Text(
                                   ann['date'] as String,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 10,
                                     color: AppColors.textTertiary,
                                   ),
@@ -1037,7 +1038,7 @@ class _AnnouncementCardState extends State<_AnnouncementCard> {
                       ],
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8),
                   Icon(
                     _expanded ? LucideIcons.chevronUp : LucideIcons.chevronDown,
                     size: 16,
@@ -1048,13 +1049,13 @@ class _AnnouncementCardState extends State<_AnnouncementCard> {
             ),
             if (_expanded)
               Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   border: Border(top: BorderSide(color: AppColors.border)),
                 ),
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+                padding: EdgeInsets.fromLTRB(16, 12, 16, 16),
                 child: Text(
                   ann['body'] as String,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
                     color: AppColors.textSecondary,
                     height: 1.5,

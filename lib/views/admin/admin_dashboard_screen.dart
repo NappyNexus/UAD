@@ -12,6 +12,7 @@ class AdminDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final modules = [
       {
         'label': 'Estudiantes',
@@ -162,7 +163,7 @@ class AdminDashboardScreen extends StatelessWidget {
           const SizedBox(height: 24),
 
           // Modules
-          const Text(
+          Text(
             'Módulos',
             style: TextStyle(
               fontSize: 14,
@@ -170,7 +171,7 @@ class AdminDashboardScreen extends StatelessWidget {
               color: AppColors.textPrimary,
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -187,9 +188,9 @@ class AdminDashboardScreen extends StatelessWidget {
                 onTap: () => context.push(mod['route'] as String),
                 borderRadius: BorderRadius.circular(16),
                 child: Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.surface,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: AppColors.border),
                     boxShadow: [
@@ -213,14 +214,14 @@ class AdminDashboardScreen extends StatelessWidget {
                         ),
                         child: Icon(
                           mod['icon'] as IconData,
-                          color: Colors.white,
+                          color: AppColors.surface,
                           size: 20,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
                       Text(
                         mod['label'] as String,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: AppColors.textPrimary,
@@ -228,7 +229,7 @@ class AdminDashboardScreen extends StatelessWidget {
                       ),
                       Text(
                         '${mod['count']} registros',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 11,
                           color: AppColors.textTertiary,
                         ),
@@ -243,16 +244,16 @@ class AdminDashboardScreen extends StatelessWidget {
 
           // Trend Chart (Simulated bar setup)
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.border),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Tendencia de Matrícula',
                   style: TextStyle(
                     fontSize: 14,
@@ -260,7 +261,7 @@ class AdminDashboardScreen extends StatelessWidget {
                     color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 SizedBox(
                   height: 140,
                   child: Row(
@@ -279,7 +280,7 @@ class AdminDashboardScreen extends StatelessWidget {
                           children: [
                             Text(
                               '$val',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 9,
                                 color: AppColors.textTertiary,
                               ),
@@ -295,10 +296,10 @@ class AdminDashboardScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4),
                             Text(
                               t['period'] as String,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 9,
                                 color: AppColors.textSecondary,
                               ),
@@ -316,16 +317,16 @@ class AdminDashboardScreen extends StatelessWidget {
 
           // Students by Program
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.border),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Estudiantes por Programa',
                   style: TextStyle(
                     fontSize: 14,
@@ -333,19 +334,19 @@ class AdminDashboardScreen extends StatelessWidget {
                     color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 ...studentsByProgram.map((p) {
                   final maxVal = 350.0;
                   final val = p['value'] as int;
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
+                    padding: EdgeInsets.only(bottom: 8.0),
                     child: Row(
                       children: [
                         SizedBox(
                           width: 80,
                           child: Text(
                             p['name'] as String,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 10,
                               color: AppColors.textSecondary,
                             ),
@@ -366,13 +367,13 @@ class AdminDashboardScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: 8),
                         SizedBox(
                           width: 24,
                           child: Text(
                             '$val',
                             textAlign: TextAlign.right,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w600,
                               color: AppColors.textPrimary,
@@ -390,9 +391,9 @@ class AdminDashboardScreen extends StatelessWidget {
 
           // Activity List
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.border),
             ),
@@ -402,7 +403,7 @@ class AdminDashboardScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'Actividad Reciente',
                       style: TextStyle(
                         fontSize: 14,
@@ -432,10 +433,10 @@ class AdminDashboardScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 ...recentActivity.map(
                   (a) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0),
+                    padding: EdgeInsets.only(bottom: 12.0),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -445,7 +446,7 @@ class AdminDashboardScreen extends StatelessWidget {
                             children: [
                               Text(
                                 a['action']!,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.textPrimary,
@@ -453,7 +454,7 @@ class AdminDashboardScreen extends StatelessWidget {
                               ),
                               Text(
                                 a['detail']!,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 11,
                                   color: AppColors.textSecondary,
                                 ),
@@ -463,7 +464,7 @@ class AdminDashboardScreen extends StatelessWidget {
                         ),
                         Text(
                           a['time']!,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 11,
                             color: AppColors.textTertiary,
                           ),

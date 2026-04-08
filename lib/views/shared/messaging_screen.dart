@@ -103,8 +103,89 @@ class _MessagingScreenState extends State<MessagingScreen> {
     });
   }
 
+  void _showAttachmentOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        margin: const EdgeInsets.all(
+          16,
+        ).copyWith(bottom: MediaQuery.of(context).padding.bottom + 16),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 8),
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade50,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  LucideIcons.image,
+                  color: Colors.blue,
+                  size: 20,
+                ),
+              ),
+              title: const Text(
+                'Galería',
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+              ),
+              onTap: () => Navigator.pop(context),
+            ),
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.orange.shade50,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  LucideIcons.fileText,
+                  color: Colors.orange,
+                  size: 20,
+                ),
+              ),
+              title: const Text(
+                'Documentos',
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+              ),
+              onTap: () => Navigator.pop(context),
+            ),
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.purple.shade50,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  LucideIcons.camera,
+                  color: Colors.purple,
+                  size: 20,
+                ),
+              ),
+              title: const Text(
+                'Cámara',
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+              ),
+              onTap: () => Navigator.pop(context),
+            ),
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     if (_selectedContact != null) {
       final msgs = _messages[_selectedContact!['id']] ?? [];
       return Scaffold(
@@ -112,7 +193,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           leading: IconButton(
-            icon: const Icon(
+            icon: Icon(
               LucideIcons.arrowLeft,
               color: AppColors.textPrimary,
             ),
@@ -125,20 +206,20 @@ class _MessagingScreenState extends State<MessagingScreen> {
                 radius: 16,
                 child: Text(
                   _selectedContact!['initials'],
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: AppColors.surface,
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     _selectedContact!['name'],
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
@@ -146,7 +227,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                   ),
                   Text(
                     _selectedContact!['role'],
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 11,
                       color: AppColors.textSecondary,
                     ),
@@ -157,7 +238,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
           ),
           actions: [
             IconButton(
-              icon: const Icon(
+              icon: Icon(
                 LucideIcons.phone,
                 size: 18,
                 color: AppColors.textSecondary,
@@ -165,7 +246,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
               onPressed: () {},
             ),
             IconButton(
-              icon: const Icon(
+              icon: Icon(
                 LucideIcons.video,
                 size: 18,
                 color: AppColors.textSecondary,
@@ -240,22 +321,22 @@ class _MessagingScreenState extends State<MessagingScreen> {
               padding: const EdgeInsets.all(
                 16,
               ).copyWith(bottom: 16 + MediaQuery.of(context).padding.bottom),
-              decoration: const BoxDecoration(
-                color: Colors.white,
+              decoration: BoxDecoration(
+                color: AppColors.surface,
                 border: Border(top: BorderSide(color: AppColors.borderMedium)),
               ),
               child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       LucideIcons.paperclip,
                       color: AppColors.textSecondary,
                     ),
-                    onPressed: () {},
+                    onPressed: () => _showAttachmentOptions(context),
                   ),
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
                         color: AppColors.background,
                         borderRadius: BorderRadius.circular(20),
@@ -272,13 +353,13 @@ class _MessagingScreenState extends State<MessagingScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8),
                   CircleAvatar(
                     backgroundColor: AppColors.primary,
                     child: IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         LucideIcons.send,
-                        color: Colors.white,
+                        color: AppColors.surface,
                         size: 18,
                       ),
                       onPressed: _sendMessage,
@@ -295,12 +376,14 @@ class _MessagingScreenState extends State<MessagingScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
+            Padding(
+              // padding: const EdgeInsets.symmetric(vertical: 8.0, bottom: 16.0),
+              padding: EdgeInsets.only(bottom: 16.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Mensajes',
@@ -310,16 +393,28 @@ class _MessagingScreenState extends State<MessagingScreen> {
                       color: AppColors.textPrimary,
                     ),
                   ),
+                  ElevatedButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(LucideIcons.plus, size: 16),
+                    label: const Text('Nuevo chat'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppColors.borderMedium),
               ),
-              child: const TextField(
+              child: TextField(
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     LucideIcons.search,
@@ -335,10 +430,10 @@ class _MessagingScreenState extends State<MessagingScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
@@ -347,7 +442,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: _contacts.length,
                 separatorBuilder: (_, _) =>
-                    const Divider(height: 1, color: AppColors.borderMedium),
+                    Divider(height: 1, color: AppColors.borderMedium),
                 itemBuilder: (ctx, i) {
                   final c = _contacts[i];
                   return InkWell(
@@ -358,7 +453,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                       });
                     },
                     child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(16.0),
                       child: Row(
                         children: [
                           Stack(
@@ -368,8 +463,8 @@ class _MessagingScreenState extends State<MessagingScreen> {
                                 radius: 24,
                                 child: Text(
                                   c['initials'],
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                                  style: TextStyle(
+                                    color: AppColors.surface,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -385,7 +480,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                                       color: Colors.green,
                                       shape: BoxShape.circle,
                                       border: Border.all(
-                                        color: Colors.white,
+                                        color: AppColors.surface,
                                         width: 2,
                                       ),
                                     ),
@@ -393,7 +488,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                                 ),
                             ],
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -426,7 +521,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 4),
+                                SizedBox(height: 4),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -453,8 +548,8 @@ class _MessagingScreenState extends State<MessagingScreen> {
                                         ),
                                         child: Text(
                                           '${c['unread']}',
-                                          style: const TextStyle(
-                                            color: Colors.white,
+                                          style: TextStyle(
+                                            color: AppColors.surface,
                                             fontSize: 9,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -462,10 +557,10 @@ class _MessagingScreenState extends State<MessagingScreen> {
                                       ),
                                   ],
                                 ),
-                                const SizedBox(height: 4),
+                                SizedBox(height: 4),
                                 Text(
                                   c['role'],
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 10,
                                     color: AppColors.textTertiary,
                                   ),

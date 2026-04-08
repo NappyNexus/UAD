@@ -10,6 +10,7 @@ class StudyPlanScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     // Group courses by semester
     final semesters = <int, List<Map<String, dynamic>>>{};
     for (final c in studyPlanCourses) {
@@ -31,7 +32,7 @@ class StudyPlanScreen extends StatelessWidget {
         : 0;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -42,9 +43,9 @@ class StudyPlanScreen extends StatelessWidget {
 
           // ═══ Progress Card ═══
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.border),
             ),
@@ -53,7 +54,7 @@ class StudyPlanScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'Progreso General',
                       style: TextStyle(
                         fontSize: 14,
@@ -81,20 +82,20 @@ class StudyPlanScreen extends StatelessWidget {
                     valueColor: const AlwaysStoppedAnimation(AppColors.primary),
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       '$completedCredits créditos completados',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 11,
                         color: AppColors.textSecondary,
                       ),
                     ),
                     Text(
                       '$totalCredits créditos totales',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 11,
                         color: AppColors.textSecondary,
                       ),
@@ -124,9 +125,9 @@ class StudyPlanScreen extends StatelessWidget {
               (a, c) => a + (c['credits'] as int),
             );
             return Container(
-              margin: const EdgeInsets.only(bottom: 12),
+              margin: EdgeInsets.only(bottom: 12),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
@@ -221,7 +222,7 @@ class StudyPlanScreen extends StatelessWidget {
                             ),
                             child: Icon(icon, size: 14, color: Colors.white),
                           ),
-                          const SizedBox(width: 10),
+                          SizedBox(width: 10),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,7 +239,7 @@ class StudyPlanScreen extends StatelessWidget {
                                 ),
                                 Text(
                                   '${c['id']} · ${c['credits']} cr.',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 11,
                                     color: AppColors.textTertiary,
                                   ),
@@ -270,10 +271,10 @@ class StudyPlanScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(6),
         ),
       ),
-      const SizedBox(width: 6),
+      SizedBox(width: 6),
       Text(
         label,
-        style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
+        style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
       ),
     ],
   );

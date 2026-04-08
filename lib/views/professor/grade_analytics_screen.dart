@@ -44,6 +44,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final grades = _mockGrades[_selectedCourse] ?? [];
     final hist = _buildHistogram(grades);
 
@@ -74,7 +75,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
         .toList();
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -91,7 +92,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                 final id = c['id'] as String;
                 final isSelected = id == _selectedCourse;
                 return Padding(
-                  padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
+                  padding: EdgeInsets.only(right: 8.0, bottom: 8.0),
                   child: ElevatedButton(
                     onPressed: () => setState(() => _selectedCourse = id),
                     style: ElevatedButton.styleFrom(
@@ -104,7 +105,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                       elevation: isSelected ? 2 : 0,
                       side: isSelected
                           ? null
-                          : const BorderSide(color: AppColors.borderMedium),
+                          : BorderSide(color: AppColors.borderMedium),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -168,16 +169,16 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
 
           // Histogram (Visual via simple bar layout)
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.border),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Distribución de Calificaciones',
                   style: TextStyle(
                     fontSize: 14,
@@ -185,7 +186,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                     color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 SizedBox(
                   height: 160,
                   child: Row(
@@ -202,7 +203,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                             if (count > 0)
                               Text(
                                 '$count',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.textSecondary,
@@ -222,10 +223,10 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            SizedBox(height: 8),
                             Text(
                               r['label'] as String,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 10,
                                 color: AppColors.textSecondary,
                               ),
@@ -271,7 +272,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   ...atRiskStudents.map(
                     (s) => Container(
                       margin: const EdgeInsets.only(bottom: 8),
@@ -280,7 +281,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AppColors.surface,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: const Color(0xFFFECACA)),
                       ),
@@ -292,7 +293,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                             children: [
                               Text(
                                 s['name'] as String,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textPrimary,
@@ -300,7 +301,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                               ),
                               Text(
                                 'Asistencia: ${s['attendance']}%',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 10,
                                   color: AppColors.textTertiary,
                                 ),
@@ -326,14 +327,14 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
           // Full list
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.border),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Text(
                     'Detalle por Estudiante',
@@ -344,13 +345,13 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                     ),
                   ),
                 ),
-                const Divider(height: 1, color: AppColors.borderMedium),
+                Divider(height: 1, color: AppColors.borderMedium),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: studentData.length,
                   separatorBuilder: (_, _) =>
-                      const Divider(height: 1, color: AppColors.borderMedium),
+                      Divider(height: 1, color: AppColors.borderMedium),
                   itemBuilder: (ctx, i) {
                     final s = studentData[i];
                     final isRisk = s['atRisk'] as bool;
@@ -393,14 +394,14 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   s['name'] as String,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.textPrimary,
@@ -408,7 +409,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                                 ),
                                 Text(
                                   'Asistencia ${s['attendance']}%',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 10,
                                     color: AppColors.textTertiary,
                                   ),
@@ -465,9 +466,9 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
     Color bg,
   ) => Expanded(
     child: Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.border),
       ),
@@ -479,7 +480,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
             children: [
               Text(
                 label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
                   color: AppColors.textTertiary,
@@ -508,7 +509,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
           ),
           Text(
             sub,
-            style: const TextStyle(fontSize: 11, color: AppColors.textTertiary),
+            style: TextStyle(fontSize: 11, color: AppColors.textTertiary),
           ),
         ],
       ),

@@ -61,8 +61,9 @@ class _AdminProgramsScreenState extends State<AdminProgramsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -98,9 +99,9 @@ class _AdminProgramsScreenState extends State<AdminProgramsScreen> {
 
             return Container(
               margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
@@ -116,16 +117,16 @@ class _AdminProgramsScreenState extends State<AdminProgramsScreen> {
                           children: [
                             Text(
                               p['name'] as String,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.textPrimary,
                               ),
                             ),
-                            const SizedBox(height: 2),
+                            SizedBox(height: 2),
                             Text(
                               '$id · ${p['faculty']}',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
                                 color: AppColors.textSecondary,
                               ),
@@ -145,28 +146,28 @@ class _AdminProgramsScreenState extends State<AdminProgramsScreen> {
                       _stat(LucideIcons.users, '${p['students']}'),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   Row(
                     children: [
                       Expanded(
                         child: ElevatedButton.icon(
                           onPressed: () => _showProgramModal(p),
                           icon: const Icon(LucideIcons.edit3, size: 14),
-                          label: const Text('Editar'),
+                          label: Text('Editar'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             foregroundColor: AppColors.textSecondary,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
-                              side: const BorderSide(
+                              side: BorderSide(
                                 color: AppColors.borderMedium,
                               ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
                       Expanded(
                         child: _confirmToggleId == id
                             ? Row(
@@ -189,7 +190,7 @@ class _AdminProgramsScreenState extends State<AdminProgramsScreen> {
                                       child: const Text('Confirmar'),
                                     ),
                                   ),
-                                  const SizedBox(width: 4),
+                                  SizedBox(width: 4),
                                   ElevatedButton(
                                     onPressed: () =>
                                         setState(() => _confirmToggleId = null),
@@ -200,7 +201,7 @@ class _AdminProgramsScreenState extends State<AdminProgramsScreen> {
                                       elevation: 0,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10),
-                                        side: const BorderSide(
+                                        side: BorderSide(
                                           color: AppColors.borderMedium,
                                         ),
                                       ),
@@ -247,10 +248,10 @@ class _AdminProgramsScreenState extends State<AdminProgramsScreen> {
   Widget _stat(IconData icon, String text) => Row(
     children: [
       Icon(icon, size: 14, color: AppColors.textTertiary),
-      const SizedBox(width: 4),
+      SizedBox(width: 4),
       Text(
         text,
-        style: const TextStyle(fontSize: 13, color: AppColors.textSecondary),
+        style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
       ),
     ],
   );
@@ -291,14 +292,14 @@ class _ProgramFormState extends State<_ProgramForm> {
       ),
       child: SafeArea(
         child: Container(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 widget.initial != null ? 'Editar Programa' : 'Nuevo Programa',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
@@ -357,19 +358,19 @@ class _ProgramFormState extends State<_ProgramForm> {
     TextInputType kbd = TextInputType.text,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: EdgeInsets.only(bottom: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: AppColors.textSecondary,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           TextFormField(
             initialValue: value,
             onChanged: onChanged,
@@ -377,7 +378,7 @@ class _ProgramFormState extends State<_ProgramForm> {
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.borderMedium),
+                borderSide: BorderSide(color: AppColors.borderMedium),
               ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 12,

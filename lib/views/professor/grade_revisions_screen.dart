@@ -110,6 +110,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final pending = _requests.where((r) => r['status'] == 'pending').length;
     final filtered = _filter == 'all'
         ? _requests
@@ -168,7 +169,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
           const SizedBox(height: 16),
 
           if (filtered.isEmpty)
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(top: 40),
               child: Center(
                 child: Text(
@@ -184,9 +185,9 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
             final conf = _getStatusConf(req['status'] as String);
 
             return Container(
-              margin: const EdgeInsets.only(bottom: 12),
+              margin: EdgeInsets.only(bottom: 12),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
@@ -198,7 +199,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
                         setState(() => _expandedId = isOpen ? null : id),
                     borderRadius: BorderRadius.circular(16),
                     child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(16.0),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -211,7 +212,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
                                     Expanded(
                                       child: Text(
                                         req['studentName'] as String,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w700,
                                           color: AppColors.textPrimary,
@@ -248,15 +249,15 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 4),
+                                SizedBox(height: 4),
                                 Text(
                                   '${req['courseName']} · ${req['partial']}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 11,
                                     color: AppColors.textSecondary,
                                   ),
                                 ),
-                                const SizedBox(height: 8),
+                                SizedBox(height: 8),
                                 Wrap(
                                   spacing: 12,
                                   runSpacing: 4,
@@ -264,7 +265,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
                                     Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        const Text(
+                                        Text(
                                           'Nota actual: ',
                                           style: TextStyle(
                                             fontSize: 11,
@@ -273,7 +274,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
                                         ),
                                         Text(
                                           '${req['currentGrade']}',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 11,
                                             fontWeight: FontWeight.w600,
                                             color: AppColors.textSecondary,
@@ -284,7 +285,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
                                     Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        const Text(
+                                        Text(
                                           'Solicitada: ',
                                           style: TextStyle(
                                             fontSize: 11,
@@ -303,7 +304,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
                                     ),
                                     Text(
                                       req['date'] as String,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 11,
                                         color: AppColors.textTertiary,
                                       ),
@@ -313,7 +314,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
                               ],
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Icon(
                             isOpen
                                 ? LucideIcons.chevronUp
@@ -327,13 +328,13 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
                   ),
 
                   if (isOpen) ...[
-                    const Divider(height: 1, color: AppColors.borderMedium),
+                    Divider(height: 1, color: AppColors.borderMedium),
                     Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'MOTIVO DEL ESTUDIANTE',
                             style: TextStyle(
                               fontSize: 10,
@@ -342,17 +343,17 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
                               letterSpacing: 1.0,
                             ),
                           ),
-                          const SizedBox(height: 6),
+                          SizedBox(height: 6),
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.all(12),
+                            padding: EdgeInsets.all(12),
                             decoration: BoxDecoration(
                               color: AppColors.background,
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
                               req['reason'] as String,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
                                 color: AppColors.textSecondary,
                               ),
@@ -361,7 +362,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
                           const SizedBox(height: 16),
 
                           if (req['status'] == 'pending') ...[
-                            const Text(
+                            Text(
                               'TU RESPUESTA',
                               style: TextStyle(
                                 fontSize: 10,
@@ -370,17 +371,17 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
                                 letterSpacing: 1.0,
                               ),
                             ),
-                            const SizedBox(height: 6),
+                            SizedBox(height: 6),
                             TextField(
                               onChanged: (v) => _responses[id] = v,
                               maxLines: 3,
                               decoration: InputDecoration(
                                 hintText:
                                     'Escribe tu respuesta al estudiante...',
-                                hintStyle: const TextStyle(fontSize: 13),
+                                hintStyle: TextStyle(fontSize: 13),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.borderMedium,
                                   ),
                                 ),
@@ -435,7 +436,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
                               ],
                             ),
                           ] else if (req['response'] != null) ...[
-                            const Text(
+                            Text(
                               'TU RESPUESTA',
                               style: TextStyle(
                                 fontSize: 10,
@@ -480,9 +481,9 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
 
   Widget _summaryBox(String label, String value, Color col) => Expanded(
     child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppColors.borderMedium),
       ),
@@ -498,7 +499,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
           ),
           Text(
             label,
-            style: const TextStyle(fontSize: 10, color: AppColors.textTertiary),
+            style: TextStyle(fontSize: 10, color: AppColors.textTertiary),
           ),
         ],
       ),
@@ -508,7 +509,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
   Widget _filterBtn(String value, String label) {
     final isSelected = _filter == value;
     return Padding(
-      padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
+      padding: EdgeInsets.only(right: 8.0, bottom: 8.0),
       child: ElevatedButton(
         onPressed: () => setState(() => _filter = value),
         style: ElevatedButton.styleFrom(
@@ -517,7 +518,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
           elevation: 0,
           side: isSelected
               ? null
-              : const BorderSide(color: AppColors.borderMedium),
+              : BorderSide(color: AppColors.borderMedium),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

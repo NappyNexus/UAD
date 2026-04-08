@@ -61,12 +61,12 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (ctx) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         child: SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
+              Text(
                 'Vista Previa del Certificado',
                 style: TextStyle(
                   fontSize: 18,
@@ -74,7 +74,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                   color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
@@ -106,39 +106,39 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                         color: AppColors.primary,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
                     Text(
                       'CERTIFICADO DE ${cert['type'].toString().toUpperCase()}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 11,
                         color: AppColors.textSecondary,
                       ),
                     ),
                     const SizedBox(height: 16),
                     const Divider(),
-                    const SizedBox(height: 16),
-                    const Text(
+                    SizedBox(height: 16),
+                    Text(
                       'Se certifica que',
                       style: TextStyle(
                         fontSize: 12,
                         color: AppColors.textSecondary,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8),
                     Text(
                       student.name,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8),
                     Text(
                       'con matrícula ${cert['studentId']}, se encuentra inscrito(a) en el programa de ${student.program} en esta institución.',
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
                         color: AppColors.textSecondary,
                         height: 1.5,
@@ -146,10 +146,10 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                     ),
                     const SizedBox(height: 16),
                     const Divider(),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     Text(
                       'Emitido el ${cert['date']} · ${cert['id']}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 10,
                         color: AppColors.textTertiary,
                       ),
@@ -157,7 +157,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
               Row(
                 children: [
                   Expanded(
@@ -179,7 +179,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton.icon(
                       onPressed: () {
@@ -188,14 +188,14 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                         _showToast('Impresión enviada');
                       },
                       icon: const Icon(LucideIcons.printer, size: 14),
-                      label: const Text('Imprimir'),
+                      label: Text('Imprimir'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: AppColors.textPrimary,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
-                          side: const BorderSide(color: AppColors.borderMedium),
+                          side: BorderSide(color: AppColors.borderMedium),
                         ),
                       ),
                     ),
@@ -228,6 +228,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final emitidos = certificates.where((c) => c['status'] == 'Emitido').length;
     final pendientes = certificates
         .where((c) => c['status'] == 'Pendiente')
@@ -238,7 +239,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
       body: Stack(
         children: [
           SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -276,9 +277,9 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                   children: [
                     Expanded(
                       child: Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppColors.surface,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: AppColors.border),
                         ),
@@ -292,7 +293,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                                 color: AppColors.primary,
                               ),
                             ),
-                            const Text(
+                            Text(
                               'Emitidos',
                               style: TextStyle(
                                 fontSize: 11,
@@ -303,12 +304,12 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     Expanded(
                       child: Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppColors.surface,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: AppColors.border),
                         ),
@@ -322,7 +323,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                                 color: AppColors.warning,
                               ),
                             ),
-                            const Text(
+                            Text(
                               'Pendientes',
                               style: TextStyle(
                                 fontSize: 11,
@@ -333,12 +334,12 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     Expanded(
                       child: Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppColors.surface,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: AppColors.border),
                         ),
@@ -346,13 +347,13 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                           children: [
                             Text(
                               '${certificates.length}',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.textSecondary,
                               ),
                             ),
-                            const Text(
+                            Text(
                               'Total',
                               style: TextStyle(
                                 fontSize: 11,
@@ -379,9 +380,9 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
 
                   return Container(
                     margin: const EdgeInsets.only(bottom: 8),
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.surface,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: AppColors.border),
                     ),
@@ -409,30 +410,30 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                                     : AppColors.warning,
                               ),
                             ),
-                            const SizedBox(width: 12),
+                            SizedBox(width: 12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     'Certificado de ${cert['type']}',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.textPrimary,
                                     ),
                                   ),
-                                  const SizedBox(height: 2),
+                                  SizedBox(height: 2),
                                   Text(
                                     '${cert['id']} · ${student.name}',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 11,
                                       color: AppColors.textSecondary,
                                     ),
                                   ),
                                   Text(
                                     cert['date'] as String,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 11,
                                       color: AppColors.textTertiary,
                                     ),
@@ -443,13 +444,13 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                             StatusBadge(status: cert['status'] as String),
                           ],
                         ),
-                        const SizedBox(height: 12),
+                        SizedBox(height: 12),
                         Row(
                           children: [
                             ElevatedButton.icon(
                               onPressed: () => _showCertificatePreview(cert),
                               icon: const Icon(LucideIcons.eye, size: 12),
-                              label: const Text('Ver'),
+                              label: Text('Ver'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white,
                                 foregroundColor: AppColors.textSecondary,
@@ -457,10 +458,10 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 12,
                                 ),
-                                minimumSize: const Size(0, 32),
+                                minimumSize: Size(0, 32),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  side: const BorderSide(
+                                  side: BorderSide(
                                     color: AppColors.borderMedium,
                                   ),
                                 ),
@@ -560,12 +561,12 @@ class _NewCertificateForm extends StatelessWidget {
       ),
       child: SafeArea(
         child: Container(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Emitir Certificado',
                 style: TextStyle(
                   fontSize: 18,
@@ -588,11 +589,11 @@ class _NewCertificateForm extends StatelessWidget {
               ]),
 
               Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
+                padding: EdgeInsets.only(bottom: 12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Notas adicionales',
                       style: TextStyle(
                         fontSize: 12,
@@ -600,17 +601,17 @@ class _NewCertificateForm extends StatelessWidget {
                         color: AppColors.textSecondary,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
                     TextFormField(
                       maxLines: 3,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
                         color: AppColors.textPrimary,
                       ),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
+                          borderSide: BorderSide(
                             color: AppColors.borderMedium,
                           ),
                         ),
@@ -646,21 +647,21 @@ class _NewCertificateForm extends StatelessWidget {
 
   Widget _dropdown(String label, String value, List<String> options) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: EdgeInsets.only(bottom: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: AppColors.textSecondary,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
               border: Border.all(color: AppColors.borderMedium),
               borderRadius: BorderRadius.circular(12),

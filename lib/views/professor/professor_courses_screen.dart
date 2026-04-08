@@ -91,10 +91,10 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 Text(
                   'Documentos — ${course['name']}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
@@ -103,7 +103,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                 const SizedBox(height: 16),
 
                 // Upload Form
-                const Text(
+                Text(
                   'TIPO DE DOCUMENTO',
                   style: TextStyle(
                     fontSize: 10,
@@ -112,13 +112,13 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                     letterSpacing: 1.0,
                   ),
                 ),
-                const SizedBox(height: 6),
+                SizedBox(height: 6),
                 DropdownButtonFormField<String>(
                   initialValue: _docType,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
+                      borderSide: BorderSide(
                         color: AppColors.borderMedium,
                       ),
                     ),
@@ -134,8 +134,8 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                     if (v != null) setModalState(() => _docType = v);
                   },
                 ),
-                const SizedBox(height: 12),
-                const Text(
+                SizedBox(height: 12),
+                Text(
                   'ARCHIVO',
                   style: TextStyle(
                     fontSize: 10,
@@ -144,13 +144,13 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                     letterSpacing: 1.0,
                   ),
                 ),
-                const SizedBox(height: 6),
+                SizedBox(height: 6),
                 GestureDetector(
                   onTap: () => setModalState(
                     () => _selectedFileName = 'documento_curso.pdf',
                   ),
                   child: Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: AppColors.borderMedium,
@@ -161,12 +161,12 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                     ),
                     child: Row(
                       children: [
-                        const Icon(
+                        Icon(
                           LucideIcons.fileUp,
                           size: 20,
                           color: AppColors.textTertiary,
                         ),
-                        const SizedBox(width: 12),
+                        SizedBox(width: 12),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,12 +174,12 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                               Text(
                                 _selectedFileName ??
                                     'Haz clic para simular subida',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 14,
                                   color: AppColors.textSecondary,
                                 ),
                               ),
-                              const Text(
+                              Text(
                                 'PDF, DOC, DOCX, XLSX',
                                 style: TextStyle(
                                   fontSize: 11,
@@ -221,8 +221,8 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                 if (numDocs > 0) ...[
                   const SizedBox(height: 16),
                   const Divider(),
-                  const SizedBox(height: 8),
-                  const Text(
+                  SizedBox(height: 8),
+                  Text(
                     'DOCUMENTOS SUBIDOS',
                     style: TextStyle(
                       fontSize: 10,
@@ -231,7 +231,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                       letterSpacing: 1.0,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   ..._courseDocs(course['id'] as String).asMap().entries.map((
                     entry,
                   ) {
@@ -239,7 +239,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                     final doc = entry.value;
                     return Container(
                       margin: const EdgeInsets.only(bottom: 8),
-                      padding: const EdgeInsets.all(12),
+                      padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: AppColors.background,
                         borderRadius: BorderRadius.circular(12),
@@ -251,14 +251,14 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                             size: 16,
                             color: AppColors.info,
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   doc['name'] as String,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.textPrimary,
@@ -266,7 +266,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                                 ),
                                 Text(
                                   '${doc['type']} · ${doc['date']}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 10,
                                     color: AppColors.textSecondary,
                                   ),
@@ -280,7 +280,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                               i,
                               setModalState,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               LucideIcons.trash2,
                               size: 16,
                               color: AppColors.textTertiary,
@@ -306,6 +306,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final p = currentProfessor;
     final totalStudents = professorCourses.fold<int>(
       0,
@@ -347,7 +348,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                         : Container(color: Colors.white.withValues(alpha: 0.2)),
                   ),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -361,10 +362,10 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                       ),
                       Text(
                         p['name'] as String,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
-                          color: Colors.white,
+                          color: AppColors.surface,
                         ),
                       ),
                       Text(
@@ -391,9 +392,9 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
             final numDocs = _courseDocs(c['id'] as String).length;
             return Container(
               margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
@@ -409,7 +410,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                           children: [
                             Text(
                               c['name'] as String,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.textPrimary,
@@ -417,7 +418,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                             ),
                             Text(
                               '${c['id']} · Sección ${c['section']}',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 12,
                                 color: AppColors.textSecondary,
                               ),
@@ -432,32 +433,32 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         LucideIcons.clock,
                         size: 14,
                         color: AppColors.textSecondary,
                       ),
-                      const SizedBox(width: 6),
+                      SizedBox(width: 6),
                       Text(
                         c['schedule'] as String,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
                           color: AppColors.textSecondary,
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      const Icon(
+                      SizedBox(width: 16),
+                      Icon(
                         LucideIcons.mapPin,
                         size: 14,
                         color: AppColors.textSecondary,
                       ),
-                      const SizedBox(width: 6),
+                      SizedBox(width: 6),
                       Text(
                         c['room'] as String,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
                           color: AppColors.textSecondary,
                         ),
@@ -495,7 +496,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10),
                       GestureDetector(
                         onTap: () => _showDocsModal(context, c),
                         child: Container(
@@ -534,9 +535,9 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                                   child: Center(
                                     child: Text(
                                       '$numDocs',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 9,
-                                        color: Colors.white,
+                                        color: AppColors.surface,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
@@ -556,16 +557,16 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
 
           // ═══ Quick Stats ═══
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.border),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Resumen',
                   style: TextStyle(
                     fontSize: 14,
@@ -601,10 +602,10 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
               color: AppColors.primary,
             ),
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: 2),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 11,
               color: AppColors.textSecondary,
             ),

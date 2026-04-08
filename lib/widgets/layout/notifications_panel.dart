@@ -178,6 +178,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final filtered = _filtered;
 
     return GestureDetector(
@@ -193,8 +194,8 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                   ? 380
                   : MediaQuery.of(context).size.width,
               height: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
+              decoration: BoxDecoration(
+                color: AppColors.surface,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black26,
@@ -220,12 +221,12 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 'Notificaciones',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
-                                  color: Colors.white,
+                                  color: AppColors.surface,
                                 ),
                               ),
                               Text(
@@ -255,10 +256,10 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     LucideIcons.checkCheck,
                                     size: 14,
-                                    color: Colors.white,
+                                    color: AppColors.surface,
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
@@ -276,13 +277,13 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: 4),
                         IconButton(
                           onPressed: widget.onClose,
-                          icon: const Icon(
+                          icon: Icon(
                             LucideIcons.x,
                             size: 18,
-                            color: Colors.white,
+                            color: AppColors.surface,
                           ),
                           style: IconButton.styleFrom(
                             backgroundColor: Colors.white.withValues(
@@ -303,7 +304,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                       horizontal: 12,
                       vertical: 8,
                     ),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(color: AppColors.border),
                       ),
@@ -539,7 +540,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                       horizontal: 16,
                       vertical: 12,
                     ),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       border: Border(top: BorderSide(color: AppColors.border)),
                     ),
                     child: Text(

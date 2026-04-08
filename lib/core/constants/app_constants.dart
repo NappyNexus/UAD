@@ -278,6 +278,7 @@ class AppConstants {
       password: 'demo123',
       role: roleStudent,
       name: 'María E. Rodríguez',
+      photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face',
     ),
     DemoUser(
       email: 'professor@unad.edu.do',
@@ -315,11 +316,13 @@ class DemoUser {
   final String password;
   final String role;
   final String name;
+  final String? photo;
 
   const DemoUser({
     required this.email,
     required this.password,
     required this.role,
     required this.name,
+    this.photo,
   });
 }

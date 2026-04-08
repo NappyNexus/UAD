@@ -128,6 +128,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final filtered = _users.where((u) {
       final name = (u['name'] as String).toLowerCase();
       final email = (u['email'] as String).toLowerCase();
@@ -137,7 +138,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     }).toList();
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -169,15 +170,15 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
 
           // Search
           Container(
-            margin: const EdgeInsets.only(bottom: 16),
+            margin: EdgeInsets.only(bottom: 16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.borderMedium),
             ),
             child: TextField(
               onChanged: (v) => setState(() => _searchQuery = v),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 prefixIcon: Icon(
                   LucideIcons.search,
                   size: 18,
@@ -212,9 +213,9 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
               final count = _users.where((u) => u['role'] == role).length;
               final color = _getRoleColor(role);
               return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.surface,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: AppColors.border),
                 ),
@@ -229,7 +230,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                       ),
                       child: Icon(_getRoleIcon(role), size: 16, color: color),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -237,7 +238,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                         children: [
                           Text(
                             '$count',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
                               color: AppColors.textPrimary,
@@ -245,7 +246,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                           ),
                           Text(
                             '${role}s',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11,
                               color: AppColors.textSecondary,
                             ),
@@ -266,9 +267,9 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
             final color = _getRoleColor(u['role'] as String);
             return Container(
               margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppColors.border),
               ),
@@ -278,7 +279,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.surface,
                       border: Border.all(color: color.withValues(alpha: 0.3)),
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -288,23 +289,23 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                       color: color,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           u['name'] as String,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textPrimary,
                           ),
                         ),
-                        const SizedBox(height: 2),
+                        SizedBox(height: 2),
                         Text(
                           u['email'] as String,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
                             color: AppColors.textSecondary,
                           ),
@@ -312,25 +313,25 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       StatusBadge(status: u['status'] as String),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4),
                       Text(
                         'Último: ${u['lastLogin']}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 10,
                           color: AppColors.textTertiary,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   IconButton(
                     onPressed: () => _showUserModal(u),
-                    icon: const Icon(
+                    icon: Icon(
                       LucideIcons.edit3,
                       size: 16,
                       color: AppColors.textSecondary,
@@ -383,14 +384,14 @@ class _UserFormState extends State<_UserForm> {
       ),
       child: SafeArea(
         child: Container(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 isEdit ? 'Editar Usuario' : 'Nuevo Usuario',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
@@ -456,29 +457,29 @@ class _UserFormState extends State<_UserForm> {
     bool obscure = false,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: EdgeInsets.only(bottom: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: AppColors.textSecondary,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           TextFormField(
             initialValue: value,
             onChanged: onChanged,
             keyboardType: kbd,
             obscureText: obscure,
-            style: const TextStyle(fontSize: 13, color: AppColors.textPrimary),
+            style: TextStyle(fontSize: 13, color: AppColors.textPrimary),
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.borderMedium),
+                borderSide: BorderSide(color: AppColors.borderMedium),
               ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 12,
@@ -499,21 +500,21 @@ class _UserFormState extends State<_UserForm> {
     void Function(String?) onChanged,
   ) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: EdgeInsets.only(bottom: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: AppColors.textSecondary,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
               border: Border.all(color: AppColors.borderMedium),
               borderRadius: BorderRadius.circular(12),

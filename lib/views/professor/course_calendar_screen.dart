@@ -179,6 +179,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final filtered = _filter == 'all'
         ? _events
         : _events.where((e) => e['courseId'] == _filter).toList();
@@ -198,7 +199,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -231,9 +232,9 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
           if (_adding)
             Container(
               margin: const EdgeInsets.only(bottom: 16),
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                   color: AppColors.primary.withValues(alpha: 0.2),
@@ -242,7 +243,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Nuevo Evento',
                     style: TextStyle(
                       fontSize: 14,
@@ -250,14 +251,14 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                       color: AppColors.textPrimary,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   Row(
                     children: [
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'CURSO',
                               style: TextStyle(
                                 fontSize: 10,
@@ -266,14 +267,14 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                 letterSpacing: 1.0,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4),
                             DropdownButtonFormField<String>(
                               initialValue: _newCourseId,
                               decoration: InputDecoration(
                                 isDense: true,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.borderMedium,
                                   ),
                                 ),
@@ -301,12 +302,12 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'TIPO',
                               style: TextStyle(
                                 fontSize: 10,
@@ -315,14 +316,14 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                 letterSpacing: 1.0,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4),
                             DropdownButtonFormField<String>(
                               initialValue: _newType,
                               decoration: InputDecoration(
                                 isDense: true,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.borderMedium,
                                   ),
                                 ),
@@ -349,15 +350,15 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   TextField(
                     onChanged: (v) => setState(() => _newTitle = v),
                     decoration: InputDecoration(
                       hintText: 'Título del evento...',
-                      hintStyle: const TextStyle(fontSize: 13),
+                      hintStyle: TextStyle(fontSize: 13),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
+                        borderSide: BorderSide(
                           color: AppColors.borderMedium,
                         ),
                       ),
@@ -367,14 +368,14 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   Row(
                     children: [
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'FECHA',
                               style: TextStyle(
                                 fontSize: 10,
@@ -383,16 +384,16 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                 letterSpacing: 1.0,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4),
                             TextField(
                               onChanged: (v) => setState(() => _newDate = v),
                               decoration: InputDecoration(
                                 hintText: 'YYYY-MM-DD',
                                 isDense: true,
-                                hintStyle: const TextStyle(fontSize: 13),
+                                hintStyle: TextStyle(fontSize: 13),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.borderMedium,
                                   ),
                                 ),
@@ -405,12 +406,12 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'HORA',
                               style: TextStyle(
                                 fontSize: 10,
@@ -419,16 +420,16 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                 letterSpacing: 1.0,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4),
                             TextField(
                               onChanged: (v) => setState(() => _newTime = v),
                               decoration: InputDecoration(
                                 hintText: 'ej. 10:00 AM',
                                 isDense: true,
-                                hintStyle: const TextStyle(fontSize: 13),
+                                hintStyle: TextStyle(fontSize: 13),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.borderMedium,
                                   ),
                                 ),
@@ -443,16 +444,16 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   TextField(
                     onChanged: (v) => setState(() => _newNotes = v),
                     maxLines: 2,
                     decoration: InputDecoration(
                       hintText: 'Notas adicionales (opcional)...',
-                      hintStyle: const TextStyle(fontSize: 13),
+                      hintStyle: TextStyle(fontSize: 13),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
+                        borderSide: BorderSide(
                           color: AppColors.borderMedium,
                         ),
                       ),
@@ -462,13 +463,13 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
                         onPressed: () => setState(() => _adding = false),
-                        child: const Text(
+                        child: Text(
                           'Cancelar',
                           style: TextStyle(color: AppColors.textSecondary),
                         ),
@@ -524,10 +525,10 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
-                      const SizedBox(width: 6),
+                      SizedBox(width: 6),
                       Text(
                         t['label'] as String,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 11,
                           color: AppColors.textSecondary,
                         ),
@@ -541,7 +542,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
 
           // List
           if (filtered.isEmpty)
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(top: 40),
               child: Center(
                 child: Text(
@@ -556,10 +557,10 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 4, bottom: 8, top: 8),
+                  padding: EdgeInsets.only(left: 4, bottom: 8, top: 8),
                   child: Text(
                     group.key.toUpperCase(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textTertiary,
@@ -580,9 +581,9 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                     opacity: isPast ? 0.6 : 1.0,
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 8),
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AppColors.surface,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: AppColors.border),
                       ),
@@ -601,7 +602,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                               children: [
                                 Text(
                                   _getDayLabel(ev['date'] as String),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w800,
                                     color: AppColors.textPrimary,
@@ -613,7 +614,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                       .split(' ')[0]
                                       .substring(0, 3)
                                       .toUpperCase(),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 9,
                                     color: AppColors.textSecondary,
                                     height: 1.2,
@@ -622,7 +623,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                               ],
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -632,7 +633,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                     Expanded(
                                       child: Text(
                                         ev['title'] as String,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w700,
                                           color: AppColors.textPrimary,
@@ -642,7 +643,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                     InkWell(
                                       onTap: () =>
                                           _deleteEvent(ev['id'] as int),
-                                      child: const Padding(
+                                      child: Padding(
                                         padding: EdgeInsets.all(4.0),
                                         child: Icon(
                                           LucideIcons.trash2,
@@ -653,7 +654,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 4),
+                                SizedBox(height: 4),
                                 Wrap(
                                   spacing: 8,
                                   runSpacing: 4,
@@ -662,15 +663,15 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                     Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        const Icon(
+                                        Icon(
                                           LucideIcons.bookOpen,
                                           size: 10,
                                           color: AppColors.textTertiary,
                                         ),
-                                        const SizedBox(width: 4),
+                                        SizedBox(width: 4),
                                         Text(
                                           cName as String,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 11,
                                             color: AppColors.textSecondary,
                                           ),
@@ -681,15 +682,15 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                       Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          const Icon(
+                                          Icon(
                                             LucideIcons.clock,
                                             size: 10,
                                             color: AppColors.textTertiary,
                                           ),
-                                          const SizedBox(width: 4),
+                                          SizedBox(width: 4),
                                           Text(
                                             ev['time'] as String,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 11,
                                               color: AppColors.textSecondary,
                                             ),
@@ -751,10 +752,10 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                 ),
                                 if ((ev['notes'] as String).isNotEmpty)
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 6),
+                                    padding: EdgeInsets.only(top: 6),
                                     child: Text(
                                       ev['notes'] as String,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 12,
                                         fontStyle: FontStyle.italic,
                                         color: AppColors.textTertiary,
@@ -780,7 +781,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
   Widget _filterBtn(String value, String label) {
     final isSelected = _filter == value;
     return Padding(
-      padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
+      padding: EdgeInsets.only(right: 8.0, bottom: 8.0),
       child: ElevatedButton(
         onPressed: () => setState(() => _filter = value),
         style: ElevatedButton.styleFrom(
@@ -789,7 +790,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
           elevation: 0,
           side: isSelected
               ? null
-              : const BorderSide(color: AppColors.borderMedium),
+              : BorderSide(color: AppColors.borderMedium),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

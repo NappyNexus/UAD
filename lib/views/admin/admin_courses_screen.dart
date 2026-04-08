@@ -152,6 +152,7 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final filtered = _courses.where((c) {
       final name = (c['name'] as String).toLowerCase();
       final id = (c['id'] as String).toLowerCase();
@@ -160,7 +161,7 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
     }).toList();
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -192,15 +193,15 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
 
           // Search
           Container(
-            margin: const EdgeInsets.only(bottom: 16),
+            margin: EdgeInsets.only(bottom: 16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.borderMedium),
             ),
             child: TextField(
               onChanged: (v) => setState(() => _searchQuery = v),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 prefixIcon: Icon(
                   LucideIcons.search,
                   size: 18,
@@ -224,9 +225,9 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
           // Courses List
           ...filtered.map(
             (c) => Container(
-              margin: const EdgeInsets.only(bottom: 12),
+              margin: EdgeInsets.only(bottom: 12),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
@@ -234,7 +235,7 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(16.0),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -247,7 +248,7 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
                                   Flexible(
                                     child: Text(
                                       c['name'] as String,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w700,
                                         color: AppColors.textPrimary,
@@ -258,27 +259,27 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
                                   StatusBadge(status: c['status'] as String),
                                 ],
                               ),
-                              const SizedBox(height: 4),
+                              SizedBox(height: 4),
                               Text(
                                 '${c['id']} · ${c['credits']} créditos · ${c['program']} · Sem. ${c['semester']}',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 13,
                                   color: AppColors.textSecondary,
                                 ),
                               ),
                               if (c['prerequisite'] != null) ...[
-                                const SizedBox(height: 4),
+                                SizedBox(height: 4),
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       LucideIcons.link,
                                       size: 12,
                                       color: AppColors.textTertiary,
                                     ),
-                                    const SizedBox(width: 4),
+                                    SizedBox(width: 4),
                                     Text(
                                       'Prerrequisito: ${c['prerequisite']}',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 11,
                                         color: AppColors.textTertiary,
                                       ),
@@ -301,10 +302,10 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
                             foregroundColor: AppColors.textSecondary,
                             elevation: 0,
                             padding: const EdgeInsets.symmetric(horizontal: 12),
-                            minimumSize: const Size(0, 32),
+                            minimumSize: Size(0, 32),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
-                              side: const BorderSide(
+                              side: BorderSide(
                                 color: AppColors.borderMedium,
                               ),
                             ),
@@ -328,7 +329,7 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
                                 horizontal: 16,
                                 vertical: 12,
                               ),
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                 border: Border(
                                   top: BorderSide(
                                     color: AppColors.borderMedium,
@@ -348,7 +349,7 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
                                       children: [
                                         Text(
                                           'Sec. ${sec['id']}',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 13,
                                             fontWeight: FontWeight.w600,
                                             color: AppColors.textPrimary,
@@ -356,7 +357,7 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
                                         ),
                                         Text(
                                           '${sec['professor']}',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 13,
                                             color: AppColors.textSecondary,
                                           ),
@@ -364,15 +365,15 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
                                         Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            const Icon(
+                                            Icon(
                                               LucideIcons.clock,
                                               size: 12,
                                               color: AppColors.textTertiary,
                                             ),
-                                            const SizedBox(width: 4),
+                                            SizedBox(width: 4),
                                             Text(
                                               '${sec['schedule']}',
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontSize: 11,
                                                 color: AppColors.textTertiary,
                                               ),
@@ -382,15 +383,15 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
                                         Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            const Icon(
+                                            Icon(
                                               LucideIcons.mapPin,
                                               size: 12,
                                               color: AppColors.textTertiary,
                                             ),
-                                            const SizedBox(width: 4),
+                                            SizedBox(width: 4),
                                             Text(
                                               '${sec['room']}',
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontSize: 11,
                                                 color: AppColors.textTertiary,
                                               ),
@@ -402,7 +403,7 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
                                   ),
                                   Row(
                                     children: [
-                                      const Icon(
+                                      Icon(
                                         LucideIcons.users,
                                         size: 12,
                                         color: AppColors.textTertiary,
@@ -475,14 +476,14 @@ class _CourseFormState extends State<_CourseForm> {
       ),
       child: SafeArea(
         child: Container(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 isEdit ? 'Editar Curso' : 'Nuevo Curso',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
@@ -512,11 +513,11 @@ class _CourseFormState extends State<_CourseForm> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
+                padding: EdgeInsets.only(bottom: 12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Programa',
                       style: TextStyle(
                         fontSize: 12,
@@ -524,9 +525,9 @@ class _CourseFormState extends State<_CourseForm> {
                         color: AppColors.textSecondary,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      padding: EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
                         border: Border.all(color: AppColors.borderMedium),
                         borderRadius: BorderRadius.circular(12),
@@ -603,19 +604,19 @@ class _CourseFormState extends State<_CourseForm> {
     String? placeholder,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: EdgeInsets.only(bottom: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: AppColors.textSecondary,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           TextFormField(
             initialValue: value,
             onChanged: onChanged,
@@ -631,7 +632,7 @@ class _CourseFormState extends State<_CourseForm> {
               hintText: placeholder,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.borderMedium),
+                borderSide: BorderSide(color: AppColors.borderMedium),
               ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 12,

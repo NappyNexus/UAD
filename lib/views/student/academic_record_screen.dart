@@ -14,6 +14,7 @@ class AcademicRecordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final s = currentStudent;
     final allCourses = gradeHistory;
     final totalCredits = allCourses.fold<int>(0, (a, c) => a + c.credits);
@@ -23,7 +24,7 @@ class AcademicRecordScreen extends StatelessWidget {
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -47,9 +48,9 @@ class AcademicRecordScreen extends StatelessWidget {
           // ═══ Student Info Card ═══
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.border),
             ),
@@ -84,27 +85,27 @@ class AcademicRecordScreen extends StatelessWidget {
                           ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 Text(
                   s.name,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: 2),
                 Text(
                   s.program,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
                     color: AppColors.textSecondary,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: 2),
                 Text(
                   '${s.id} · Cohorte: ${s.cohort} · Estado: ${s.status}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 11,
                     color: AppColors.textTertiary,
                   ),
@@ -166,9 +167,9 @@ class AcademicRecordScreen extends StatelessWidget {
                 courses.length;
 
             return Container(
-              margin: const EdgeInsets.only(bottom: 12),
+              margin: EdgeInsets.only(bottom: 12),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
@@ -236,30 +237,30 @@ class AcademicRecordScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     '${c.credits}',
-                                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textPrimary, height: 1.0),
+                                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textPrimary, height: 1.0),
                                   ),
-                                  const Text(
+                                  Text(
                                     'CR',
                                     style: TextStyle(fontSize: 8, fontWeight: FontWeight.w600, color: AppColors.textTertiary),
                                   ),
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 12),
+                            SizedBox(width: 12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     c.courseName,
-                                    style: const TextStyle(fontWeight: FontWeight.w600, color: AppColors.textPrimary, fontSize: 13),
+                                    style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.textPrimary, fontSize: 13),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                  const SizedBox(height: 2),
+                                  SizedBox(height: 2),
                                   Text(
                                     c.courseId,
-                                    style: const TextStyle(fontFamily: 'monospace', fontSize: 11, color: AppColors.textSecondary),
+                                    style: TextStyle(fontFamily: 'monospace', fontSize: 11, color: AppColors.textSecondary),
                                   ),
                                 ],
                               ),
@@ -300,7 +301,7 @@ class AcademicRecordScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Total del Período',
                           style: TextStyle(
                             fontSize: 11,

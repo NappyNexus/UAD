@@ -74,6 +74,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final cName =
         (professorCourses.firstWhere((c) => c['id'] == _selectedCourse)['name']
             as String);
@@ -87,7 +88,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -101,7 +102,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 final id = c['id'] as String;
                 final isSelected = id == _selectedCourse;
                 return Padding(
-                  padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
+                  padding: EdgeInsets.only(right: 8.0, bottom: 8.0),
                   child: ElevatedButton(
                     onPressed: () => setState(() => _selectedCourse = id),
                     style: ElevatedButton.styleFrom(
@@ -114,7 +115,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       elevation: isSelected ? 2 : 0,
                       side: isSelected
                           ? null
-                          : const BorderSide(color: AppColors.borderMedium),
+                          : BorderSide(color: AppColors.borderMedium),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -131,9 +132,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
           // Date selector card
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.border),
             ),
@@ -142,13 +143,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               children: [
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       LucideIcons.calendar,
                       size: 14,
                       color: AppColors.textTertiary,
                     ),
-                    const SizedBox(width: 8),
-                    const Text(
+                    SizedBox(width: 8),
+                    Text(
                       'SELECCIONAR FECHA DE CLASE',
                       style: TextStyle(
                         fontSize: 10,
@@ -268,7 +269,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           // Student list
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.border),
             ),
@@ -279,7 +280,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     horizontal: 16,
                     vertical: 12,
                   ),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border(bottom: BorderSide(color: AppColors.border)),
                   ),
                   child: Row(
@@ -289,11 +290,11 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         size: 16,
                         color: AppColors.primary,
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           '$cName — $_selectedDate',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                             color: AppColors.textPrimary,
@@ -304,7 +305,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       ),
                       Text(
                         '${professorStudents.length} est.',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 11,
                           color: AppColors.textTertiary,
                         ),
@@ -317,7 +318,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: professorStudents.length,
                   separatorBuilder: (_, _) =>
-                      const Divider(height: 1, color: AppColors.border),
+                      Divider(height: 1, color: AppColors.border),
                   itemBuilder: (ctx, i) {
                     final s = professorStudents[i];
                     final id = s['id'] as String;
@@ -354,14 +355,14 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   name,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.textPrimary,
@@ -448,9 +449,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   Widget _statBox(String value, String label, Color color) => Expanded(
     child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppColors.borderMedium),
       ),
@@ -466,7 +467,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           ),
           Text(
             label,
-            style: const TextStyle(fontSize: 9, color: AppColors.textTertiary),
+            style: TextStyle(fontSize: 9, color: AppColors.textTertiary),
           ),
         ],
       ),

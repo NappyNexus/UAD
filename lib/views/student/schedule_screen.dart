@@ -29,6 +29,7 @@ class ScheduleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final scheduleByDay = <String, List<Map<String, dynamic>>>{};
     for (final d in _days) {
       scheduleByDay[d] = [];
@@ -232,15 +233,15 @@ class ScheduleScreen extends StatelessWidget {
 
           // ═══ Weekly Summary ═══
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.border),
             ),
             child: Column(
               children: [
-                const Text(
+                Text(
                   'Resumen Semanal',
                   style: TextStyle(
                     fontSize: 14,
@@ -275,10 +276,10 @@ class ScheduleScreen extends StatelessWidget {
             color: AppColors.primary,
           ),
         ),
-        const SizedBox(height: 2),
+        SizedBox(height: 2),
         Text(
           label,
-          style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
+          style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
         ),
       ],
     ),

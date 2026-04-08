@@ -50,6 +50,7 @@ class AuthViewModel extends StateNotifier<AuthState> {
         currentRole: matched.role,
         userName: matched.name,
         userEmail: matched.email,
+        userPhoto: matched.photo,
       );
       return true;
     }
@@ -67,6 +68,7 @@ class AuthViewModel extends StateNotifier<AuthState> {
       currentRole: role,
       userName: user.name,
       userEmail: user.email,
+      userPhoto: user.photo,
     );
   }
 

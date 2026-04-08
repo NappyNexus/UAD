@@ -10,6 +10,7 @@ class RequestsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final total = requests.length;
     final inProcess = requests.where((r) => r['status'] == 'En proceso').length;
     final completed = requests.where((r) => r['status'] == 'Completada').length;
@@ -72,9 +73,9 @@ class RequestsScreen extends StatelessWidget {
 
             return Container(
               margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.all(14),
+              padding: EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppColors.border),
               ),
@@ -90,31 +91,31 @@ class RequestsScreen extends StatelessWidget {
                     ),
                     child: Icon(icon, size: 16, color: iconColor),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           r['type'] as String,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textPrimary,
                           ),
                         ),
-                        const SizedBox(height: 2),
+                        SizedBox(height: 2),
                         Text(
                           '${r['id']} · ${r['date']}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 11,
                             color: AppColors.textSecondary,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4),
                         Text(
                           r['details'] as String,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
                             color: AppColors.textSecondary,
                           ),
@@ -134,9 +135,9 @@ class RequestsScreen extends StatelessWidget {
 
   Widget _statMini(String value, String label, Color color) => Expanded(
     child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppColors.border),
       ),
@@ -150,10 +151,10 @@ class RequestsScreen extends StatelessWidget {
               color: color,
             ),
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: 2),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 11,
               color: AppColors.textSecondary,
             ),
@@ -219,10 +220,10 @@ class _NewRequestFormSheetState extends State<NewRequestFormSheet> {
 
   Widget _buildLabel(String text) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 6, top: 12),
+      padding: EdgeInsets.only(bottom: 6, top: 12),
       child: Text(
         text,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 10,
           fontWeight: FontWeight.w600,
           color: AppColors.textSecondary,
@@ -237,7 +238,7 @@ class _NewRequestFormSheetState extends State<NewRequestFormSheet> {
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.borderMedium),
+          borderSide: BorderSide(color: AppColors.borderMedium),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 12,
@@ -246,7 +247,7 @@ class _NewRequestFormSheetState extends State<NewRequestFormSheet> {
       ),
       hint: Text(
         hint,
-        style: const TextStyle(fontSize: 13, color: AppColors.textTertiary),
+        style: TextStyle(fontSize: 13, color: AppColors.textTertiary),
       ),
       items: items
           .map(
@@ -270,10 +271,10 @@ class _NewRequestFormSheetState extends State<NewRequestFormSheet> {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(fontSize: 13, color: AppColors.textTertiary),
+        hintStyle: TextStyle(fontSize: 13, color: AppColors.textTertiary),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.borderMedium),
+          borderSide: BorderSide(color: AppColors.borderMedium),
         ),
         contentPadding: const EdgeInsets.all(12),
       ),
@@ -317,7 +318,7 @@ class _NewRequestFormSheetState extends State<NewRequestFormSheet> {
   Widget build(BuildContext context) {
     if (_submitted) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+        padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -335,8 +336,8 @@ class _NewRequestFormSheetState extends State<NewRequestFormSheet> {
                 size: 28,
               ),
             ),
-            const SizedBox(height: 16),
-            const Text(
+            SizedBox(height: 16),
+            Text(
               'Solicitud enviada exitosamente',
               style: TextStyle(
                 fontSize: 16,
@@ -344,8 +345,8 @@ class _NewRequestFormSheetState extends State<NewRequestFormSheet> {
                 color: AppColors.textPrimary,
               ),
             ),
-            const SizedBox(height: 6),
-            const Text(
+            SizedBox(height: 6),
+            Text(
               'Recibirás una respuesta en 3-5 días hábiles.',
               style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
             ),
@@ -381,8 +382,8 @@ class _NewRequestFormSheetState extends State<NewRequestFormSheet> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
-            const Text(
+            SizedBox(height: 16),
+            Text(
               'Nueva Solicitud',
               style: TextStyle(
                 fontSize: 20,
@@ -397,7 +398,7 @@ class _NewRequestFormSheetState extends State<NewRequestFormSheet> {
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.borderMedium),
+                  borderSide: BorderSide(color: AppColors.borderMedium),
                 ),
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 12,
@@ -570,7 +571,7 @@ class _NewRequestFormSheetState extends State<NewRequestFormSheet> {
                         ),
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Cancelar',
                         style: TextStyle(color: AppColors.textPrimary),
                       ),

@@ -25,6 +25,7 @@ class _AppShellState extends ConsumerState<AppShell> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final auth = ref.watch(authProvider);
     final role = auth.currentRole ?? AppConstants.roleStudent;
     final navItems = AppConstants.getNavItems(role);
@@ -50,10 +51,10 @@ class _AppShellState extends ConsumerState<AppShell> {
             Builder(
               builder: (context) => IconButton(
                 visualDensity: VisualDensity.compact,
-                icon: const Icon(
+                icon: Icon(
                   LucideIcons.menu,
-                  color: Colors.white,
-                  size: 20,
+                  color: AppColors.surface,
+                  size: 24,
                 ),
                 onPressed: () => Scaffold.of(context).openDrawer(),
               ),
@@ -87,10 +88,10 @@ class _AppShellState extends ConsumerState<AppShell> {
           ),
           child: Text(
             AppConstants.roleLabels[role] ?? role,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w700,
-              color: Colors.white,
+              color: AppColors.surface,
               letterSpacing: 0.5,
             ),
           ),
@@ -100,7 +101,7 @@ class _AppShellState extends ConsumerState<AppShell> {
           IconButton(
             icon: Stack(
               children: [
-                const Icon(LucideIcons.bell, color: Colors.white, size: 20),
+                const Icon(LucideIcons.bell, color: Colors.white, size: 24),
                 Positioned(
                   right: 0,
                   top: 0,
@@ -123,15 +124,15 @@ class _AppShellState extends ConsumerState<AppShell> {
           ),
           // Profile avatar
           Padding(
-            padding: const EdgeInsets.only(right: 12),
+            padding: EdgeInsets.only(right: 12),
             child: GestureDetector(
               onTap: () => setState(() {
                 _showProfile = true;
                 _showNotifications = false;
               }),
               child: Container(
-                width: 32,
-                height: 32,
+                width: 38,
+                height: 38,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
                   border: Border.all(
@@ -148,8 +149,8 @@ class _AppShellState extends ConsumerState<AppShell> {
                           child: Center(
                             child: Text(
                               (auth.userName ?? 'U')[0].toUpperCase(),
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: AppColors.surface,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -189,7 +190,7 @@ class _AppShellState extends ConsumerState<AppShell> {
       // ── Bottom Navigation ──
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).scaffoldBackgroundColor,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.08),

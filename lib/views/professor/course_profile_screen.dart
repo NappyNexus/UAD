@@ -29,6 +29,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final course = professorCourses.firstWhere(
       (c) => c['id'] == _selectedCourse,
       orElse: () => professorCourses[0],
@@ -179,13 +180,13 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
               children: [
                 Text(
                   course['name'] as String,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                    color: AppColors.surface,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Wrap(
                   spacing: 16,
                   runSpacing: 8,
@@ -198,12 +199,12 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                           size: 14,
                           color: Colors.white70,
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: 4),
                         Text(
                           '${course['enrolled']} estudiantes',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
-                            color: Colors.white,
+                            color: AppColors.surface,
                           ),
                         ),
                       ],
@@ -216,12 +217,12 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                           size: 14,
                           color: Colors.white70,
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: 4),
                         Text(
                           course['schedule'] as String,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
-                            color: Colors.white,
+                            color: AppColors.surface,
                           ),
                         ),
                       ],
@@ -234,19 +235,19 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                           size: 14,
                           color: Colors.white70,
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: 4),
                         Text(
                           course['room'] as String,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
-                            color: Colors.white,
+                            color: AppColors.surface,
                           ),
                         ),
                       ],
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 Row(
                   children: [
                     Container(
@@ -269,8 +270,8 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                           ),
                           Text(
                             avg,
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: AppColors.surface,
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
                             ),
@@ -278,7 +279,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 12,
@@ -299,8 +300,8 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                           ),
                           Text(
                             '$passing/${grades.length}',
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: AppColors.surface,
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
                             ),
@@ -362,14 +363,14 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               s['name'] as String,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.textPrimary,
@@ -377,7 +378,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                             ),
                             Text(
                               'Asistencia: ${s['attendance']}%',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 11,
                                 color: AppColors.textTertiary,
                               ),
@@ -406,7 +407,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
             'Sílabo del Curso',
             LucideIcons.bookOpen,
             syllabus == null
-                ? const Text(
+                ? Text(
                     'No hay sílabo registrado para este curso.',
                     style: TextStyle(
                       color: AppColors.textTertiary,
@@ -418,14 +419,14 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                     children: [
                       Text(
                         syllabus['description'] as String,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: AppColors.textSecondary,
                           fontSize: 13,
                           height: 1.4,
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      const Text(
+                      SizedBox(height: 16),
+                      Text(
                         'OBJETIVOS',
                         style: TextStyle(
                           fontSize: 10,
@@ -440,7 +441,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                           .entries
                           .map(
                             (e) => Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0),
+                              padding: EdgeInsets.only(bottom: 8.0),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -462,11 +463,11 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(width: 8),
+                                  SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
                                       e.value as String,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 13,
                                         color: AppColors.textSecondary,
                                       ),
@@ -476,8 +477,8 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                               ),
                             ),
                           ),
-                      const SizedBox(height: 16),
-                      const Text(
+                      SizedBox(height: 16),
+                      Text(
                         'TEMAS',
                         style: TextStyle(
                           fontSize: 10,
@@ -486,7 +487,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                           letterSpacing: 1.0,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       Wrap(
                         spacing: 8,
                         runSpacing: 8,
@@ -503,7 +504,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                                 ),
                                 child: Text(
                                   t as String,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.textPrimary,
@@ -547,7 +548,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 ...professorStudents.asMap().entries.map((e) {
                   final s = e.value;
                   final grade = e.key < grades.length ? grades[e.key] : 0;
@@ -557,14 +558,14 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                       ? AppColors.gold
                       : AppColors.error;
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
+                    padding: EdgeInsets.only(bottom: 8.0),
                     child: Row(
                       children: [
                         SizedBox(
                           width: 80,
                           child: Text(
                             (s['name'] as String).split(' ')[0],
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11,
                               color: AppColors.textSecondary,
                             ),
@@ -627,10 +628,10 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
               color: color,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 10,
               color: AppColors.textSecondary,
             ),
@@ -643,9 +644,9 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
   Widget _accordion(String id, String label, IconData icon, Widget content) {
     final isExpanded = _expandedSection == id;
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.border),
       ),
@@ -656,7 +657,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
             onTap: () => _toggle(id),
             borderRadius: BorderRadius.circular(16),
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.0),
               child: Row(
                 children: [
                   Container(
@@ -668,11 +669,11 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                     ),
                     child: Icon(icon, size: 16, color: AppColors.primary),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Expanded(
                     child: Text(
                       label,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: AppColors.textPrimary,
@@ -691,7 +692,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
             ),
           ),
           if (isExpanded) ...[
-            const Divider(height: 1, color: AppColors.borderMedium),
+            Divider(height: 1, color: AppColors.borderMedium),
             Padding(padding: const EdgeInsets.all(16.0), child: content),
           ],
         ],

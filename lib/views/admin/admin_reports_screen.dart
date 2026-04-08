@@ -27,12 +27,13 @@ class AdminReportsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final enrollmentTrend = reportData['enrollmentTrend'] as List<dynamic>;
     final studentsByProgram = reportData['studentsByProgram'] as List<dynamic>;
     final statusBreakdown = reportData['statusBreakdown'] as List<dynamic>;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -57,7 +58,7 @@ class AdminReportsScreen extends StatelessWidget {
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
-                    side: const BorderSide(color: AppColors.borderMedium),
+                    side: BorderSide(color: AppColors.borderMedium),
                   ),
                 ),
               ),
@@ -126,7 +127,7 @@ class AdminReportsScreen extends StatelessWidget {
                       children: [
                         Text(
                           '$val',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 9,
                             color: AppColors.textSecondary,
                           ),
@@ -142,10 +143,10 @@ class AdminReportsScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4),
                         Text(
                           t['period'] as String,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 9,
                             color: AppColors.textTertiary,
                           ),
@@ -167,14 +168,14 @@ class AdminReportsScreen extends StatelessWidget {
                 final maxVal = 350.0;
                 final val = p['value'] as int;
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0),
+                  padding: EdgeInsets.only(bottom: 12.0),
                   child: Row(
                     children: [
                       SizedBox(
                         width: 80,
                         child: Text(
                           p['name'] as String,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 10,
                             color: AppColors.textSecondary,
                           ),
@@ -195,13 +196,13 @@ class AdminReportsScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
                       SizedBox(
                         width: 30,
                         child: Text(
                           '$val',
                           textAlign: TextAlign.right,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textPrimary,
@@ -259,10 +260,10 @@ class AdminReportsScreen extends StatelessWidget {
                             color: AppColors.primary,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4),
                         Text(
                           t['month'] as String,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 9,
                             color: AppColors.textTertiary,
                           ),
@@ -293,7 +294,7 @@ class AdminReportsScreen extends StatelessWidget {
                       children: [
                         Text(
                           '$val',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 9,
                             color: AppColors.textSecondary,
                           ),
@@ -309,10 +310,10 @@ class AdminReportsScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4),
                         Text(
                           t['range'] as String,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 9,
                             color: AppColors.textTertiary,
                           ),
@@ -350,7 +351,7 @@ class AdminReportsScreen extends StatelessWidget {
                   cColor = AppColors.primary;
                 }
                 return Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: AppColors.background,
                     borderRadius: BorderRadius.circular(12),
@@ -365,7 +366,7 @@ class AdminReportsScreen extends StatelessWidget {
                           shape: BoxShape.circle,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -373,7 +374,7 @@ class AdminReportsScreen extends StatelessWidget {
                           children: [
                             Text(
                               '${s['value']}',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.textPrimary,
@@ -381,7 +382,7 @@ class AdminReportsScreen extends StatelessWidget {
                             ),
                             Text(
                               s['name'] as String,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 11,
                                 color: AppColors.textSecondary,
                               ),
@@ -411,9 +412,9 @@ class _CardContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.border),
       ),
@@ -425,7 +426,7 @@ class _CardContainer extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
@@ -433,7 +434,7 @@ class _CardContainer extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {},
-                child: const Row(
+                child: Row(
                   children: [
                     Icon(
                       LucideIcons.printer,

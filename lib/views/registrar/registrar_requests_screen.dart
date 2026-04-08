@@ -103,13 +103,13 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (ctx) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         child: SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Gestionar Solicitud',
                 style: TextStyle(
                   fontSize: 18,
@@ -117,9 +117,9 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                   color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: AppColors.background,
                   borderRadius: BorderRadius.circular(16),
@@ -133,7 +133,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                         Expanded(
                           child: Text(
                             r['type'],
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: AppColors.textPrimary,
                             ),
@@ -142,10 +142,10 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                         StatusBadge(status: r['status']),
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
                     Text(
                       '${r['id']} · ${r['date']}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
                         color: AppColors.textSecondary,
                       ),
@@ -159,10 +159,10 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                         color: AppColors.primary,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
                     Text(
                       r['details'],
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
                         color: AppColors.textPrimary,
                       ),
@@ -170,8 +170,8 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
-              const Text(
+              SizedBox(height: 24),
+              Text(
                 'CAMBIAR ESTADO',
                 style: TextStyle(
                   fontSize: 11,
@@ -179,7 +179,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                   color: AppColors.textTertiary,
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
@@ -190,7 +190,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                         label: Text(st),
                         onPressed: () => _changeStatus(r['id'], st),
                         backgroundColor: Colors.white,
-                        side: const BorderSide(color: AppColors.borderMedium),
+                        side: BorderSide(color: AppColors.borderMedium),
                       ),
                     )
                     .toList(),
@@ -204,6 +204,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final filtered = _reqs.where((r) {
       final matchSearch =
           r['type'].toString().toLowerCase().contains(
@@ -218,7 +219,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
         child: Column(
           children: [
             const PageHeader(
@@ -229,13 +230,13 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
             // Search
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppColors.borderMedium),
               ),
               child: TextField(
                 onChanged: (v) => setState(() => _searchQuery = v),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   prefixIcon: Icon(
                     LucideIcons.search,
                     size: 18,
@@ -293,7 +294,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
             // List
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
@@ -302,7 +303,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: filtered.length,
                 separatorBuilder: (_, _) =>
-                    const Divider(height: 1, color: AppColors.borderMedium),
+                    Divider(height: 1, color: AppColors.borderMedium),
                 itemBuilder: (ctx, i) {
                   final r = filtered[i];
                   final s = allStudents.firstWhere(
@@ -312,7 +313,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                   return InkWell(
                     onTap: () => _showDetailModal(r),
                     child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(16.0),
                       child: Row(
                         children: [
                           Expanded(
@@ -324,7 +325,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                                     Expanded(
                                       child: Text(
                                         r['type'],
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,
                                           color: AppColors.textPrimary,
@@ -342,10 +343,10 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 4),
+                                SizedBox(height: 4),
                                 Text(
                                   '${r['id']} · ${r['date']}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 11,
                                     color: AppColors.textTertiary,
                                   ),

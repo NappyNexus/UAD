@@ -21,6 +21,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final s = currentStudent;
     final paid = accountStatement
         .where((p) => p.status == 'Pagado')
@@ -99,7 +100,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
 
           // ═══ Tabs ═══
           Container(
-            padding: const EdgeInsets.all(4),
+            padding: EdgeInsets.all(4),
             decoration: BoxDecoration(
               color: AppColors.background,
               borderRadius: BorderRadius.circular(12),
@@ -118,9 +119,9 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
             ...accountStatement.map(
               (p) => Container(
                 margin: const EdgeInsets.only(bottom: 8),
-                padding: const EdgeInsets.all(14),
+                padding: EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.surface,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: AppColors.border),
                 ),
@@ -132,16 +133,16 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                         children: [
                           Text(
                             p.concept,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
                               color: AppColors.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 2),
+                          SizedBox(height: 2),
                           Text(
                             '${Formatters.dateShort(p.date)}${p.method != null ? ' · ${p.method}' : ''}',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11,
                               color: AppColors.textSecondary,
                             ),
@@ -154,7 +155,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                       children: [
                         Text(
                           Formatters.currencyShort(p.amount),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                             color: AppColors.textPrimary,
@@ -175,7 +176,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'Historial de Transacciones',
                       style: TextStyle(
                         fontSize: 14,
@@ -200,13 +201,13 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 ...accountStatement.map(
                   (p) => Container(
                     margin: const EdgeInsets.only(bottom: 10),
-                    padding: const EdgeInsets.all(14),
+                    padding: EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.surface,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: AppColors.border),
                     ),
@@ -230,14 +231,14 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                                 : AppColors.error,
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        SizedBox(width: 12),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 p.concept,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textPrimary,
@@ -245,10 +246,10 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              const SizedBox(height: 4),
+                              SizedBox(height: 4),
                               Text(
                                 Formatters.dateShort(p.date),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 11,
                                   color: AppColors.textSecondary,
                                 ),
@@ -401,19 +402,19 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
         constraints: BoxConstraints(
           maxHeight: MediaQuery.of(context).size.height * 0.9,
         ),
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration: BoxDecoration(
+          color: AppColors.surface,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+              padding: EdgeInsets.fromLTRB(20, 16, 20, 8),
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  const Center(
+                  Center(
                     child: Text(
                       'Realizar Pago',
                       style: TextStyle(
@@ -427,7 +428,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
                       onTap: () => Navigator.pop(context),
-                      child: const Icon(
+                      child: Icon(
                         LucideIcons.x,
                         size: 20,
                         color: AppColors.textSecondary,
@@ -440,16 +441,16 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
 
             Flexible(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+                padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildLabel('CONCEPTO'),
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      padding: EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AppColors.surface,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: AppColors.borderMedium),
                       ),
@@ -457,7 +458,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                         child: DropdownButton<String>(
                           value: _selectedConcept,
                           isExpanded: true,
-                          icon: const Icon(
+                          icon: Icon(
                             LucideIcons.chevronDown,
                             size: 20,
                             color: AppColors.textPrimary,
@@ -467,7 +468,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                               value: c,
                               child: Text(
                                 c,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 14,
                                   color: AppColors.textPrimary,
                                 ),
@@ -490,7 +491,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                     const SizedBox(height: 16),
 
                     _buildLabel('MONTO'),
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6),
                     TextField(
                       controller: _montoController,
                       readOnly: _selectedConcept != 'Monto Personalizado',
@@ -499,7 +500,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                         FilteringTextInputFormatter.digitsOnly,
                         CurrencyInputFormatter(),
                       ],
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         color: AppColors.textPrimary,
                         fontWeight: FontWeight.w500,
@@ -513,7 +514,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                         fillColor: Colors.white,
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
+                          borderSide: BorderSide(
                             color: AppColors.borderMedium,
                           ),
                         ),
@@ -590,7 +591,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
 
   Widget _buildLabel(String text) => Text(
     text,
-    style: const TextStyle(
+    style: TextStyle(
       fontSize: 10,
       fontWeight: FontWeight.w600,
       color: AppColors.textSecondary,
@@ -647,18 +648,18 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
           const SizedBox(height: 16),
 
           _buildLabel('BANCO DE ORIGEN'),
-          const SizedBox(height: 6),
+          SizedBox(height: 6),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.borderMedium),
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 value: _selectedBank,
-                hint: const Text(
+                hint: Text(
                   'Seleccionar banco...',
                   style: TextStyle(
                     fontSize: 14,
@@ -666,13 +667,13 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                   ),
                 ),
                 isExpanded: true,
-                icon: const Icon(LucideIcons.chevronDown, size: 18),
+                icon: Icon(LucideIcons.chevronDown, size: 18),
                 items: _banks.map((String c) {
                   return DropdownMenuItem<String>(
                     value: c,
                     child: Text(
                       c,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         color: AppColors.textPrimary,
                       ),
@@ -734,13 +735,13 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
           const SizedBox(height: 16),
 
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: const Color(0xFFCFE1FF)),
             ),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -796,10 +797,10 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
       onTap: onTap,
       inputFormatters: inputFormatters,
       keyboardType: keyboardType,
-      style: const TextStyle(fontSize: 14, color: AppColors.textPrimary),
+      style: TextStyle(fontSize: 14, color: AppColors.textPrimary),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(color: AppColors.textSecondary),
+        hintStyle: TextStyle(color: AppColors.textSecondary),
         suffixIcon: icon != null
             ? Icon(icon, size: 16, color: AppColors.textPrimary)
             : null,
@@ -811,7 +812,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
         fillColor: Colors.white,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.borderMedium),
+          borderSide: BorderSide(color: AppColors.borderMedium),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -831,7 +832,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Instrucciones para pago en ventanilla',
             style: TextStyle(
               fontSize: 14,
@@ -839,8 +840,8 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
               color: AppColors.textPrimary,
             ),
           ),
-          const SizedBox(height: 12),
-          const Text(
+          SizedBox(height: 12),
+          Text(
             '1. Dirígete a la caja de la universidad en horario de 8am-4pm.',
             style: TextStyle(
               fontSize: 13,
@@ -848,9 +849,9 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
               height: 1.5,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           RichText(
-            text: const TextSpan(
+            text: TextSpan(
               style: TextStyle(
                 fontSize: 13,
                 color: AppColors.textSecondary,
@@ -872,8 +873,8 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
               ],
             ),
           ),
-          const SizedBox(height: 8),
-          const Text(
+          SizedBox(height: 8),
+          Text(
             '3. Realiza el pago del monto indicado. Se emitirá un recibo oficial.',
             style: TextStyle(
               fontSize: 13,
@@ -881,8 +882,8 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
               height: 1.5,
             ),
           ),
-          const SizedBox(height: 8),
-          const Text(
+          SizedBox(height: 8),
+          Text(
             '4. Entrega una copia del recibo al departamento de finanzas.',
             style: TextStyle(
               fontSize: 13,
@@ -943,7 +944,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
           _buildLabel('NOMBRE DEL TITULAR'),
           const SizedBox(height: 6),
           _buildTextField('Como aparece en la tarjeta'),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Row(
             children: [
               Expanded(
@@ -956,13 +957,13 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                   ],
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildLabel('CVV'),
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6),
                     TextField(
                       obscureText: _obscureCVV,
                       keyboardType: TextInputType.number,
@@ -970,7 +971,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                         FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(3),
                       ],
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         color: AppColors.textPrimary,
                       ),
@@ -993,7 +994,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                         fillColor: Colors.white,
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
+                          borderSide: BorderSide(
                             color: AppColors.borderMedium,
                           ),
                         ),
@@ -1011,7 +1012,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           GestureDetector(
             onTap: () => setState(() => _saveCard = !_saveCard),
             behavior: HitTestBehavior.opaque,
@@ -1033,8 +1034,8 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                       ? const Icon(Icons.check, size: 12, color: Colors.white)
                       : null,
                 ),
-                const SizedBox(width: 8),
-                const Text(
+                SizedBox(width: 8),
+                Text(
                   'Guardar tarjeta para futuros pagos',
                   style: TextStyle(fontSize: 13, color: AppColors.textPrimary),
                 ),
@@ -1067,10 +1068,10 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
         ),
 
         if (_selectedCard != null) ...[
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Row(
             children: [
-              const Text(
+              Text(
                 'CVV ',
                 style: TextStyle(
                   fontSize: 10,
@@ -1088,7 +1089,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
               ),
             ],
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: 6),
           TextField(
             obscureText: _obscureCVV,
             keyboardType: TextInputType.number,
@@ -1096,7 +1097,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
               FilteringTextInputFormatter.digitsOnly,
               LengthLimitingTextInputFormatter(3),
             ],
-            style: const TextStyle(fontSize: 14, color: AppColors.textPrimary),
+            style: TextStyle(fontSize: 14, color: AppColors.textPrimary),
             decoration: InputDecoration(
               hintText: '...',
               suffixIcon: GestureDetector(
@@ -1115,7 +1116,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
               fillColor: Colors.white,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.borderMedium),
+                borderSide: BorderSide(color: AppColors.borderMedium),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -1161,9 +1162,9 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
     return GestureDetector(
       onTap: () => setState(() => _selectedCard = '$brand $last4'),
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
@@ -1187,7 +1188,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -1201,7 +1202,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                         color: brandColor,
                       ),
                     ),
-                    const Text(
+                    Text(
                       ' •••• ',
                       style: TextStyle(
                         fontSize: 14,
@@ -1211,7 +1212,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                     ),
                     Text(
                       last4,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
@@ -1221,7 +1222,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                 ),
                 Text(
                   'Vence $exp · $name',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 11,
                     color: AppColors.textSecondary,
                   ),

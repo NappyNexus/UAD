@@ -16,6 +16,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final s = currentStudent;
 
     final infoSections = [
@@ -127,7 +128,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
     ];
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -147,7 +148,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                     : AppColors.textPrimary,
                 side: _editing
                     ? null
-                    : const BorderSide(color: AppColors.borderMedium),
+                    : BorderSide(color: AppColors.borderMedium),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -158,7 +159,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
           // ═══ Profile Header ═══
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(20),
+            // padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 begin: Alignment.topLeft,
@@ -181,95 +182,98 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                     ),
                   ),
                 ),
-                Row(
-                  children: [
-                    Container(
-                      width: 72,
-                      height: 72,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.2),
-                          width: 3,
+                Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 72,
+                        height: 72,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(18),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.2),
+                            width: 3,
+                          ),
                         ),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: s.photo != null
-                            ? Image.network(s.photo!, fit: BoxFit.cover)
-                            : Container(
-                                color: Colors.white.withValues(alpha: 0.2),
-                                child: Center(
-                                  child: Text(
-                                    s.name[0],
-                                    style: const TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: s.photo != null
+                              ? Image.network(s.photo!, fit: BoxFit.cover)
+                              : Container(
+                                  color: Colors.white.withValues(alpha: 0.2),
+                                  child: Center(
+                                    child: Text(
+                                      s.name[0],
+                                      style: TextStyle(
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.surface,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            s.name,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              s.name,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.surface,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            s.program,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.white.withValues(alpha: 0.8),
+                            const SizedBox(height: 2),
+                            Text(
+                              s.program,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.white.withValues(alpha: 0.8),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 6),
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 3,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withValues(alpha: 0.2),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Text(
-                                  s.status,
-                                  style: const TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
+                            SizedBox(height: 6),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withValues(alpha: 0.2),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text(
+                                    s.status,
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.surface,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(width: 6),
-                              Text(
-                                'GPA: ${s.gpa}',
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  color: Colors.white.withValues(alpha: 0.6),
+                                const SizedBox(width: 6),
+                                Text(
+                                  'Indice: ${s.gpa}',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.white.withValues(alpha: 0.6),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -279,9 +283,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
           // ═══ Info Sections ═══
           ...infoSections.map(
             (section) => Container(
-              margin: const EdgeInsets.only(bottom: 12),
+              margin: EdgeInsets.only(bottom: 12),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
@@ -292,7 +296,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                       horizontal: 14,
                       vertical: 10,
                     ),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(color: AppColors.border),
                       ),
@@ -301,7 +305,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         section['title'] as String,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: AppColors.textPrimary,
@@ -339,14 +343,14 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                               color: AppColors.textTertiary,
                             ),
                           ),
-                          const SizedBox(width: 10),
+                          SizedBox(width: 10),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   f['label'] as String,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 11,
                                     color: AppColors.textSecondary,
                                   ),
@@ -354,7 +358,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                 if (_editing && isEditable)
                                   TextFormField(
                                     initialValue: f['value'] as String?,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                       color: AppColors.textPrimary,
@@ -381,7 +385,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                 else
                                   Text(
                                     f['value'] as String? ?? '-',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                       color: AppColors.textPrimary,

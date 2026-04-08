@@ -57,13 +57,13 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (ctx) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         child: SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Detalle del Estudiante',
                 style: TextStyle(
                   fontSize: 18,
@@ -71,10 +71,10 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                   color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: AppColors.background,
                   borderRadius: BorderRadius.circular(16),
@@ -84,16 +84,16 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                   children: [
                     Text(
                       st.name,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
                     Text(
                       '${st.id} · ${st.cedula}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
                         color: AppColors.textSecondary,
                       ),
@@ -108,7 +108,7 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                   Expanded(child: _detailData('Semestre', '${st.semester}°')),
                 ],
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               Row(
                 children: [
                   Expanded(child: _detailData('Índice', '${st.gpa}')),
@@ -116,7 +116,7 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Estado',
                           style: TextStyle(
                             fontSize: 11,
@@ -139,21 +139,21 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                 isAlert: st.balance > 0,
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
               Row(
                 children: [
                   Expanded(
                     child: ElevatedButton.icon(
                       onPressed: () {},
                       icon: const Icon(LucideIcons.edit3, size: 14),
-                      label: const Text('Editar'),
+                      label: Text('Editar'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: AppColors.textPrimary,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
-                          side: const BorderSide(color: AppColors.borderMedium),
+                          side: BorderSide(color: AppColors.borderMedium),
                         ),
                       ),
                     ),
@@ -190,7 +190,7 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
         children: [
           Text(
             label,
-            style: const TextStyle(fontSize: 11, color: AppColors.textTertiary),
+            style: TextStyle(fontSize: 11, color: AppColors.textTertiary),
           ),
           const SizedBox(height: 4),
           Text(
@@ -206,6 +206,7 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final filtered = allStudents.where((s) {
       final nameStr = s.name.toLowerCase();
       final idStr = s.id.toLowerCase();
@@ -222,7 +223,7 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -258,13 +259,13 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.surface,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: AppColors.borderMedium),
                     ),
                     child: TextField(
                       onChanged: (v) => setState(() => _searchQuery = v),
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         prefixIcon: Icon(
                           LucideIcons.search,
                           size: 18,
@@ -356,7 +357,7 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
             // Students List
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
@@ -365,7 +366,7 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: filtered.length,
                 separatorBuilder: (_, _) =>
-                    const Divider(height: 1, color: AppColors.borderMedium),
+                    Divider(height: 1, color: AppColors.borderMedium),
                 itemBuilder: (ctx, i) {
                   final s = filtered[i];
                   final gpa = s.gpa;
@@ -373,7 +374,7 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                   return InkWell(
                     onTap: () => _showStudentDetail(s),
                     child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(16.0),
                       child: Row(
                         children: [
                           Expanded(
@@ -382,16 +383,16 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                               children: [
                                 Text(
                                   s.name,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: AppColors.textPrimary,
                                   ),
                                 ),
-                                const SizedBox(height: 4),
+                                SizedBox(height: 4),
                                 Text(
                                   '${s.id} · ${s.cedula}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 11,
                                     color: AppColors.textTertiary,
                                   ),
@@ -435,8 +436,8 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                                       : AppColors.success,
                                 ),
                               ),
-                              const SizedBox(height: 8),
-                              const Icon(
+                              SizedBox(height: 8),
+                              Icon(
                                 LucideIcons.chevronRight,
                                 size: 16,
                                 color: AppColors.textTertiary,
@@ -471,7 +472,7 @@ class _NewStudentForm extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Registrar Nuevo Estudiante',
                 style: TextStyle(
                   fontSize: 18,
@@ -520,30 +521,30 @@ class _NewStudentForm extends StatelessWidget {
 
   Widget _input(String label, String hint, {int maxLines = 1}) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: EdgeInsets.only(bottom: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: AppColors.textSecondary,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           TextField(
             maxLines: maxLines,
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: const TextStyle(
+              hintStyle: TextStyle(
                 fontSize: 13,
                 color: AppColors.textTertiary,
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.borderMedium),
+                borderSide: BorderSide(color: AppColors.borderMedium),
               ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 12,

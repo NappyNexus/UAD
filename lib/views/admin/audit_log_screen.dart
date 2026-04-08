@@ -111,6 +111,7 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final filtered = _initialAuditLog.where((log) {
       final a = (log['action'] as String).toLowerCase();
       final u = (log['user'] as String).toLowerCase();
@@ -120,7 +121,7 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
     }).toList();
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -131,15 +132,15 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
 
           // Search
           Container(
-            margin: const EdgeInsets.only(bottom: 16),
+            margin: EdgeInsets.only(bottom: 16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.borderMedium),
             ),
             child: TextField(
               onChanged: (v) => setState(() => _searchQuery = v),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 prefixIcon: Icon(
                   LucideIcons.search,
                   size: 18,
@@ -163,7 +164,7 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
           // Log List
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.border),
             ),
@@ -172,14 +173,14 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: filtered.length,
               separatorBuilder: (_, _) =>
-                  const Divider(height: 1, color: AppColors.borderMedium),
+                  Divider(height: 1, color: AppColors.borderMedium),
               itemBuilder: (ctx, i) {
                 final log = filtered[i];
                 final roleColor = _getRoleColor(log['role'] as String);
                 final roleBgColor = _getRoleBgColor(log['role'] as String);
 
                 return Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -189,15 +190,15 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
                           Expanded(
                             child: Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   LucideIcons.clock,
                                   size: 14,
                                   color: AppColors.textTertiary,
                                 ),
-                                const SizedBox(width: 6),
+                                SizedBox(width: 6),
                                 Text(
                                   log['date'] as String,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 11,
                                     color: AppColors.textSecondary,
                                   ),
@@ -225,30 +226,30 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       Text(
                         log['action'] as String,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: AppColors.textPrimary,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4),
                       Text(
                         log['details'] as String,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
                           color: AppColors.textSecondary,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             log['user'] as String,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w500,
                               color: AppColors.textPrimary,
@@ -256,7 +257,7 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
                           ),
                           Text(
                             log['ip'] as String,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11,
                               fontFamily: 'monospace',
                               color: AppColors.textTertiary,

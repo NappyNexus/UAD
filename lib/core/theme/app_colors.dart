@@ -218,3 +218,27 @@ class StatusBadgeColors {
 
   const StatusBadgeColors(this.background, this.text, this.border);
 }
+
+/// Theme-aware color helper. Use `AppColors.of(context)` to get colors
+/// that automatically switch between light and dark mode.
+class ThemeColors {
+  final BuildContext _context;
+  const ThemeColors._(this._context);
+
+  bool get _isDark => Theme.of(_context).brightness == Brightness.dark;
+
+  Color get surface => _isDark ? AppColors.darkSurface : AppColors.surface;
+  Color get background => _isDark ? AppColors.darkBackground : AppColors.background;
+  Color get border => _isDark ? AppColors.darkBorder : AppColors.border;
+  Color get borderMedium => _isDark ? AppColors.darkBorder : AppColors.borderMedium;
+  Color get textPrimary => _isDark ? AppColors.darkTextPrimary : AppColors.textPrimary;
+  Color get textSecondary => _isDark ? AppColors.darkTextSecondary : AppColors.textSecondary;
+  Color get textTertiary => _isDark ? AppColors.darkTextTertiary : AppColors.textTertiary;
+  Color get cardColor => _isDark ? AppColors.darkSurface : Colors.white;
+  Color get inputFill => _isDark ? AppColors.darkBackground : AppColors.background;
+}
+
+/// Extension on AppColors to provide theme-aware colors.
+extension AppColorsTheme on AppColors {
+  static ThemeColors of(BuildContext context) => ThemeColors._(context);
+}

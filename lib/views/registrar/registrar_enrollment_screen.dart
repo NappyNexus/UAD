@@ -155,8 +155,8 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
               'Admisión Registrada',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
             ),
-            const SizedBox(height: 8),
-            const Text(
+            SizedBox(height: 8),
+            Text(
               'El expediente del aspirante fue creado exitosamente y está pendiente de revisión.',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
@@ -190,13 +190,13 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (ctx) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         child: SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Expediente de Admisión',
                 style: TextStyle(
                   fontSize: 18,
@@ -204,9 +204,9 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                   color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: AppColors.background,
                   borderRadius: BorderRadius.circular(16),
@@ -219,15 +219,15 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                       children: [
                         Text(
                           adm['name'],
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: AppColors.textPrimary,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4),
                         Text(
                           adm['cedula'],
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
                             color: AppColors.textSecondary,
                           ),
@@ -291,7 +291,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
               const SizedBox(height: 24),
               if (adm['status'] != 'Aprobado' &&
                   adm['status'] != 'Rechazado') ...[
-                const Text(
+                Text(
                   'DECISIÓN',
                   style: TextStyle(
                     fontSize: 11,
@@ -337,19 +337,19 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                   ],
                 ),
                 if (adm['status'] == 'Pendiente') ...[
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   ElevatedButton.icon(
                     onPressed: () => _changeStatus(adm['id'], 'En revisión'),
                     icon: const Icon(LucideIcons.alertCircle, size: 16),
-                    label: const Text('Marcar En Revisión'),
+                    label: Text('Marcar En Revisión'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       foregroundColor: AppColors.textPrimary,
                       elevation: 0,
-                      minimumSize: const Size(double.infinity, 45),
+                      minimumSize: Size(double.infinity, 45),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
-                        side: const BorderSide(color: AppColors.borderMedium),
+                        side: BorderSide(color: AppColors.borderMedium),
                       ),
                     ),
                   ),
@@ -363,7 +363,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
   }
 
   Widget _detailBox(String label, String value) => Container(
-    padding: const EdgeInsets.all(10),
+    padding: EdgeInsets.all(10),
     decoration: BoxDecoration(
       color: AppColors.background,
       borderRadius: BorderRadius.circular(10),
@@ -373,12 +373,12 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
       children: [
         Text(
           label,
-          style: const TextStyle(fontSize: 11, color: AppColors.textTertiary),
+          style: TextStyle(fontSize: 11, color: AppColors.textTertiary),
         ),
-        const SizedBox(height: 2),
+        SizedBox(height: 2),
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w500,
             color: AppColors.textPrimary,
@@ -392,6 +392,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final filtered = _admissions.where((a) {
       final matchSearch =
           a['name'].toString().toLowerCase().contains(
@@ -409,7 +410,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -442,13 +443,13 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
             // Search
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppColors.borderMedium),
               ),
               child: TextField(
                 onChanged: (v) => setState(() => _searchQuery = v),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   prefixIcon: Icon(
                     LucideIcons.search,
                     size: 18,
@@ -510,7 +511,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
             // List
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
@@ -519,13 +520,13 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: filtered.length,
                 separatorBuilder: (_, _) =>
-                    const Divider(height: 1, color: AppColors.borderMedium),
+                    Divider(height: 1, color: AppColors.borderMedium),
                 itemBuilder: (ctx, i) {
                   final a = filtered[i];
                   return InkWell(
                     onTap: () => _showDetailModal(a),
                     child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(16.0),
                       child: Row(
                         children: [
                           Expanded(
@@ -534,16 +535,16 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                               children: [
                                 Text(
                                   '${a['name']}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: AppColors.textPrimary,
                                   ),
                                 ),
-                                const SizedBox(height: 4),
+                                SizedBox(height: 4),
                                 Text(
                                   '${a['id']} · ${a['cedula']}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 11,
                                     color: AppColors.textTertiary,
                                   ),
@@ -565,7 +566,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                               ],
                             ),
                           ),
-                          const Icon(
+                          Icon(
                             LucideIcons.chevronRight,
                             size: 16,
                             color: AppColors.textTertiary,

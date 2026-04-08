@@ -52,11 +52,12 @@ class _GradesScreenState extends State<GradesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final s = currentStudent;
     final gpaIndex = (s.gpa / 4.0 * 100).toStringAsFixed(1);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -103,9 +104,9 @@ class _GradesScreenState extends State<GradesScreen> {
 
           // ═══ Current Semester ═══
           Container(
-            margin: const EdgeInsets.only(bottom: 8),
+            margin: EdgeInsets.only(bottom: 8),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.border),
             ),
@@ -115,7 +116,7 @@ class _GradesScreenState extends State<GradesScreen> {
               ),
               borderRadius: BorderRadius.circular(12),
               child: Padding(
-                padding: const EdgeInsets.all(14),
+                padding: EdgeInsets.all(14),
                 child: Row(
                   children: [
                     Container(
@@ -131,8 +132,8 @@ class _GradesScreenState extends State<GradesScreen> {
                         color: AppColors.primary,
                       ),
                     ),
-                    const SizedBox(width: 12),
-                    const Expanded(
+                    SizedBox(width: 12),
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -155,8 +156,8 @@ class _GradesScreenState extends State<GradesScreen> {
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
                         color: AppColors.background,
                         shape: BoxShape.circle,
                       ),
@@ -198,7 +199,7 @@ class _GradesScreenState extends State<GradesScreen> {
                             children: [
                               Text(
                                 c.name,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textPrimary,
@@ -206,10 +207,10 @@ class _GradesScreenState extends State<GradesScreen> {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              const SizedBox(height: 2),
+                              SizedBox(height: 2),
                               Text(
                                 '${c.id} · ${c.professor}',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 11,
                                   color: AppColors.textSecondary,
                                 ),
@@ -226,7 +227,7 @@ class _GradesScreenState extends State<GradesScreen> {
                             color: AppColors.background,
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: const Text(
+                          child: Text(
                             'En curso',
                             style: TextStyle(
                               fontSize: 12,
@@ -242,7 +243,7 @@ class _GradesScreenState extends State<GradesScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Asistencia',
                           style: TextStyle(
                             fontSize: 10,
@@ -290,7 +291,7 @@ class _GradesScreenState extends State<GradesScreen> {
           const SizedBox(height: 20),
 
           // ═══ Grade History ═══
-          const Text(
+          Text(
             'Historial de Calificaciones',
             style: TextStyle(
               fontSize: 14,
@@ -298,7 +299,7 @@ class _GradesScreenState extends State<GradesScreen> {
               color: AppColors.textPrimary,
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           ..._semesters.asMap().entries.map((entry) {
             final idx = entry.key;
             final sem = entry.value;
@@ -315,9 +316,9 @@ class _GradesScreenState extends State<GradesScreen> {
                 sem.courses.length;
 
             return Container(
-              margin: const EdgeInsets.only(bottom: 8),
+              margin: EdgeInsets.only(bottom: 8),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppColors.border),
               ),
@@ -328,7 +329,7 @@ class _GradesScreenState extends State<GradesScreen> {
                         setState(() => _expandedSemester = isOpen ? null : idx),
                     borderRadius: BorderRadius.circular(12),
                     child: Padding(
-                      padding: const EdgeInsets.all(14),
+                      padding: EdgeInsets.all(14),
                       child: Row(
                         children: [
                           Container(
@@ -344,14 +345,14 @@ class _GradesScreenState extends State<GradesScreen> {
                               color: AppColors.primary,
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   sem.semester,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w600,
                                     color: AppColors.textPrimary,
@@ -359,7 +360,7 @@ class _GradesScreenState extends State<GradesScreen> {
                                 ),
                                 Text(
                                   '${sem.courses.length} materias · $totalCredits créditos',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 11,
                                     color: AppColors.textSecondary,
                                   ),
@@ -375,7 +376,7 @@ class _GradesScreenState extends State<GradesScreen> {
                               color: _scoreColor(avgGrade),
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 8),
                           Icon(
                             isOpen
                                 ? LucideIcons.chevronUp
@@ -388,7 +389,7 @@ class _GradesScreenState extends State<GradesScreen> {
                     ),
                   ),
                   if (isOpen) ...[
-                    const Divider(height: 1),
+                    Divider(height: 1),
                     ...sem.courses.map(
                       (c) => Padding(
                         padding: const EdgeInsets.symmetric(
@@ -403,14 +404,14 @@ class _GradesScreenState extends State<GradesScreen> {
                                 children: [
                                   Text(
                                     c['name'] as String,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 13,
                                       color: AppColors.textPrimary,
                                     ),
                                   ),
                                   Text(
                                     '${c['id']} · ${c['credits']} cr.',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 11,
                                       color: AppColors.textSecondary,
                                     ),

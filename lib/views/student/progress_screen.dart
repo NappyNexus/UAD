@@ -29,6 +29,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
       child: Column(
@@ -106,15 +107,15 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
             // Radial Progress Card
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
               child: Column(
                 children: [
-                  const Text(
+                  Text(
                     'Créditos vs. Meta',
                     style: TextStyle(
                       fontSize: 14,
@@ -154,7 +155,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                               ),
                               Text(
                                 '$_completedCredits/$_totalCredits cr.',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 11,
                                   color: AppColors.textSecondary,
                                 ),
@@ -193,16 +194,16 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
             // Distribución de Créditos Chart
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Distribución de Créditos',
                     style: TextStyle(
                       fontSize: 14,
@@ -239,16 +240,16 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
             // Índice Académico por Período
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Índice Académico por Período',
                     style: TextStyle(
                       fontSize: 14,
@@ -271,16 +272,16 @@ class _ProgressScreenState extends State<ProgressScreen> {
             // Créditos Cursados por Período
             Container(
               padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.only(bottom: 16),
+              margin: EdgeInsets.only(bottom: 16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Créditos Cursados por Período',
                     style: TextStyle(
                       fontSize: 14,
@@ -293,17 +294,17 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     height: 180,
                     child: _buildCreditsBarChart(),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(width: 12, height: 12, decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(4))),
-                      const SizedBox(width: 8),
-                      const Text('Completado', style: TextStyle(fontSize: 12, color: AppColors.textPrimary)),
+                      SizedBox(width: 8),
+                      Text('Completado', style: TextStyle(fontSize: 12, color: AppColors.textPrimary)),
                       const SizedBox(width: 20),
                       Container(width: 12, height: 12, decoration: BoxDecoration(color: const Color(0xFF2563EB), borderRadius: BorderRadius.circular(4))),
-                      const SizedBox(width: 8),
-                      const Text('En curso', style: TextStyle(fontSize: 12, color: AppColors.textPrimary)),
+                      SizedBox(width: 8),
+                      Text('En curso', style: TextStyle(fontSize: 12, color: AppColors.textPrimary)),
                     ],
                   )
                 ],
@@ -331,9 +332,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
                   return Container(
                     margin: const EdgeInsets.only(bottom: 12),
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.surface,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: AppColors.border),
                     ),
@@ -345,7 +346,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           children: [
                             Text(
                               'Período $semName',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.textPrimary,
@@ -355,7 +356,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                               children: [
                                 Text(
                                   '$semCredits cr.',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 11,
                                     color: AppColors.textSecondary,
                                   ),
@@ -373,7 +374,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10),
                         LayoutBuilder(
                           builder: (context, constraints) {
                             final itemWidth = (constraints.maxWidth - 6) / 2;
@@ -398,7 +399,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                     ? const Color(0xFFEFF6FF)
                                     : grade >= 70
                                     ? const Color(0xFFFFFBEB)
-                                    : const Color(0xFFFEF2F2);
+                                    : Color(0xFFFEF2F2);
                                 return Container(
                                   width: width,
                                   padding: const EdgeInsets.symmetric(
@@ -417,7 +418,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                     children: [
                                       Text(
                                         c.courseName,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 11,
                                           fontWeight: FontWeight.w600,
                                           color: AppColors.textPrimary,
@@ -427,7 +428,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                       ),
                                       Text(
                                         '${c.credits} cr.',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 10,
                                           color: AppColors.textTertiary,
                                         ),
@@ -457,16 +458,16 @@ class _ProgressScreenState extends State<ProgressScreen> {
           if (_view == 'materias') ...[
             Container(
               padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.only(bottom: 16),
+              margin: EdgeInsets.only(bottom: 16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Materias por Estado',
                     style: TextStyle(
                       fontSize: 14,
@@ -524,9 +525,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
               return Container(
                 margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.surface,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: AppColors.border),
                 ),
@@ -538,7 +539,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       children: [
                         Text(
                           'Semestre $semNum',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                             color: AppColors.textPrimary,
@@ -566,7 +567,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     ...courses.map((c) {
                       final status = c['status'] as String;
                       final isCompleted = status == 'Aprobada';
@@ -608,11 +609,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             ),
-                            const SizedBox(width: 10),
+                            SizedBox(width: 10),
                             Expanded(
                               child: Text(
                                 c['name'] as String,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.textPrimary,
@@ -623,7 +624,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                             ),
                             Text(
                               '${c['credits']} cr.',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 11,
                                 color: AppColors.textSecondary,
                               ),
@@ -714,9 +715,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
     Color bgColor,
   ) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.border),
       ),
@@ -746,10 +747,10 @@ class _ProgressScreenState extends State<ProgressScreen> {
               ),
             ],
           ),
-          const Spacer(),
+          Spacer(),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w700,
               color: AppColors.textPrimary,
@@ -757,7 +758,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
           ),
           Text(
             sub,
-            style: const TextStyle(fontSize: 10, color: AppColors.textTertiary),
+            style: TextStyle(fontSize: 10, color: AppColors.textTertiary),
           ),
         ],
       ),
@@ -774,10 +775,10 @@ class _ProgressScreenState extends State<ProgressScreen> {
           color: color,
         ),
       ),
-      const SizedBox(height: 2),
+      SizedBox(height: 2),
       Text(
         label,
-        style: const TextStyle(fontSize: 10, color: AppColors.textSecondary),
+        style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
       ),
     ],
   );
@@ -798,8 +799,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 const labels = ['2023 1', '2023 2', '2024 1'];
                 if (val.toInt() >= 0 && val.toInt() < labels.length) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Text(labels[val.toInt()], style: const TextStyle(fontSize: 10, color: AppColors.textSecondary)),
+                    padding: EdgeInsets.only(top: 8),
+                    child: Text(labels[val.toInt()], style: TextStyle(fontSize: 10, color: AppColors.textSecondary)),
                   );
                 }
                 return const SizedBox.shrink();
@@ -811,7 +812,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
               showTitles: true,
               interval: 25,
               reservedSize: 30,
-              getTitlesWidget: (val, meta) => Text('${val.toInt()}', style: const TextStyle(fontSize: 10, color: AppColors.textSecondary)),
+              getTitlesWidget: (val, meta) => Text('${val.toInt()}', style: TextStyle(fontSize: 10, color: AppColors.textSecondary)),
             ),
           ),
           topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -825,7 +826,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
         ),
         borderData: FlBorderData(
           show: true,
-          border: const Border(
+          border: Border(
             bottom: BorderSide(color: AppColors.textSecondary, width: 1),
             left: BorderSide(color: AppColors.textSecondary, width: 1),
           ),
@@ -855,8 +856,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 const labels = ['2023 1', '2023 2', '2024 1', '2024-2 (actual)'];
                 if (val.toInt() >= 0 && val.toInt() < labels.length) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Text(labels[val.toInt()], style: const TextStyle(fontSize: 9, color: AppColors.textSecondary)),
+                    padding: EdgeInsets.only(top: 8),
+                    child: Text(labels[val.toInt()], style: TextStyle(fontSize: 9, color: AppColors.textSecondary)),
                   );
                 }
                 return const SizedBox.shrink();
@@ -868,7 +869,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
               showTitles: true,
               interval: 5,
               reservedSize: 24,
-              getTitlesWidget: (val, meta) => Text('${val.toInt()}', style: const TextStyle(fontSize: 10, color: AppColors.textSecondary)),
+              getTitlesWidget: (val, meta) => Text('${val.toInt()}', style: TextStyle(fontSize: 10, color: AppColors.textSecondary)),
             ),
           ),
           topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -882,7 +883,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
         ),
         borderData: FlBorderData(
           show: true,
-          border: const Border(
+          border: Border(
             bottom: BorderSide(color: AppColors.textSecondary, width: 1),
             left: BorderSide(color: AppColors.textSecondary, width: 1),
           ),
@@ -908,11 +909,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
             borderRadius: BorderRadius.circular(3),
           ),
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: 8),
         Expanded(
           child: Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               color: AppColors.textSecondary,
             ),
@@ -920,7 +921,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
         ),
         Text(
           '$value cr.',
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w700,
             color: AppColors.textPrimary,

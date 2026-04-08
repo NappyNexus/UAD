@@ -121,6 +121,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final filtered = _filter == 'all'
         ? _announcements
         : _announcements.where((a) => a['courseId'] == _filter).toList();
@@ -133,7 +134,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
     });
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -166,9 +167,9 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
           if (_composing)
             Container(
               margin: const EdgeInsets.only(bottom: 16),
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                   color: AppColors.primary.withValues(alpha: 0.2),
@@ -177,7 +178,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Nuevo Comunicado',
                     style: TextStyle(
                       fontSize: 14,
@@ -185,14 +186,14 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                       color: AppColors.textPrimary,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   Row(
                     children: [
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'CURSO',
                               style: TextStyle(
                                 fontSize: 10,
@@ -201,14 +202,14 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                                 letterSpacing: 1.0,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4),
                             DropdownButtonFormField<String>(
                               initialValue: _newCourseId,
                               decoration: InputDecoration(
                                 isDense: true,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.borderMedium,
                                   ),
                                 ),
@@ -236,12 +237,12 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'TIPO',
                               style: TextStyle(
                                 fontSize: 10,
@@ -250,14 +251,14 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                                 letterSpacing: 1.0,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4),
                             DropdownButtonFormField<String>(
                               initialValue: _newType,
                               decoration: InputDecoration(
                                 isDense: true,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(
+                                  borderSide: BorderSide(
                                     color: AppColors.borderMedium,
                                   ),
                                 ),
@@ -303,15 +304,15 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   TextField(
                     onChanged: (v) => setState(() => _newTitle = v),
                     decoration: InputDecoration(
                       hintText: 'Título del comunicado...',
-                      hintStyle: const TextStyle(fontSize: 13),
+                      hintStyle: TextStyle(fontSize: 13),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
+                        borderSide: BorderSide(
                           color: AppColors.borderMedium,
                         ),
                       ),
@@ -321,16 +322,16 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   TextField(
                     onChanged: (v) => setState(() => _newBody = v),
                     maxLines: 4,
                     decoration: InputDecoration(
                       hintText: 'Escribe el mensaje...',
-                      hintStyle: const TextStyle(fontSize: 13),
+                      hintStyle: TextStyle(fontSize: 13),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
+                        borderSide: BorderSide(
                           color: AppColors.borderMedium,
                         ),
                       ),
@@ -340,7 +341,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -356,8 +357,8 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                               activeColor: AppColors.primary,
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          const Text(
+                          SizedBox(width: 8),
+                          Text(
                             'Fijar comunicado',
                             style: TextStyle(
                               fontSize: 13,
@@ -370,7 +371,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                         children: [
                           TextButton(
                             onPressed: () => setState(() => _composing = false),
-                            child: const Text(
+                            child: Text(
                               'Cancelar',
                               style: TextStyle(color: AppColors.textSecondary),
                             ),
@@ -415,7 +416,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
 
           // List
           if (filtered.isEmpty)
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(top: 40),
               child: Center(
                 child: Text(
@@ -435,9 +436,9 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
 
             return Container(
               margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                   color: isPinned
@@ -463,7 +464,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                       color: isPinned ? Colors.white : AppColors.textSecondary,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -474,7 +475,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                             Expanded(
                               child: Text(
                                 ann['title'] as String,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.textPrimary,
@@ -497,7 +498,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                             ),
                             InkWell(
                               onTap: () => _deleteAnn(ann['id'] as int),
-                              child: const Padding(
+                              child: Padding(
                                 padding: EdgeInsets.all(4.0),
                                 child: Icon(
                                   LucideIcons.trash2,
@@ -508,7 +509,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4),
                         Wrap(
                           spacing: 8,
                           runSpacing: 4,
@@ -517,15 +518,15 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(
+                                Icon(
                                   LucideIcons.bookOpen,
                                   size: 10,
                                   color: AppColors.textTertiary,
                                 ),
-                                const SizedBox(width: 4),
+                                SizedBox(width: 4),
                                 Text(
                                   courseName as String,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 11,
                                     color: AppColors.textSecondary,
                                   ),
@@ -535,15 +536,15 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(
+                                Icon(
                                   LucideIcons.clock,
                                   size: 10,
                                   color: AppColors.textTertiary,
                                 ),
-                                const SizedBox(width: 4),
+                                SizedBox(width: 4),
                                 Text(
                                   ann['date'] as String,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 11,
                                     color: AppColors.textSecondary,
                                   ),
@@ -589,10 +590,10 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                               ),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8),
                         Text(
                           ann['body'] as String,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 13,
                             color: AppColors.textSecondary,
                             height: 1.4,
@@ -613,7 +614,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
   Widget _filterBtn(String value, String label) {
     final isSelected = _filter == value;
     return Padding(
-      padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
+      padding: EdgeInsets.only(right: 8.0, bottom: 8.0),
       child: ElevatedButton(
         onPressed: () => setState(() => _filter = value),
         style: ElevatedButton.styleFrom(
@@ -622,7 +623,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
           elevation: 0,
           side: isSelected
               ? null
-              : const BorderSide(color: AppColors.borderMedium),
+              : BorderSide(color: AppColors.borderMedium),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

@@ -163,6 +163,7 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final daysInMonth = DateTime(_year, _month + 2, 0).day;
     final firstDay = DateTime(_year, _month + 1, 1).weekday % 7;
     final upcomingEvents =
@@ -172,7 +173,7 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
         child: Column(
           children: [
             Row(
@@ -184,9 +185,9 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(4),
+                  padding: EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.surface,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: AppColors.borderMedium),
                   ),
@@ -230,7 +231,7 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
             // Layout (stacking on mobile, we can just use columns)
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
@@ -260,16 +261,16 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
                             ],
                           ),
                         ),
-                        const Divider(height: 1),
+                        Divider(height: 1),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          padding: EdgeInsets.symmetric(vertical: 8),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: _days
                                 .map(
                                   (d) => Text(
                                     d,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.textSecondary,
@@ -279,7 +280,7 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
                                 .toList(),
                           ),
                         ),
-                        const Divider(height: 1),
+                        Divider(height: 1),
                         GridView.builder(
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
@@ -293,7 +294,7 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
                           itemBuilder: (ctx, i) {
                             if (i < firstDay) {
                               return Container(
-                                decoration: const BoxDecoration(
+                                decoration: BoxDecoration(
                                   border: Border(
                                     right: BorderSide(
                                       color: AppColors.borderMedium,
@@ -319,7 +320,7 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
                                   color: selected
                                       ? AppColors.primarySurface
                                       : null,
-                                  border: const Border(
+                                  border: Border(
                                     right: BorderSide(
                                       color: AppColors.borderMedium,
                                     ),
@@ -424,7 +425,7 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
                             ],
                           ),
                           subtitle: Padding(
-                            padding: const EdgeInsets.only(top: 8),
+                            padding: EdgeInsets.only(top: 8),
                             child: Row(
                               children: [
                                 Icon(
@@ -432,10 +433,10 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
                                   size: 12,
                                   color: AppColors.textSecondary,
                                 ),
-                                const SizedBox(width: 4),
+                                SizedBox(width: 4),
                                 Text(
                                   e['date'],
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 11,
                                     color: AppColors.textSecondary,
                                   ),
@@ -447,10 +448,10 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
                                     size: 12,
                                     color: AppColors.textSecondary,
                                   ),
-                                  const SizedBox(width: 4),
+                                  SizedBox(width: 4),
                                   Text(
                                     e['time'],
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 11,
                                       color: AppColors.textSecondary,
                                     ),
@@ -464,11 +465,11 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
                     ),
             ),
 
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.border),
               ),
@@ -519,7 +520,7 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
                     );
                   }),
                   if (_getEventsForDate(_selectedDate).isEmpty)
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.symmetric(vertical: 16),
                       child: Center(
                         child: Text(
@@ -534,6 +535,90 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
                 ],
               ),
             ),
+            
+            const SizedBox(height: 16),
+
+            // Leyenda Card
+            Container(
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Leyenda', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                  SizedBox(height: 16),
+                  ..._typeConf.values.map((tc) => Padding(
+                    padding: EdgeInsets.only(bottom: 12),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 10, height: 10,
+                          decoration: BoxDecoration(color: tc['color'], shape: BoxShape.circle),
+                        ),
+                        SizedBox(width: 12),
+                        Text(tc['label'], style: TextStyle(fontSize: 13, color: AppColors.textSecondary)),
+                      ],
+                    ),
+                  )),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 16),
+
+            // Sincronizar Calendario Card
+            Container(
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Sincronizar calendario', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                  SizedBox(height: 8),
+                  Text(
+                    'Exporta tus eventos académicos a tu calendario personal',
+                    style: TextStyle(fontSize: 13, color: AppColors.textSecondary, height: 1.4),
+                  ),
+                  const SizedBox(height: 20),
+                  _buildSyncButton('Google Calendar', Colors.blue.shade700, Colors.blue.shade50),
+                  const SizedBox(height: 12),
+                  _buildSyncButton('Outlook Calendar', Colors.blue.shade700, Colors.blue.shade50),
+                  const SizedBox(height: 12),
+                  _buildSyncButton('Exportar .ics', AppColors.textSecondary, Colors.grey.shade50, AppColors.borderMedium),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSyncButton(String text, Color color, Color bg, [Color? border]) {
+    return InkWell(
+      onTap: () {},
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          color: bg,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: border ?? color.withValues(alpha: 0.3)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(text, style: TextStyle(color: color, fontWeight: FontWeight.w600, fontSize: 13)),
+            Icon(LucideIcons.externalLink, color: color, size: 16),
           ],
         ),
       ),

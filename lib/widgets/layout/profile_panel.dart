@@ -18,6 +18,7 @@ class ProfilePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final profile = _getProfile(currentRole);
     final quickLinks = _getQuickLinks(currentRole);
 
@@ -34,8 +35,8 @@ class ProfilePanel extends StatelessWidget {
                   ? 380
                   : MediaQuery.of(context).size.width,
               height: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
+              decoration: BoxDecoration(
+                color: AppColors.surface,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black26,
@@ -69,10 +70,10 @@ class ProfilePanel extends StatelessWidget {
                           alignment: Alignment.topRight,
                           child: IconButton(
                             onPressed: onClose,
-                            icon: const Icon(
+                            icon: Icon(
                               LucideIcons.x,
                               size: 18,
-                              color: Colors.white,
+                              color: AppColors.surface,
                             ),
                             style: IconButton.styleFrom(
                               backgroundColor: Colors.white.withValues(
@@ -110,17 +111,17 @@ class ProfilePanel extends StatelessWidget {
                                     : _avatarFallback(profile['name']!),
                               ),
                             ),
-                            const SizedBox(width: 14),
+                            SizedBox(width: 14),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     profile['name']!,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.white,
+                                      color: AppColors.surface,
                                     ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
@@ -137,7 +138,7 @@ class ProfilePanel extends StatelessWidget {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                  const SizedBox(height: 6),
+                                  SizedBox(height: 6),
                                   Row(
                                     children: [
                                       Container(
@@ -160,7 +161,7 @@ class ProfilePanel extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(width: 6),
+                                      SizedBox(width: 6),
                                       Container(
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 8,
@@ -174,11 +175,11 @@ class ProfilePanel extends StatelessWidget {
                                             10,
                                           ),
                                         ),
-                                        child: const Text(
+                                        child: Text(
                                           'Activo',
                                           style: TextStyle(
                                             fontSize: 10,
-                                            color: Colors.white,
+                                            color: AppColors.surface,
                                           ),
                                         ),
                                       ),
@@ -211,10 +212,10 @@ class ProfilePanel extends StatelessWidget {
                                   children: [
                                     Text(
                                       '${stat['value']}',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w700,
-                                        color: Colors.white,
+                                        color: AppColors.surface,
                                       ),
                                     ),
                                     const SizedBox(height: 2),
@@ -255,14 +256,14 @@ class ProfilePanel extends StatelessWidget {
                           size: 14,
                           color: AppColors.goldDark,
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: 8),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 profile['program']!,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textPrimary,
@@ -270,7 +271,7 @@ class ProfilePanel extends StatelessWidget {
                               ),
                               Text(
                                 profile['programSub']!,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 11,
                                   color: AppColors.textSecondary,
                                 ),
@@ -285,13 +286,13 @@ class ProfilePanel extends StatelessWidget {
                   // ── Progress bar (student only) ──
                   if (profile['progress'] != null) ...[
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
+                      padding: EdgeInsets.fromLTRB(16, 10, 16, 0),
                       child: Column(
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'Progreso académico',
                                 style: TextStyle(
                                   fontSize: 12,
@@ -321,10 +322,10 @@ class ProfilePanel extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          SizedBox(height: 4),
                           Text(
                             profile['progressLabel']!,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 10,
                               color: AppColors.textTertiary,
                             ),
@@ -337,11 +338,11 @@ class ProfilePanel extends StatelessWidget {
                   // ── Quick Links ──
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                      padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'ACCESO RÁPIDO',
                             style: TextStyle(
                               fontSize: 10,
@@ -434,8 +435,8 @@ class ProfilePanel extends StatelessWidget {
 
                   // ── Logout ──
                   Container(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                    decoration: const BoxDecoration(
+                    padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+                    decoration: BoxDecoration(
                       border: Border(top: BorderSide(color: AppColors.border)),
                     ),
                     child: SizedBox(
@@ -473,10 +474,10 @@ class ProfilePanel extends StatelessWidget {
       child: Center(
         child: Text(
           name[0],
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w700,
-            color: Colors.white,
+            color: AppColors.surface,
           ),
         ),
       ),

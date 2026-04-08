@@ -34,6 +34,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
       child: Column(
@@ -82,10 +83,10 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                     ),
                     Text(
                       '${_selected.length}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
-                        color: Colors.white,
+                        color: AppColors.surface,
                       ),
                     ),
                   ],
@@ -102,10 +103,10 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                     ),
                     Text(
                       '$_totalCredits',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
-                        color: Colors.white,
+                        color: AppColors.surface,
                       ),
                     ),
                   ],
@@ -125,11 +126,11 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
               fillColor: Colors.white,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.borderMedium),
+                borderSide: BorderSide(color: AppColors.borderMedium),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.borderMedium),
+                borderSide: BorderSide(color: AppColors.borderMedium),
               ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 12,
@@ -149,13 +150,13 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
               letterSpacing: 1.0,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           ...currentCourses.map(
             (c) => Opacity(
               opacity: 0.6,
               child: Container(
                 margin: const EdgeInsets.only(bottom: 6),
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: AppColors.background,
                   borderRadius: BorderRadius.circular(12),
@@ -169,7 +170,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                         children: [
                           Text(
                             c.name,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
                               color: AppColors.textSecondary,
@@ -177,7 +178,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                           ),
                           Text(
                             '${c.id} · ${c.credits} cr. · ${c.professor}',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11,
                               color: AppColors.textTertiary,
                             ),
@@ -203,7 +204,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
               letterSpacing: 1.0,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           ..._filtered.map((c) {
             final isFull = c.enrolled >= c.capacity;
             final isSelected = _selected.contains(c.id);
@@ -232,16 +233,16 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                           children: [
                             Text(
                               c.name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.textPrimary,
                               ),
                             ),
-                            const SizedBox(height: 2),
+                            SizedBox(height: 2),
                             Text(
                               '${c.id} · ${c.credits} créditos · ${c.professor}',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 11,
                                 color: AppColors.textSecondary,
                               ),
@@ -287,7 +288,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Row(
                     children: [
                       Icon(
@@ -295,29 +296,29 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                         size: 12,
                         color: AppColors.textTertiary,
                       ),
-                      const SizedBox(width: 4),
+                      SizedBox(width: 4),
                       Text(
                         c.schedule,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 11,
                           color: AppColors.textSecondary,
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12),
                       Icon(
                         LucideIcons.mapPin,
                         size: 12,
                         color: AppColors.textTertiary,
                       ),
-                      const SizedBox(width: 4),
+                      SizedBox(width: 4),
                       Text(
                         c.room,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 11,
                           color: AppColors.textSecondary,
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12),
                       Icon(
                         LucideIcons.users,
                         size: 12,
@@ -339,12 +340,12 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                     ],
                   ),
                   if (c.prerequisite != null) ...[
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6),
                     Row(
                       children: [
                         Text(
                           'Prerrequisito: ',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 11,
                             color: AppColors.textTertiary,
                           ),
@@ -384,11 +385,11 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (ctx) => Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
+            Text(
               'Confirmar Selección',
               style: TextStyle(
                 fontSize: 18,
@@ -396,12 +397,12 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                 color: AppColors.textPrimary,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             ..._selected.map((id) {
               final c = availableCourses.firstWhere((co) => co.id == id);
               return Container(
                 margin: const EdgeInsets.only(bottom: 8),
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: AppColors.background,
                   borderRadius: BorderRadius.circular(12),
@@ -414,7 +415,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                         children: [
                           Text(
                             c.name,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
                               color: AppColors.textPrimary,
@@ -422,7 +423,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                           ),
                           Text(
                             '${c.id} · ${c.credits} cr.',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11,
                               color: AppColors.textSecondary,
                             ),
@@ -445,11 +446,11 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                 ),
               );
             }),
-            const Divider(),
+            Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'Total de créditos:',
                   style: TextStyle(
                     fontSize: 14,
