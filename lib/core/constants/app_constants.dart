@@ -159,7 +159,7 @@ class AppConstants {
       route: routeAttendance,
     ),
     NavItem(
-      label: 'Anuncios',
+      label: 'Comunicados',
       icon: LucideIcons.megaphone,
       route: routeCourseAnnouncements,
     ),
