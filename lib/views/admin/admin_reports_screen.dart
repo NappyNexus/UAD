@@ -22,6 +22,7 @@ final _gpaDistribution = [
   {'range': '3.0-3.5', 'count': 520},
   {'range': '3.5-4.0', 'count': 486},
 ];
+
 class AdminReportsScreen extends StatelessWidget {
   const AdminReportsScreen({super.key});
 
@@ -124,18 +125,26 @@ class AdminReportsScreen extends StatelessWidget {
                   ),
                   titlesData: FlTitlesData(
                     show: true,
-                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
                         getTitlesWidget: (value, meta) {
-                          if (value.toInt() >= 0 && value.toInt() < enrollmentTrend.length) {
+                          if (value.toInt() >= 0 &&
+                              value.toInt() < enrollmentTrend.length) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 8.0),
                               child: Text(
                                 enrollmentTrend[value.toInt()]['period'],
-                                style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: AppColors.textSecondary,
+                                ),
                               ),
                             );
                           }
@@ -150,7 +159,10 @@ class AdminReportsScreen extends StatelessWidget {
                   lineBarsData: [
                     LineChartBarData(
                       spots: enrollmentTrend.asMap().entries.map((e) {
-                        return FlSpot(e.key.toDouble(), (e.value['students'] as num).toDouble());
+                        return FlSpot(
+                          e.key.toDouble(),
+                          (e.value['students'] as num).toDouble(),
+                        );
                       }).toList(),
                       isCurved: false,
                       color: AppColors.primary,
@@ -356,7 +368,14 @@ class AdminReportsScreen extends StatelessWidget {
                           final val = (s['value'] as num).toDouble();
                           Color cColor;
                           try {
-                            cColor = Color(int.parse((s['color'] as String).replaceFirst('#', '0xFF')));
+                            cColor = Color(
+                              int.parse(
+                                (s['color'] as String).replaceFirst(
+                                  '#',
+                                  '0xFF',
+                                ),
+                              ),
+                            );
                           } catch (_) {
                             cColor = AppColors.primary;
                           }
@@ -377,7 +396,11 @@ class AdminReportsScreen extends StatelessWidget {
                     children: statusBreakdown.map((s) {
                       Color cColor;
                       try {
-                        cColor = Color(int.parse((s['color'] as String).replaceFirst('#', '0xFF')));
+                        cColor = Color(
+                          int.parse(
+                            (s['color'] as String).replaceFirst('#', '0xFF'),
+                          ),
+                        );
                       } catch (_) {
                         cColor = AppColors.primary;
                       }
@@ -396,12 +419,19 @@ class AdminReportsScreen extends StatelessWidget {
                             const SizedBox(width: 8),
                             Text(
                               s['name'] as String,
-                              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: AppColors.textSecondary,
+                              ),
                             ),
                             const SizedBox(width: 8),
                             Text(
                               '${s['value']}',
-                              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textPrimary,
+                              ),
                             ),
                           ],
                         ),

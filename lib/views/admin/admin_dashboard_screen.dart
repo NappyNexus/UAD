@@ -423,7 +423,14 @@ class AdminDashboardScreen extends StatelessWidget {
                               final val = (s['value'] as num).toDouble();
                               Color cColor;
                               try {
-                                cColor = Color(int.parse((s['color'] as String).replaceFirst('#', '0xFF')));
+                                cColor = Color(
+                                  int.parse(
+                                    (s['color'] as String).replaceFirst(
+                                      '#',
+                                      '0xFF',
+                                    ),
+                                  ),
+                                );
                               } catch (_) {
                                 cColor = AppColors.primary;
                               }
@@ -444,7 +451,14 @@ class AdminDashboardScreen extends StatelessWidget {
                         children: statusBreakdown.map((s) {
                           Color cColor;
                           try {
-                            cColor = Color(int.parse((s['color'] as String).replaceFirst('#', '0xFF')));
+                            cColor = Color(
+                              int.parse(
+                                (s['color'] as String).replaceFirst(
+                                  '#',
+                                  '0xFF',
+                                ),
+                              ),
+                            );
                           } catch (_) {
                             cColor = AppColors.primary;
                           }
@@ -463,12 +477,19 @@ class AdminDashboardScreen extends StatelessWidget {
                                 const SizedBox(width: 8),
                                 Text(
                                   s['name'] as String,
-                                  style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.textSecondary,
+                                  ),
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
                                   '${s['value']}',
-                                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textPrimary,
+                                  ),
                                 ),
                               ],
                             ),

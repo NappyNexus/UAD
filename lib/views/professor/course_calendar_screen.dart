@@ -396,7 +396,8 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                 );
                                 if (date != null) {
                                   setState(() {
-                                    _newDate = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+                                    _newDate =
+                                        '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
                                   });
                                 }
                               },

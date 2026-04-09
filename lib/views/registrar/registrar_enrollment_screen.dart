@@ -368,8 +368,12 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
               TextField(
                 maxLines: 3,
                 decoration: InputDecoration(
-                  hintText: 'Agregar observaciones o notas sobre esta solicitud...',
-                  hintStyle: TextStyle(fontSize: 13, color: AppColors.textTertiary),
+                  hintText:
+                      'Agregar observaciones o notas sobre esta solicitud...',
+                  hintStyle: TextStyle(
+                    fontSize: 13,
+                    color: AppColors.textTertiary,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: AppColors.borderMedium),
@@ -560,11 +564,14 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                   Color iconColor = AppColors.textTertiary;
                   Color iconBg = AppColors.background;
                   IconData iconData = LucideIcons.file;
-                  
-                  if (a['status'] == 'Pendiente' || a['status'] == 'En revisión') {
+
+                  if (a['status'] == 'Pendiente' ||
+                      a['status'] == 'En revisión') {
                     iconColor = AppColors.warning;
                     iconBg = AppColors.warningLight;
-                    iconData = a['status'] == 'Pendiente' ? LucideIcons.clock : LucideIcons.alertCircle;
+                    iconData = a['status'] == 'Pendiente'
+                        ? LucideIcons.clock
+                        : LucideIcons.alertCircle;
                   } else if (a['status'] == 'Aprobado') {
                     iconColor = AppColors.success;
                     iconBg = AppColors.successLight;
@@ -630,17 +637,25 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Icon(
-                                          a['docs'] ? LucideIcons.check : LucideIcons.x,
+                                          a['docs']
+                                              ? LucideIcons.check
+                                              : LucideIcons.x,
                                           size: 14,
-                                          color: a['docs'] ? AppColors.success : AppColors.error,
+                                          color: a['docs']
+                                              ? AppColors.success
+                                              : AppColors.error,
                                         ),
                                         const SizedBox(width: 4),
                                         Text(
-                                          a['docs'] ? 'Docs completos' : 'Docs incompletos',
+                                          a['docs']
+                                              ? 'Docs completos'
+                                              : 'Docs incompletos',
                                           style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w500,
-                                            color: a['docs'] ? AppColors.success : AppColors.error,
+                                            color: a['docs']
+                                                ? AppColors.success
+                                                : AppColors.error,
                                           ),
                                         ),
                                       ],
@@ -651,7 +666,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                                         fontSize: 12,
                                         color: AppColors.textTertiary,
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ],
@@ -673,7 +688,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textPrimary,
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ],

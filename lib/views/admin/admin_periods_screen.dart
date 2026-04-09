@@ -515,7 +515,11 @@ class _ConfigFormState extends State<_ConfigForm> {
     );
   }
 
-  Widget _datePickerInput(String label, String value, Function(String) onChanged) {
+  Widget _datePickerInput(
+    String label,
+    String value,
+    Function(String) onChanged,
+  ) {
     return Padding(
       padding: EdgeInsets.only(bottom: 12.0),
       child: Column(
@@ -543,7 +547,9 @@ class _ConfigFormState extends State<_ConfigForm> {
                 lastDate: DateTime(2100),
               );
               if (picked != null) {
-                onChanged('${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}');
+                onChanged(
+                  '${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}',
+                );
               }
             },
             child: Container(
@@ -559,10 +565,16 @@ class _ConfigFormState extends State<_ConfigForm> {
                     value.isNotEmpty ? value : 'Seleccionar',
                     style: TextStyle(
                       fontSize: 13,
-                      color: value.isNotEmpty ? AppColors.textPrimary : AppColors.textTertiary,
+                      color: value.isNotEmpty
+                          ? AppColors.textPrimary
+                          : AppColors.textTertiary,
                     ),
                   ),
-                  Icon(LucideIcons.calendar, size: 16, color: AppColors.textSecondary),
+                  Icon(
+                    LucideIcons.calendar,
+                    size: 16,
+                    color: AppColors.textSecondary,
+                  ),
                 ],
               ),
             ),

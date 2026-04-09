@@ -290,9 +290,7 @@ class _NewRequestFormSheetState extends State<NewRequestFormSheet> {
                     RadioGroup<String>(
                       groupValue: null,
                       onChanged: (_) {},
-                      child: Radio<String>(
-                        value: o,
-                      ),
+                      child: Radio<String>(value: o),
                     ),
                     Text(o, style: const TextStyle(fontSize: 13)),
                     const SizedBox(width: 16),

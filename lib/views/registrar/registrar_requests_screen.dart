@@ -208,8 +208,12 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
               TextField(
                 maxLines: 3,
                 decoration: InputDecoration(
-                  hintText: 'Agregar observaciones o notas sobre esta solicitud...',
-                  hintStyle: TextStyle(fontSize: 13, color: AppColors.textTertiary),
+                  hintText:
+                      'Agregar observaciones o notas sobre esta solicitud...',
+                  hintStyle: TextStyle(
+                    fontSize: 13,
+                    color: AppColors.textTertiary,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: AppColors.borderMedium),
@@ -348,8 +352,9 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                   Color iconColor = AppColors.textTertiary;
                   Color iconBg = AppColors.background;
                   IconData iconData = LucideIcons.file;
-                  
-                  if (r['status'] == 'Pendiente' || r['status'] == 'En proceso') {
+
+                  if (r['status'] == 'Pendiente' ||
+                      r['status'] == 'En proceso') {
                     iconColor = AppColors.warning;
                     iconBg = AppColors.warningLight;
                     iconData = LucideIcons.clock;
@@ -408,11 +413,16 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
                                     Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 6,
+                                        vertical: 2,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: priorityColor.withOpacity(0.1),
                                         borderRadius: BorderRadius.circular(4),
-                                        border: Border.all(color: priorityColor.withOpacity(0.3)),
+                                        border: Border.all(
+                                          color: priorityColor.withOpacity(0.3),
+                                        ),
                                       ),
                                       child: Text(
                                         r['priority'],
@@ -473,7 +483,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.textPrimary,
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                             ],

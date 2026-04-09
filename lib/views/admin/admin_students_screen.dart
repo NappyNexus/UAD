@@ -505,12 +505,37 @@ class _NewStudentFormState extends State<_NewStudentForm> {
                 child: ListView(
                   children: [
                     _input('Nombre Completo', 'Nombre completo'),
-                    _formattedInput('Cédula', '000-0000000-0', _cedulaController, 13),
+                    _formattedInput(
+                      'Cédula',
+                      '000-0000000-0',
+                      _cedulaController,
+                      13,
+                    ),
                     _datePickerInput('Fecha de Nacimiento', _dob),
-                    _dropdown('Género', ['Femenino', 'Masculino'], _gender, (v) => setState(() => _gender = v!)),
-                    _dropdown('Nacionalidad', ['Dominicana', 'Extranjero'], _nationality, (v) => setState(() => _nationality = v!)),
-                    _input('Correo', 'correo@ejemplo.com', kbd: TextInputType.emailAddress),
-                    _formattedInput('Teléfono', '809-000-0000', _phoneController, 12, isPhone: true),
+                    _dropdown(
+                      'Género',
+                      ['Femenino', 'Masculino'],
+                      _gender,
+                      (v) => setState(() => _gender = v!),
+                    ),
+                    _dropdown(
+                      'Nacionalidad',
+                      ['Dominicana', 'Extranjero'],
+                      _nationality,
+                      (v) => setState(() => _nationality = v!),
+                    ),
+                    _input(
+                      'Correo',
+                      'correo@ejemplo.com',
+                      kbd: TextInputType.emailAddress,
+                    ),
+                    _formattedInput(
+                      'Teléfono',
+                      '809-000-0000',
+                      _phoneController,
+                      12,
+                      isPhone: true,
+                    ),
                     _input('Dirección', 'Dirección completa', maxLines: 2),
                     _input('Programa', 'Ing. en Sistemas'),
                     _input('Cohorte', 'Ej. 2024-2'),
@@ -539,7 +564,12 @@ class _NewStudentFormState extends State<_NewStudentForm> {
     );
   }
 
-  Widget _input(String label, String hint, {int maxLines = 1, TextInputType kbd = TextInputType.text}) {
+  Widget _input(
+    String label,
+    String hint, {
+    int maxLines = 1,
+    TextInputType kbd = TextInputType.text,
+  }) {
     return Padding(
       padding: EdgeInsets.only(bottom: 12.0),
       child: Column(
@@ -576,7 +606,13 @@ class _NewStudentFormState extends State<_NewStudentForm> {
     );
   }
 
-  Widget _formattedInput(String label, String hint, TextEditingController ctrl, int maxLength, {bool isPhone = false}) {
+  Widget _formattedInput(
+    String label,
+    String hint,
+    TextEditingController ctrl,
+    int maxLength, {
+    bool isPhone = false,
+  }) {
     return Padding(
       padding: EdgeInsets.only(bottom: 12.0),
       child: Column(
@@ -599,13 +635,29 @@ class _NewStudentFormState extends State<_NewStudentForm> {
               String cleaned = v.replaceAll(RegExp(r'\D'), '');
               String formatted = '';
               if (isPhone) {
-                if (cleaned.isNotEmpty) formatted = cleaned.substring(0, cleaned.length > 3 ? 3 : cleaned.length);
-                if (cleaned.length > 3) formatted += '-${cleaned.substring(3, cleaned.length > 6 ? 6 : cleaned.length)}';
-                if (cleaned.length > 6) formatted += '-${cleaned.substring(6, cleaned.length > 10 ? 10 : cleaned.length)}';
+                if (cleaned.isNotEmpty)
+                  formatted = cleaned.substring(
+                    0,
+                    cleaned.length > 3 ? 3 : cleaned.length,
+                  );
+                if (cleaned.length > 3)
+                  formatted +=
+                      '-${cleaned.substring(3, cleaned.length > 6 ? 6 : cleaned.length)}';
+                if (cleaned.length > 6)
+                  formatted +=
+                      '-${cleaned.substring(6, cleaned.length > 10 ? 10 : cleaned.length)}';
               } else {
-                if (cleaned.isNotEmpty) formatted = cleaned.substring(0, cleaned.length > 3 ? 3 : cleaned.length);
-                if (cleaned.length > 3) formatted += '-${cleaned.substring(3, cleaned.length > 10 ? 10 : cleaned.length)}';
-                if (cleaned.length > 10) formatted += '-${cleaned.substring(10, cleaned.length > 11 ? 11 : cleaned.length)}';
+                if (cleaned.isNotEmpty)
+                  formatted = cleaned.substring(
+                    0,
+                    cleaned.length > 3 ? 3 : cleaned.length,
+                  );
+                if (cleaned.length > 3)
+                  formatted +=
+                      '-${cleaned.substring(3, cleaned.length > 10 ? 10 : cleaned.length)}';
+                if (cleaned.length > 10)
+                  formatted +=
+                      '-${cleaned.substring(10, cleaned.length > 11 ? 11 : cleaned.length)}';
               }
               if (v != formatted) {
                 ctrl.value = ctrl.value.copyWith(
@@ -666,10 +718,16 @@ class _NewStudentFormState extends State<_NewStudentForm> {
                         : 'Seleccionar fecha',
                     style: TextStyle(
                       fontSize: 13,
-                      color: value != null ? AppColors.textPrimary : AppColors.textTertiary,
+                      color: value != null
+                          ? AppColors.textPrimary
+                          : AppColors.textTertiary,
                     ),
                   ),
-                  Icon(LucideIcons.calendar, size: 16, color: AppColors.textSecondary),
+                  Icon(
+                    LucideIcons.calendar,
+                    size: 16,
+                    color: AppColors.textSecondary,
+                  ),
                 ],
               ),
             ),
@@ -679,7 +737,12 @@ class _NewStudentFormState extends State<_NewStudentForm> {
     );
   }
 
-  Widget _dropdown(String label, List<String> items, String value, Function(String?) onChanged) {
+  Widget _dropdown(
+    String label,
+    List<String> items,
+    String value,
+    Function(String?) onChanged,
+  ) {
     return Padding(
       padding: EdgeInsets.only(bottom: 12.0),
       child: Column(
@@ -704,7 +767,14 @@ class _NewStudentFormState extends State<_NewStudentForm> {
               child: DropdownButton<String>(
                 isExpanded: true,
                 value: value,
-                items: items.map((i) => DropdownMenuItem(value: i, child: Text(i, style: TextStyle(fontSize: 13)))).toList(),
+                items: items
+                    .map(
+                      (i) => DropdownMenuItem(
+                        value: i,
+                        child: Text(i, style: TextStyle(fontSize: 13)),
+                      ),
+                    )
+                    .toList(),
                 onChanged: onChanged,
               ),
             ),

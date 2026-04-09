@@ -24,6 +24,7 @@ dependencies:
   printing: ^5.14.3
   fl_chart: ^1.2.0
   shared_preferences: ^2.5.5
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:

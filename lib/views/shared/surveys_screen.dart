@@ -696,7 +696,8 @@ class _SurveyModalState extends State<_SurveyModal> {
                         ),
                         child: TextField(
                           maxLines: 3,
-                          onChanged: (v) => setState(() => _answers[q['id']] = v),
+                          onChanged: (v) =>
+                              setState(() => _answers[q['id']] = v),
                           decoration: InputDecoration(
                             hintText: 'Escribe tu respuesta aquí...',
                             hintStyle: TextStyle(

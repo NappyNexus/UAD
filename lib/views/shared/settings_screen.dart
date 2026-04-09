@@ -81,7 +81,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     return [
       {
         'id': 'profile',
-        'label': isAdmin ? 'Mi Perfil Admin' : (role == 'professor' ? 'Mi Perfil' : 'Perfil Personal'),
+        'label': isAdmin
+            ? 'Mi Perfil Admin'
+            : (role == 'professor' ? 'Mi Perfil' : 'Perfil Personal'),
         'icon': LucideIcons.user,
         'color': Colors.blue,
       },
@@ -229,15 +231,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
     final String rolePhoto = isAdmin
         ? adminData['photo']!
-        : (isProfessor ? currentProfessor['photo']! : currentStudent.photo ?? '');
+        : (isProfessor
+              ? currentProfessor['photo']!
+              : currentStudent.photo ?? '');
 
     final String roleSub1 = isAdmin
         ? adminData['department']!
-        : (isProfessor ? 'Departamento de ${currentProfessor['department']}' : currentStudent.program);
+        : (isProfessor
+              ? 'Departamento de ${currentProfessor['department']}'
+              : currentStudent.program);
 
     final String roleSub2 = isAdmin
         ? '${adminData['id']} · ${isRegistrar ? 'Registradora' : 'Administrador'}'
-        : (isProfessor ? '${currentProfessor['id']} · Profesor' : '${currentStudent.id} · Sem. ${currentStudent.semester}');
+        : (isProfessor
+              ? '${currentProfessor['id']} · Profesor'
+              : '${currentStudent.id} · Sem. ${currentStudent.semester}');
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
@@ -663,7 +671,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           _readOnlyField('Departamento / Área', adminData['department']!),
           _readOnlyField('ID de Administrador', adminData['id']!),
         ] else if (isProfessor) ...[
-          _readOnlyField('Departamento', 'Departamento de ${currentProfessor['department']}'),
+          _readOnlyField(
+            'Departamento',
+            'Departamento de ${currentProfessor['department']}',
+          ),
           _readOnlyField('ID de Empleado', currentProfessor['id']!),
         ] else ...[
           _readOnlyField('Cédula', currentStudent.cedula),
@@ -744,55 +755,55 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             },
           ]
         : (isProfessor
-            ? [
-                {
-                  'key': 'grades',
-                  'label': 'Recordatorio de calificaciones',
-                  'desc': 'Alertas de notas pendientes por publicar',
-                },
-                {
-                  'key': 'announcements',
-                  'label': 'Anuncios institucionales',
-                  'desc': 'Comunicados de la universidad',
-                },
-                {
-                  'key': 'requests',
-                  'label': 'Solicitudes de estudiantes',
-                  'desc': 'Cuando un estudiante te envíe una consulta',
-                },
-                {
-                  'key': 'reminders',
-                  'label': 'Recordatorios académicos',
-                  'desc': 'Fechas límite de calificaciones, etc.',
-                },
-              ]
-            : [
-                {
-                  'key': 'grades',
-                  'label': 'Publicación de calificaciones',
-                  'desc': 'Cuando un profesor publique notas',
-                },
-                {
-                  'key': 'payments',
-                  'label': 'Pagos y estados de cuenta',
-                  'desc': 'Vencimientos y confirmaciones',
-                },
-                {
-                  'key': 'announcements',
-                  'label': 'Anuncios institucionales',
-                  'desc': 'Comunicados de la universidad',
-                },
-                {
-                  'key': 'requests',
-                  'label': 'Actualización de solicitudes',
-                  'desc': 'Cambios de estado en tus solicitudes',
-                },
-                {
-                  'key': 'reminders',
-                  'label': 'Recordatorios académicos',
-                  'desc': 'Fechas de selección, retiro, etc.',
-                },
-              ]);
+              ? [
+                  {
+                    'key': 'grades',
+                    'label': 'Recordatorio de calificaciones',
+                    'desc': 'Alertas de notas pendientes por publicar',
+                  },
+                  {
+                    'key': 'announcements',
+                    'label': 'Anuncios institucionales',
+                    'desc': 'Comunicados de la universidad',
+                  },
+                  {
+                    'key': 'requests',
+                    'label': 'Solicitudes de estudiantes',
+                    'desc': 'Cuando un estudiante te envíe una consulta',
+                  },
+                  {
+                    'key': 'reminders',
+                    'label': 'Recordatorios académicos',
+                    'desc': 'Fechas límite de calificaciones, etc.',
+                  },
+                ]
+              : [
+                  {
+                    'key': 'grades',
+                    'label': 'Publicación de calificaciones',
+                    'desc': 'Cuando un profesor publique notas',
+                  },
+                  {
+                    'key': 'payments',
+                    'label': 'Pagos y estados de cuenta',
+                    'desc': 'Vencimientos y confirmaciones',
+                  },
+                  {
+                    'key': 'announcements',
+                    'label': 'Anuncios institucionales',
+                    'desc': 'Comunicados de la universidad',
+                  },
+                  {
+                    'key': 'requests',
+                    'label': 'Actualización de solicitudes',
+                    'desc': 'Cambios de estado en tus solicitudes',
+                  },
+                  {
+                    'key': 'reminders',
+                    'label': 'Recordatorios académicos',
+                    'desc': 'Fechas de selección, retiro, etc.',
+                  },
+                ]);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -960,7 +971,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               value: false,
               onChanged: (v) {},
               activeThumbColor: AppColors.primary,
-            activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
+              activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
             ),
           ],
         ),
@@ -1670,7 +1681,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               value: isDark,
               onChanged: (v) => prefsNotifier.setDarkMode(v),
               activeThumbColor: AppColors.primary,
-            activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
+              activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
             ),
           ],
         ),

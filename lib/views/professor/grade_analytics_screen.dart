@@ -192,7 +192,13 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                   child: BarChart(
                     BarChartData(
                       alignment: BarChartAlignment.spaceAround,
-                      maxY: (grades.isEmpty ? 4 : hist.map((e) => e['count'] as int).reduce(max).toDouble() + 1),
+                      maxY: (grades.isEmpty
+                          ? 4
+                          : hist
+                                    .map((e) => e['count'] as int)
+                                    .reduce(max)
+                                    .toDouble() +
+                                1),
                       barTouchData: BarTouchData(enabled: false),
                       titlesData: FlTitlesData(
                         show: true,
@@ -200,12 +206,16 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                           sideTitles: SideTitles(
                             showTitles: true,
                             getTitlesWidget: (value, meta) {
-                              if (value.toInt() >= 0 && value.toInt() < hist.length) {
+                              if (value.toInt() >= 0 &&
+                                  value.toInt() < hist.length) {
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 8.0),
                                   child: Text(
                                     hist[value.toInt()]['label'] as String,
-                                    style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: AppColors.textSecondary,
+                                    ),
                                   ),
                                 );
                               }
@@ -221,15 +231,22 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                               if (value % 1 == 0) {
                                 return Text(
                                   value.toInt().toString(),
-                                  style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: AppColors.textSecondary,
+                                  ),
                                 );
                               }
                               return const SizedBox.shrink();
                             },
                           ),
                         ),
-                        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                        topTitles: AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        rightTitles: AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
                       ),
                       gridData: FlGridData(
                         show: true,
@@ -244,8 +261,14 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                       borderData: FlBorderData(
                         show: true,
                         border: Border(
-                          bottom: BorderSide(color: AppColors.textSecondary, width: 1),
-                          left: BorderSide(color: AppColors.textSecondary, width: 1),
+                          bottom: BorderSide(
+                            color: AppColors.textSecondary,
+                            width: 1,
+                          ),
+                          left: BorderSide(
+                            color: AppColors.textSecondary,
+                            width: 1,
+                          ),
                         ),
                       ),
                       barGroups: List.generate(hist.length, (i) {
@@ -256,7 +279,9 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                               toY: (hist[i]['count'] as int).toDouble(),
                               color: hist[i]['color'] as Color,
                               width: 32,
-                              borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(4),
+                              ),
                             ),
                           ],
                         );
@@ -269,34 +294,45 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                 Wrap(
                   spacing: 16,
                   runSpacing: 8,
-                  children: hist.map((r) => Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: 12,
-                        height: 12,
-                        decoration: BoxDecoration(
-                          color: r['color'] as Color,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      SizedBox(width: 6),
-                      Text.rich(
-                        TextSpan(
+                  children: hist
+                      .map(
+                        (r) => Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            TextSpan(
-                              text: '${r['label']}: ',
-                              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                            Container(
+                              width: 12,
+                              height: 12,
+                              decoration: BoxDecoration(
+                                color: r['color'] as Color,
+                                shape: BoxShape.circle,
+                              ),
                             ),
-                            TextSpan(
-                              text: '${r['count']}',
-                              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
+                            SizedBox(width: 6),
+                            Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: '${r['label']}: ',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppColors.textSecondary,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: '${r['count']}',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  )).toList(),
+                      )
+                      .toList(),
                 ),
               ],
             ),
@@ -344,12 +380,13 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                           isStrokeCapRound: true,
                           dotData: FlDotData(
                             show: true,
-                            getDotPainter: (spot, percent, barData, index) => FlDotCirclePainter(
-                              radius: 6,
-                              color: AppColors.primary,
-                              strokeWidth: 2,
-                              strokeColor: AppColors.surface,
-                            ),
+                            getDotPainter: (spot, percent, barData, index) =>
+                                FlDotCirclePainter(
+                                  radius: 6,
+                                  color: AppColors.primary,
+                                  strokeWidth: 2,
+                                  strokeColor: AppColors.surface,
+                                ),
                           ),
                         ),
                       ],
@@ -362,10 +399,17 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                             dashArray: [4, 4],
                             label: HorizontalLineLabel(
                               show: true,
-                              style: TextStyle(color: AppColors.error, fontSize: 10, fontWeight: FontWeight.w700),
+                              style: TextStyle(
+                                color: AppColors.error,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                              ),
                               alignment: Alignment.center,
                               labelResolver: (line) => '70',
-                              padding: const EdgeInsets.only(right: 5, bottom: 0),
+                              padding: const EdgeInsets.only(
+                                right: 5,
+                                bottom: 0,
+                              ),
                             ),
                           ),
                         ],
@@ -377,13 +421,20 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                             showTitles: true,
                             interval: 1,
                             getTitlesWidget: (value, meta) {
-                              const titles = ['Parcial 1', 'Parcial 2', 'Final (est.)'];
+                              const titles = [
+                                'Parcial 1',
+                                'Parcial 2',
+                                'Final (est.)',
+                              ];
                               if (value >= 0 && value < titles.length) {
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 8.0),
                                   child: Text(
                                     titles[value.toInt()],
-                                    style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: AppColors.textSecondary,
+                                    ),
                                   ),
                                 );
                               }
@@ -399,13 +450,20 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                             getTitlesWidget: (value, meta) {
                               return Text(
                                 value.toInt().toString(),
-                                style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: AppColors.textSecondary,
+                                ),
                               );
                             },
                           ),
                         ),
-                        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                        topTitles: AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        rightTitles: AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
                       ),
                       gridData: FlGridData(
                         show: true,
@@ -419,8 +477,14 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                       borderData: FlBorderData(
                         show: true,
                         border: Border(
-                          bottom: BorderSide(color: AppColors.textSecondary, width: 1),
-                          left: BorderSide(color: AppColors.textSecondary, width: 1),
+                          bottom: BorderSide(
+                            color: AppColors.textSecondary,
+                            width: 1,
+                          ),
+                          left: BorderSide(
+                            color: AppColors.textSecondary,
+                            width: 1,
+                          ),
                         ),
                       ),
                     ),
