@@ -195,6 +195,41 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                     )
                     .toList(),
               ),
+              const SizedBox(height: 24),
+              Text(
+                'NOTAS DEL REGISTRADOR',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textTertiary,
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                maxLines: 3,
+                decoration: InputDecoration(
+                  hintText: 'Agregar observaciones o notas sobre esta solicitud...',
+                  hintStyle: TextStyle(fontSize: 13, color: AppColors.textTertiary),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: AppColors.borderMedium),
+                  ),
+                  contentPadding: const EdgeInsets.all(12),
+                ),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text('Guardar Cambios'),
+              ),
             ],
           ),
         ),
@@ -309,61 +344,140 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                     (st) => st.id == r['studentId'],
                     orElse: () => allStudents[0],
                   );
+
+                  Color iconColor = AppColors.textTertiary;
+                  Color iconBg = AppColors.background;
+                  IconData iconData = LucideIcons.file;
+                  
+                  if (r['status'] == 'Pendiente' || r['status'] == 'En proceso') {
+                    iconColor = AppColors.warning;
+                    iconBg = AppColors.warningLight;
+                    iconData = LucideIcons.clock;
+                  } else if (r['status'] == 'Completada') {
+                    iconColor = AppColors.success;
+                    iconBg = AppColors.successLight;
+                    iconData = LucideIcons.checkCircle;
+                  } else if (r['status'] == 'Cerrada') {
+                    iconColor = AppColors.textSecondary;
+                    iconBg = AppColors.background;
+                    iconData = LucideIcons.xCircle;
+                  }
+
+                  Color priorityColor;
+                  switch (r['priority']) {
+                    case 'Alta':
+                      priorityColor = AppColors.error;
+                      break;
+                    case 'Normal':
+                    default:
+                      priorityColor = AppColors.info;
+                  }
+
                   return InkWell(
                     onTap: () => _showDetailModal(r),
                     child: Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: iconBg,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(iconData, size: 20, color: iconColor),
+                          ),
+                          const SizedBox(width: 16),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
+                                Text(
+                                  r['type'],
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Wrap(
+                                  spacing: 8,
+                                  runSpacing: 4,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
-                                    Expanded(
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                      decoration: BoxDecoration(
+                                        color: priorityColor.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(4),
+                                        border: Border.all(color: priorityColor.withOpacity(0.3)),
+                                      ),
                                       child: Text(
-                                        r['type'],
+                                        r['priority'],
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 10,
                                           fontWeight: FontWeight.w600,
-                                          color: AppColors.textPrimary,
+                                          color: priorityColor,
                                         ),
                                       ),
                                     ),
                                     Text(
-                                      r['priority'],
+                                      '${r['id']} · ${r['date']}',
                                       style: TextStyle(
-                                        fontSize: 10,
-                                        color: r['priority'] == 'Alta'
-                                            ? AppColors.error
-                                            : AppColors.info,
+                                        fontSize: 12,
+                                        color: AppColors.textSecondary,
                                       ),
                                     ),
                                   ],
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  '${r['id']} · ${r['date']}',
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    color: AppColors.textTertiary,
-                                  ),
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
                                   s.name,
                                   style: const TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 13,
                                     color: AppColors.primary,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  r['details'],
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: AppColors.textSecondary,
                                   ),
                                 ),
                               ],
                             ),
                           ),
                           const SizedBox(width: 16),
-                          StatusBadge(status: r['status']),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              StatusBadge(status: r['status']),
+                              const SizedBox(height: 16),
+                              Row(
+                                children: [
+                                  Icon(
+                                    LucideIcons.eye,
+                                    size: 16,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Gestionar',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),

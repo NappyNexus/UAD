@@ -355,6 +355,41 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                   ),
                 ],
               ],
+              const SizedBox(height: 24),
+              Text(
+                'NOTAS DEL REGISTRADOR',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textTertiary,
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                maxLines: 3,
+                decoration: InputDecoration(
+                  hintText: 'Agregar observaciones o notas sobre esta solicitud...',
+                  hintStyle: TextStyle(fontSize: 13, color: AppColors.textTertiary),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: AppColors.borderMedium),
+                  ),
+                  contentPadding: const EdgeInsets.all(12),
+                ),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text('Guardar Cambios'),
+              ),
             ],
           ),
         ),
@@ -522,12 +557,40 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                     Divider(height: 1, color: AppColors.borderMedium),
                 itemBuilder: (ctx, i) {
                   final a = filtered[i];
+                  Color iconColor = AppColors.textTertiary;
+                  Color iconBg = AppColors.background;
+                  IconData iconData = LucideIcons.file;
+                  
+                  if (a['status'] == 'Pendiente' || a['status'] == 'En revisión') {
+                    iconColor = AppColors.warning;
+                    iconBg = AppColors.warningLight;
+                    iconData = a['status'] == 'Pendiente' ? LucideIcons.clock : LucideIcons.alertCircle;
+                  } else if (a['status'] == 'Aprobado') {
+                    iconColor = AppColors.success;
+                    iconBg = AppColors.successLight;
+                    iconData = LucideIcons.checkCircle;
+                  } else if (a['status'] == 'Rechazado') {
+                    iconColor = AppColors.error;
+                    iconBg = AppColors.errorLight;
+                    iconData = LucideIcons.xCircle;
+                  }
+
                   return InkWell(
                     onTap: () => _showDetailModal(a),
                     child: Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: iconBg,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(iconData, size: 20, color: iconColor),
+                          ),
+                          const SizedBox(width: 16),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -535,8 +598,8 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                                 Text(
                                   '${a['name']}',
                                   style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
                                     color: AppColors.textPrimary,
                                   ),
                                 ),
@@ -544,31 +607,74 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                                 Text(
                                   '${a['id']} · ${a['cedula']}',
                                   style: TextStyle(
-                                    fontSize: 11,
-                                    color: AppColors.textTertiary,
+                                    fontSize: 12,
+                                    color: AppColors.textSecondary,
                                   ),
                                 ),
-                                const SizedBox(height: 8),
-                                Row(
+                                SizedBox(height: 2),
+                                Text(
+                                  '${a['program']} · Cohorte ${a['cohort']}',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Wrap(
+                                  spacing: 8,
+                                  runSpacing: 4,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
                                     StatusBadge(status: a['status']),
-                                    const SizedBox(width: 8),
-                                    Icon(
-                                      LucideIcons.fileText,
-                                      size: 12,
-                                      color: a['docs']
-                                          ? AppColors.success
-                                          : AppColors.error,
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          a['docs'] ? LucideIcons.check : LucideIcons.x,
+                                          size: 14,
+                                          color: a['docs'] ? AppColors.success : AppColors.error,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          a['docs'] ? 'Docs completos' : 'Docs incompletos',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color: a['docs'] ? AppColors.success : AppColors.error,
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                    Text(
+                                      a['date'],
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: AppColors.textTertiary,
+                                      ),
+                                    )
                                   ],
                                 ),
                               ],
                             ),
                           ),
-                          Icon(
-                            LucideIcons.chevronRight,
-                            size: 16,
-                            color: AppColors.textTertiary,
+                          const SizedBox(width: 8),
+                          Row(
+                            children: [
+                              Icon(
+                                LucideIcons.eye,
+                                size: 16,
+                                color: AppColors.textPrimary,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                'Ver',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.textPrimary,
+                                ),
+                              )
+                            ],
                           ),
                         ],
                       ),
