@@ -440,12 +440,12 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                     ? AppColors.warning
                                     : AppColors.error;
                                 final bgColor = grade >= 90
-                                    ? const Color(0xFFF0FDF4)
+                                    ? AppColors.successSurface
                                     : grade >= 80
-                                    ? const Color(0xFFEFF6FF)
+                                    ? AppColors.infoSurface
                                     : grade >= 70
-                                    ? const Color(0xFFFFFBEB)
-                                    : Color(0xFFFEF2F2);
+                                    ? AppColors.warningSurface
+                                    : AppColors.errorSurface;
                                 return Container(
                                   width: width,
                                   padding: const EdgeInsets.symmetric(
@@ -649,14 +649,14 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           ? AppColors.info
                           : AppColors.textTertiary;
                       final bgColor = isCompleted
-                          ? const Color(0xFFF0FDF4)
+                          ? AppColors.successSurface
                           : isInProgress
-                          ? const Color(0xFFEFF6FF)
-                          : Colors.white;
+                          ? AppColors.infoSurface
+                          : AppColors.surface;
                       final borderColor = isCompleted
-                          ? const Color(0xFFBBF7D0)
+                          ? AppColors.successLight
                           : isInProgress
-                          ? const Color(0xFFBFDBFE)
+                          ? AppColors.infoLight
                           : AppColors.border;
 
                       return Container(
@@ -708,9 +708,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
                               ),
                               decoration: BoxDecoration(
                                 color: isCompleted
-                                    ? const Color(0xFFDCFCE7)
+                                    ? AppColors.successSurface
                                     : isInProgress
-                                    ? const Color(0xFFDBEAFE)
+                                    ? AppColors.infoSurface
                                     : AppColors.background,
                                 borderRadius: BorderRadius.circular(20),
                               ),

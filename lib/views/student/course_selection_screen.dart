@@ -77,7 +77,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                       'Materias seleccionadas',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.white.withValues(alpha: 0.7),
+                        color: AppColors.surface.withValues(alpha: 0.7),
                       ),
                     ),
                     Text(
@@ -97,7 +97,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                       'Créditos',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.white.withValues(alpha: 0.7),
+                        color: AppColors.surface.withValues(alpha: 0.7),
                       ),
                     ),
                     Text(
@@ -122,7 +122,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
               hintText: 'Buscar materias...',
               prefixIcon: const Icon(LucideIcons.search, size: 18),
               filled: true,
-              fillColor: Colors.white,
+              fillColor: AppColors.surface,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(color: AppColors.borderMedium),
@@ -212,7 +212,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
               margin: const EdgeInsets.only(bottom: 8),
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.primarySurface : Colors.white,
+                color: isSelected ? AppColors.primarySurface : AppColors.surface,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: isSelected
@@ -379,7 +379,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
   void _showConfirmation(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),

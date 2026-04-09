@@ -98,7 +98,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -189,7 +189,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                       (st) => ActionChip(
                         label: Text(st),
                         onPressed: () => _changeStatus(r['id'], st),
-                        backgroundColor: Colors.white,
+                        backgroundColor: AppColors.surface,
                         side: BorderSide(color: AppColors.borderMedium),
                       ),
                     )

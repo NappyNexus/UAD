@@ -345,35 +345,46 @@ class _SurveyPendingCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 8),
-                Row(
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 4,
                   children: [
-                    Icon(
-                      LucideIcons.messageSquare,
-                      size: 10,
-                      color: AppColors.textSecondary,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          LucideIcons.messageSquare,
+                          size: 10,
+                          color: AppColors.textSecondary,
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                          '${survey['questions']} preguntas',
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(width: 4),
-                    Text(
-                      '${survey['questions']} preguntas',
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Icon(
-                      LucideIcons.clock,
-                      size: 10,
-                      color: Colors.amber.shade600,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Vence: ${survey['deadline']}',
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.amber.shade600,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          LucideIcons.clock,
+                          size: 10,
+                          color: Colors.amber.shade600,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Vence: ${survey['deadline']}',
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.amber.shade600,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -420,7 +431,7 @@ class _SurveyCompletedCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.7),
+        color: AppColors.surface.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.border),
       ),

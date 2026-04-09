@@ -73,7 +73,7 @@ class _AdminPeriodsScreenState extends State<AdminPeriodsScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -302,7 +302,7 @@ class _AdminPeriodsScreenState extends State<AdminPeriodsScreen> {
                                   icon: const Icon(LucideIcons.pause, size: 12),
                                   label: const Text('Cerrar Inscripción'),
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
+                                    backgroundColor: AppColors.surface,
                                     foregroundColor: AppColors.warning,
                                     elevation: 0,
                                     padding: const EdgeInsets.symmetric(
@@ -332,7 +332,7 @@ class _AdminPeriodsScreenState extends State<AdminPeriodsScreen> {
                                 ),
                                 label: Text('Configurar'),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
+                                  backgroundColor: AppColors.surface,
                                   foregroundColor: AppColors.textSecondary,
                                   elevation: 0,
                                   padding: const EdgeInsets.symmetric(

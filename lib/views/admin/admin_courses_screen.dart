@@ -125,7 +125,7 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -297,7 +297,7 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
                             style: TextStyle(fontSize: 11),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: AppColors.surface,
                             foregroundColor: AppColors.textSecondary,
                             elevation: 0,
                             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -636,7 +636,7 @@ class _CourseFormState extends State<_CourseForm> {
                 vertical: 12,
               ),
               filled: isReadOnly,
-              fillColor: isReadOnly ? AppColors.background : Colors.white,
+              fillColor: isReadOnly ? AppColors.background : AppColors.surface,
               isDense: true,
             ),
           ),

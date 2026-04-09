@@ -181,7 +181,7 @@ class _GradesScreenState extends State<GradesScreen> {
                 margin: const EdgeInsets.only(bottom: 8),
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: lowAtt ? const Color(0xFFFEF2F2) : Colors.white,
+                  color: lowAtt ? AppColors.errorSurface : AppColors.surface,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: lowAtt ? const Color(0xFFFECACA) : AppColors.border,

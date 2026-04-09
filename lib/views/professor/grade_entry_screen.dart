@@ -135,7 +135,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -528,12 +528,12 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: _csvStatusIsSuccess
-                    ? const Color(0xFFF0FDF4)
-                    : const Color(0xFFFEF2F2),
+                    ? AppColors.successSurface
+                    : AppColors.errorSurface,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: _csvStatusIsSuccess
-                      ? const Color(0xFFBBF7D0)
+                      ? AppColors.successLight
                       : const Color(0xFFFECACA),
                 ),
               ),
@@ -613,7 +613,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                     )
                   : null,
               filled: true,
-              fillColor: Colors.white,
+              fillColor: AppColors.surface,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(color: AppColors.borderMedium),
@@ -682,7 +682,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: isLow
-                    ? const Color(0xFFFEF2F2).withValues(alpha: 0.5)
+                    ? AppColors.errorSurface.withValues(alpha: 0.5)
                     : Colors.white,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
@@ -905,7 +905,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                     : AppColors.gold,
                 foregroundColor: _published ? Colors.white : AppColors.primary,
                 disabledBackgroundColor: AppColors.success,
-                disabledForegroundColor: Colors.white,
+                disabledForegroundColor: AppColors.surface,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),

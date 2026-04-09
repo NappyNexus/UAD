@@ -63,7 +63,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -334,7 +334,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.2),
+                      color: AppColors.surface.withValues(alpha: 0.2),
                       width: 2,
                     ),
                   ),
@@ -342,7 +342,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                     borderRadius: BorderRadius.circular(10),
                     child: p['photo'] != null
                         ? Image.network(p['photo'] as String, fit: BoxFit.cover)
-                        : Container(color: Colors.white.withValues(alpha: 0.2)),
+                        : Container(color: AppColors.surface.withValues(alpha: 0.2)),
                   ),
                 ),
                 SizedBox(width: 16),
@@ -354,7 +354,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                         'Portal del Profesor',
                         style: TextStyle(
                           fontSize: 11,
-                          color: Colors.white.withValues(alpha: 0.7),
+                          color: AppColors.surface.withValues(alpha: 0.7),
                         ),
                       ),
                       Text(
@@ -369,7 +369,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                         p['department'] as String,
                         style: TextStyle(
                           fontSize: 13,
-                          color: Colors.white.withValues(alpha: 0.8),
+                          color: AppColors.surface.withValues(alpha: 0.8),
                         ),
                       ),
                     ],

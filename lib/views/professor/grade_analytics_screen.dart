@@ -501,7 +501,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
               margin: const EdgeInsets.only(bottom: 16),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color(0xFFFEF2F2),
+                color: AppColors.errorSurface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: const Color(0xFFFECACA)),
               ),

@@ -141,7 +141,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
               ),
               label: Text(_editing ? 'Guardar' : 'Editar'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: _editing ? AppColors.primary : Colors.white,
+                backgroundColor: _editing ? AppColors.primary : AppColors.surface,
                 foregroundColor: _editing
                     ? Colors.white
                     : AppColors.textPrimary,
@@ -191,7 +191,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
                           border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.2),
+                            color: AppColors.surface.withValues(alpha: 0.2),
                             width: 3,
                           ),
                         ),
@@ -200,14 +200,14 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                           child: s.photo != null
                               ? Image.network(s.photo!, fit: BoxFit.cover)
                               : Container(
-                                  color: Colors.white.withValues(alpha: 0.2),
+                                  color: AppColors.surface.withValues(alpha: 0.2),
                                   child: Center(
                                     child: Text(
                                       s.name[0],
                                       style: TextStyle(
                                         fontSize: 28,
                                         fontWeight: FontWeight.w700,
-                                        color: AppColors.surface,
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ),
@@ -224,7 +224,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
-                                color: AppColors.surface,
+                                color: Colors.white,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -234,7 +234,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                               s.program,
                               style: TextStyle(
                                 fontSize: 13,
-                                color: Colors.white.withValues(alpha: 0.8),
+                                color: AppColors.surface.withValues(alpha: 0.8),
                               ),
                             ),
                             SizedBox(height: 6),
@@ -246,7 +246,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                     vertical: 3,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withValues(alpha: 0.2),
+                                    color: AppColors.surface.withValues(alpha: 0.2),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Text(
@@ -254,7 +254,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                     style: TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.w600,
-                                      color: AppColors.surface,
+                                      color: Colors.white,
                                     ),
                                   ),
                                 ),
@@ -263,7 +263,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                   'Indice: ${s.gpa}',
                                   style: TextStyle(
                                     fontSize: 11,
-                                    color: Colors.white.withValues(alpha: 0.6),
+                                    color: AppColors.surface.withValues(alpha: 0.6),
                                   ),
                                 ),
                               ],

@@ -164,7 +164,7 @@ class RequestsScreen extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -520,7 +520,7 @@ class _NewRequestFormSheetState extends State<NewRequestFormSheet> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFFBEB),
+                  color: AppColors.warningSurface,
                   border: Border.all(color: const Color(0xFFFDE68A)),
                   borderRadius: BorderRadius.circular(12),
                 ),

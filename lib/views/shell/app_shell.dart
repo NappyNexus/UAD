@@ -65,7 +65,7 @@ class _AppShellState extends ConsumerState<AppShell> {
               width: 32,
               height: 32,
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.15),
+                color: AppColors.surface.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: ClipRRect(
@@ -84,7 +84,7 @@ class _AppShellState extends ConsumerState<AppShell> {
         title: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.15),
+            color: AppColors.surface.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(6),
           ),
           child: Text(
@@ -137,7 +137,7 @@ class _AppShellState extends ConsumerState<AppShell> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.3),
+                    color: AppColors.surface.withValues(alpha: 0.3),
                     width: 1.5,
                   ),
                 ),
@@ -146,7 +146,7 @@ class _AppShellState extends ConsumerState<AppShell> {
                   child: auth.userPhoto != null
                       ? Image.network(auth.userPhoto!, fit: BoxFit.cover)
                       : Container(
-                          color: Colors.white.withValues(alpha: 0.2),
+                          color: AppColors.surface.withValues(alpha: 0.2),
                           child: Center(
                             child: Text(
                               (auth.userName ?? 'U')[0].toUpperCase(),

@@ -18,9 +18,9 @@ final _colors = [
     const Color(0xFF026A45).withValues(alpha: 0.3),
     const Color(0xFF026A45),
   ],
-  [const Color(0xFFEFF6FF), const Color(0xFFBFDBFE), const Color(0xFF1D4ED8)],
+  [AppColors.infoSurface, AppColors.infoLight, const Color(0xFF1D4ED8)],
   [const Color(0xFFF5F3FF), const Color(0xFFDDD6FE), const Color(0xFF7C3AED)],
-  [const Color(0xFFFFFBEB), const Color(0xFFFDE68A), const Color(0xFFB45309)],
+  [AppColors.warningSurface, const Color(0xFFFDE68A), const Color(0xFFB45309)],
   [const Color(0xFFFFF1F2), const Color(0xFFFECDD3), const Color(0xFFF43F5E)],
 ];
 
@@ -160,7 +160,7 @@ class ScheduleScreen extends StatelessWidget {
                                 vertical: 3,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.5),
+                                color: AppColors.surface.withValues(alpha: 0.5),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(

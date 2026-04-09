@@ -400,7 +400,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
                                     icon: const Icon(LucideIcons.x, size: 14),
                                     label: const Text('Rechazar'),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFFFEF2F2),
+                                      backgroundColor: AppColors.errorSurface,
                                       foregroundColor: AppColors.error,
                                       elevation: 0,
                                       shape: RoundedRectangleBorder(
@@ -450,8 +450,8 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                 color: req['status'] == 'approved'
-                                    ? const Color(0xFFF0FDF4)
-                                    : const Color(0xFFFEF2F2),
+                                    ? AppColors.successSurface
+                                    : AppColors.errorSurface,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(

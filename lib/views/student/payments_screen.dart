@@ -294,7 +294,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: isActive ? Colors.white : Colors.transparent,
+            color: isActive ? AppColors.surface : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
             boxShadow: isActive
                 ? [
@@ -510,7 +510,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                           vertical: 14,
                         ),
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor: AppColors.surface,
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: AppColors.borderMedium),
@@ -603,7 +603,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: active ? const Color(0xFF1B704C) : Colors.white,
+            color: active ? const Color(0xFF1B704C) : AppColors.surface,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: active ? const Color(0xFF1B704C) : AppColors.borderMedium,
@@ -808,7 +808,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
           vertical: 14,
         ),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: AppColors.surface,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: AppColors.borderMedium),
@@ -990,7 +990,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                           vertical: 14,
                         ),
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor: AppColors.surface,
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: AppColors.borderMedium),
@@ -1019,7 +1019,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                   width: 16,
                   height: 16,
                   decoration: BoxDecoration(
-                    color: _saveCard ? const Color(0xFF1B704C) : Colors.white,
+                    color: _saveCard ? const Color(0xFF1B704C) : AppColors.surface,
                     borderRadius: BorderRadius.circular(4),
                     border: Border.all(
                       color: _saveCard
@@ -1028,7 +1028,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                     ),
                   ),
                   child: _saveCard
-                      ? const Icon(Icons.check, size: 12, color: Colors.white)
+                      ? Icon(Icons.check, size: 12, color: AppColors.surface)
                       : null,
                 ),
                 SizedBox(width: 8),
@@ -1110,7 +1110,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                 vertical: 14,
               ),
               filled: true,
-              fillColor: Colors.white,
+              fillColor: AppColors.surface,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(color: AppColors.borderMedium),

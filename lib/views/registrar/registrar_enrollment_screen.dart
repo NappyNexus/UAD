@@ -116,7 +116,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -185,7 +185,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -324,12 +324,12 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                         icon: const Icon(LucideIcons.x, size: 16),
                         label: const Text('Rechazar'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
+                          backgroundColor: AppColors.surface,
                           foregroundColor: AppColors.error,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
-                            side: const BorderSide(color: AppColors.errorLight),
+                            side: BorderSide(color: AppColors.errorLight),
                           ),
                         ),
                       ),
@@ -343,7 +343,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                     icon: const Icon(LucideIcons.alertCircle, size: 16),
                     label: Text('Marcar En Revisión'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
+                      backgroundColor: AppColors.surface,
                       foregroundColor: AppColors.textPrimary,
                       elevation: 0,
                       minimumSize: Size(double.infinity, 45),

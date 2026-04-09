@@ -39,7 +39,7 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -51,7 +51,7 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -147,7 +147,7 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                       icon: const Icon(LucideIcons.edit3, size: 14),
                       label: Text('Editar'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
+                        backgroundColor: AppColors.surface,
                         foregroundColor: AppColors.textPrimary,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
@@ -164,7 +164,7 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                       icon: const Icon(LucideIcons.ban, size: 14),
                       label: const Text('Suspender'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFEF2F2),
+                        backgroundColor: AppColors.errorSurface,
                         foregroundColor: AppColors.error,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
@@ -296,7 +296,7 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                     style: const TextStyle(fontSize: 12),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: AppColors.surface,
                     foregroundColor: _exportDone
                         ? AppColors.success
                         : AppColors.textSecondary,

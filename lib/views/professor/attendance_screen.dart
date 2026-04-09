@@ -231,7 +231,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   icon: const Icon(LucideIcons.check, size: 14),
                   label: const Text('Todos Presentes'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFF0FDF4),
+                    backgroundColor: AppColors.successSurface,
                     foregroundColor: AppColors.success,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(vertical: 12),
@@ -249,7 +249,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   icon: const Icon(LucideIcons.x, size: 14),
                   label: const Text('Todos Ausentes'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFFEF2F2),
+                    backgroundColor: AppColors.errorSurface,
                     foregroundColor: AppColors.error,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(vertical: 12),

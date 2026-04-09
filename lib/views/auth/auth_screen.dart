@@ -88,7 +88,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.15),
+                      color: AppColors.surface.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: ClipRRect(
@@ -117,7 +117,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     'Sistema Académico',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.white.withValues(alpha: 0.7),
+                      color: AppColors.surface.withValues(alpha: 0.7),
                     ),
                   ),
                   const SizedBox(height: 32),
@@ -321,10 +321,10 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     constraints: const BoxConstraints(maxWidth: 400),
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.1),
+                      color: AppColors.surface.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.15),
+                        color: AppColors.surface.withValues(alpha: 0.15),
                       ),
                     ),
                     child: Column(
@@ -334,7 +334,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
-                            color: Colors.white.withValues(alpha: 0.5),
+                            color: AppColors.surface.withValues(alpha: 0.5),
                             letterSpacing: 1.5,
                           ),
                         ),
@@ -354,7 +354,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                                     vertical: 8,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withValues(alpha: 0.08),
+                                    color: AppColors.surface.withValues(alpha: 0.08),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Row(
@@ -363,7 +363,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                                         width: 28,
                                         height: 28,
                                         decoration: BoxDecoration(
-                                          color: Colors.white.withValues(
+                                          color: AppColors.surface.withValues(
                                             alpha: 0.15,
                                           ),
                                           borderRadius: BorderRadius.circular(
@@ -401,7 +401,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                                                   user.role,
                                               style: TextStyle(
                                                 fontSize: 10,
-                                                color: Colors.white.withValues(
+                                                color: AppColors.surface.withValues(
                                                   alpha: 0.5,
                                                 ),
                                               ),
@@ -412,7 +412,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                                       Icon(
                                         LucideIcons.arrowRight,
                                         size: 14,
-                                        color: Colors.white.withValues(
+                                        color: AppColors.surface.withValues(
                                           alpha: 0.4,
                                         ),
                                       ),

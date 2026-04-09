@@ -56,7 +56,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -190,7 +190,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                       icon: const Icon(LucideIcons.printer, size: 14),
                       label: Text('Imprimir'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
+                        backgroundColor: AppColors.surface,
                         foregroundColor: AppColors.textPrimary,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
@@ -213,7 +213,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -396,7 +396,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                               decoration: BoxDecoration(
                                 color: isEmitido
                                     ? const Color(0xFFECFDF5)
-                                    : const Color(0xFFFFFBEB),
+                                    : AppColors.warningSurface,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Icon(
@@ -451,7 +451,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                               icon: const Icon(LucideIcons.eye, size: 12),
                               label: Text('Ver'),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
+                                backgroundColor: AppColors.surface,
                                 foregroundColor: AppColors.textSecondary,
                                 elevation: 0,
                                 padding: const EdgeInsets.symmetric(
@@ -478,7 +478,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                               ),
                               label: Text(isExported ? 'Listo' : 'Exportar'),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
+                                backgroundColor: AppColors.surface,
                                 foregroundColor: isExported
                                     ? AppColors.success
                                     : AppColors.textSecondary,
@@ -511,7 +511,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                                 isPrinted ? 'Imprimiendo' : 'Imprimir',
                               ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
+                                backgroundColor: AppColors.surface,
                                 foregroundColor: isPrinted
                                     ? Colors.blue
                                     : AppColors.textSecondary,

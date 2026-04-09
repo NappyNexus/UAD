@@ -97,9 +97,9 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
   Color _getRoleBgColor(String role) {
     switch (role) {
       case 'Admin':
-        return const Color(0xFFFEF2F2);
+        return AppColors.errorSurface;
       case 'Registrador':
-        return const Color(0xFFEFF6FF);
+        return AppColors.infoSurface;
       case 'Profesor':
         return const Color(0xFFFAF5FF);
       case 'Estudiante':

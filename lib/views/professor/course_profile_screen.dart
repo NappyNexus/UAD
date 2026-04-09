@@ -72,7 +72,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                       width: 200,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: isSelected ? AppColors.primary : Colors.white,
+                        color: isSelected ? AppColors.primary : AppColors.surface,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
                           color: isSelected
@@ -257,7 +257,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.1),
+                        color: AppColors.surface.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
@@ -287,7 +287,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.1),
+                        color: AppColors.surface.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
@@ -332,7 +332,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                   margin: const EdgeInsets.only(bottom: 8),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: atRisk ? const Color(0xFFFEF2F2) : Colors.white,
+                    color: atRisk ? AppColors.errorSurface : AppColors.surface,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: atRisk
@@ -538,14 +538,14 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                       '$passing',
                       'Aprobados',
                       AppColors.success,
-                      const Color(0xFFF0FDF4),
+                      AppColors.successSurface,
                     ),
                     const SizedBox(width: 8),
                     _progStat(
                       '${grades.where((g) => g < 70).length}',
                       'En riesgo',
                       AppColors.error,
-                      const Color(0xFFFEF2F2),
+                      AppColors.errorSurface,
                     ),
                   ],
                 ),

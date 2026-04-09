@@ -182,7 +182,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                     height: 80,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withValues(alpha: 0.05),
+                      color: AppColors.surface.withValues(alpha: 0.05),
                     ),
                   ),
                 ),
@@ -200,7 +200,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.2),
+                                color: AppColors.surface.withValues(alpha: 0.2),
                                 width: 2,
                               ),
                             ),
@@ -225,7 +225,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                                   'Bienvenida 👋',
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Colors.white.withValues(alpha: 0.7),
+                                    color: AppColors.surface.withValues(alpha: 0.7),
                                   ),
                                 ),
                                 Text(
@@ -464,7 +464,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                 typeBg = const Color(0xFFF3E8FF);
                 typeText = const Color(0xFF7E22CE);
               } else {
-                typeBg = const Color(0xFFDBEAFE);
+                typeBg = AppColors.infoSurface;
                 typeText = const Color(0xFF1D4ED8);
               }
 
@@ -688,7 +688,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                 typeBg = const Color(0xFFFEF3C7);
                 typeText = const Color(0xFFB45309);
               } else if (type == 'material') {
-                typeBg = const Color(0xFFDBEAFE);
+                typeBg = AppColors.infoSurface;
                 typeText = const Color(0xFF1D4ED8);
               } else {
                 typeBg = const Color(0xFFF3E8FF);
@@ -839,7 +839,7 @@ class StudentDashboardScreen extends ConsumerWidget {
 
   static Widget _avatarFallback(String name) {
     return Container(
-      color: Colors.white.withValues(alpha: 0.2),
+      color: AppColors.surface.withValues(alpha: 0.2),
       child: Center(
         child: Text(
           name[0],

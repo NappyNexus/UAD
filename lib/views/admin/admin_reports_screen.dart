@@ -53,7 +53,7 @@ class AdminReportsScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
+                  backgroundColor: AppColors.surface,
                   foregroundColor: AppColors.textPrimary,
                   elevation: 0,
                   shape: RoundedRectangleBorder(

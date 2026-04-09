@@ -100,7 +100,7 @@ class AppDrawer extends StatelessWidget {
                         color: Colors.white,
                       ),
                       style: IconButton.styleFrom(
-                        backgroundColor: Colors.white.withValues(alpha: 0.1),
+                        backgroundColor: AppColors.surface.withValues(alpha: 0.1),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),

@@ -287,7 +287,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                             color: AppColors.surface,
                           ),
                           style: IconButton.styleFrom(
-                            backgroundColor: Colors.white.withValues(
+                            backgroundColor: AppColors.surface.withValues(
                               alpha: 0.1,
                             ),
                             shape: RoundedRectangleBorder(

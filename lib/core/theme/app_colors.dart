@@ -67,23 +67,23 @@ class AppColors {
 
   // ─── Semantic Colors — fixed across themes ──────────────────────
   static const Color success = Color(0xFF059669);
-  static const Color successLight = Color(0xFFD1FAE5);
-  static const Color successSurface = Color(0xFFECFDF5);
+  static Color get successLight => _isDark ? success.withValues(alpha: 0.2) : const Color(0xFFD1FAE5);
+  static Color get successSurface => _isDark ? success.withValues(alpha: 0.1) : const Color(0xFFECFDF5);
   static const Color successText = Color(0xFF047857);
 
   static const Color warning = Color(0xFFD97706);
-  static const Color warningLight = Color(0xFFFDE68A);
-  static const Color warningSurface = Color(0xFFFFFBEB);
+  static Color get warningLight => _isDark ? warning.withValues(alpha: 0.2) : const Color(0xFFFDE68A);
+  static Color get warningSurface => _isDark ? warning.withValues(alpha: 0.1) : const Color(0xFFFFFBEB);
   static const Color warningText = Color(0xFFB45309);
 
   static const Color error = Color(0xFFDC2626);
-  static const Color errorLight = Color(0xFFFECACA);
-  static const Color errorSurface = Color(0xFFFEF2F2);
+  static Color get errorLight => _isDark ? error.withValues(alpha: 0.2) : const Color(0xFFFECACA);
+  static Color get errorSurface => _isDark ? error.withValues(alpha: 0.1) : const Color(0xFFFEF2F2);
   static const Color errorText = Color(0xFFB91C1C);
 
   static const Color info = Color(0xFF2563EB);
-  static const Color infoLight = Color(0xFFBFDBFE);
-  static const Color infoSurface = Color(0xFFEFF6FF);
+  static Color get infoLight => _isDark ? info.withValues(alpha: 0.2) : const Color(0xFFBFDBFE);
+  static Color get infoSurface => _isDark ? info.withValues(alpha: 0.1) : const Color(0xFFEFF6FF);
   static const Color infoText = Color(0xFF1D4ED8);
 
   // ─── Role Gradients ──────────────────────────────────────────────
@@ -228,12 +228,22 @@ class AppColors {
 
   /// Get status badge colors, with a gray fallback for unknown statuses.
   static StatusBadgeColors getStatusColors(String status) {
-    return statusColors[status] ??
+    final base = statusColors[status] ??
         const StatusBadgeColors(
           Color(0xFFF9FAFB),
           Color(0xFF6B7280),
           Color(0xFFE5E7EB),
         );
+        
+    if (_isDark) {
+      return StatusBadgeColors(
+        base.text.withValues(alpha: 0.15),
+        base.text.withAlpha(200), // Slightly subdued white-ish if we prefer or just text tone
+        base.text.withValues(alpha: 0.3),
+      );
+    }
+    
+    return base;
   }
 }
 

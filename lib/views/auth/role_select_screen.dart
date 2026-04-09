@@ -36,7 +36,7 @@ class RoleSelectScreen extends ConsumerWidget {
                   width: 72,
                   height: 72,
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.15),
+                    color: AppColors.surface.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: ClipRRect(
@@ -65,7 +65,7 @@ class RoleSelectScreen extends ConsumerWidget {
                   'Sistema Académico',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.white.withValues(alpha: 0.7),
+                    color: AppColors.surface.withValues(alpha: 0.7),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -77,7 +77,7 @@ class RoleSelectScreen extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white.withValues(alpha: 0.9),
+                    color: AppColors.surface.withValues(alpha: 0.9),
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -85,7 +85,7 @@ class RoleSelectScreen extends ConsumerWidget {
                   'Elige un rol para explorar el sistema',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.white.withValues(alpha: 0.5),
+                    color: AppColors.surface.withValues(alpha: 0.5),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -155,7 +155,7 @@ class RoleSelectScreen extends ConsumerWidget {
                   'Universidad Adventista Dominicana',
                   style: TextStyle(
                     fontSize: 11,
-                    color: Colors.white.withValues(alpha: 0.4),
+                    color: AppColors.surface.withValues(alpha: 0.4),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -164,7 +164,7 @@ class RoleSelectScreen extends ConsumerWidget {
                   'Bonao, Monseñor Nouel · RD',
                   style: TextStyle(
                     fontSize: 10,
-                    color: Colors.white.withValues(alpha: 0.3),
+                    color: AppColors.surface.withValues(alpha: 0.3),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -329,7 +329,7 @@ class _RoleCardState extends State<_RoleCard>
                           width: 2,
                         ),
                       ),
-                      child: Icon(widget.icon, size: 11, color: Colors.white),
+                      child: Icon(widget.icon, size: 11, color: AppColors.surface),
                     ),
                   ),
                 ],

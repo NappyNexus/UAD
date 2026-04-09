@@ -68,7 +68,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
       'value': 'entrega',
       'label': 'Entrega',
       'color': AppColors.info,
-      'bg': const Color(0xFFDBEAFE),
+      'bg': AppColors.infoSurface,
     },
     {
       'value': 'clase_especial',

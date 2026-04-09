@@ -177,14 +177,14 @@ class StudyPlanScreen extends StatelessWidget {
                     final isPending = status == 'Pendiente';
 
                     final bgColor = isCompleted
-                        ? const Color(0xFFF0FDF4)
+                        ? AppColors.successSurface
                         : isInProgress
-                        ? const Color(0xFFEFF6FF)
-                        : Colors.white;
+                        ? AppColors.infoSurface
+                        : AppColors.surface;
                     final borderColor = isCompleted
-                        ? const Color(0xFFBBF7D0)
+                        ? AppColors.successLight
                         : isInProgress
-                        ? const Color(0xFFBFDBFE)
+                        ? AppColors.infoLight
                         : AppColors.border;
                     final iconColor = isCompleted
                         ? AppColors.success
@@ -219,7 +219,7 @@ class StudyPlanScreen extends StatelessWidget {
                               color: iconColor,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Icon(icon, size: 14, color: Colors.white),
+                            child: Icon(icon, size: 14, color: AppColors.surface),
                           ),
                           SizedBox(width: 10),
                           Expanded(

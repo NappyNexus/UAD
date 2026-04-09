@@ -190,7 +190,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
       return Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.surface,
           leading: IconButton(
             icon: Icon(LucideIcons.arrowLeft, color: AppColors.textPrimary),
             onPressed: () => setState(() => _selectedContact = null),
@@ -271,7 +271,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                         vertical: 12,
                       ),
                       decoration: BoxDecoration(
-                        color: isMe ? AppColors.primary : Colors.white,
+                        color: isMe ? AppColors.primary : AppColors.surface,
                         borderRadius: BorderRadius.only(
                           topLeft: const Radius.circular(16),
                           topRight: const Radius.circular(16),

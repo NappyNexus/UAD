@@ -34,7 +34,7 @@ class _AdminProgramsScreenState extends State<AdminProgramsScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -166,7 +166,7 @@ class _AdminProgramsScreenState extends State<AdminProgramsScreen> {
                           icon: const Icon(LucideIcons.edit3, size: 14),
                           label: Text('Editar'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: AppColors.surface,
                             foregroundColor: AppColors.textSecondary,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
@@ -205,7 +205,7 @@ class _AdminProgramsScreenState extends State<AdminProgramsScreen> {
                                         setState(() => _confirmToggleId = null),
                                     style: ElevatedButton.styleFrom(
                                       padding: EdgeInsets.zero,
-                                      backgroundColor: Colors.white,
+                                      backgroundColor: AppColors.surface,
                                       foregroundColor: AppColors.textSecondary,
                                       elevation: 0,
                                       shape: RoundedRectangleBorder(
@@ -227,7 +227,7 @@ class _AdminProgramsScreenState extends State<AdminProgramsScreen> {
                                   isActive ? 'Desactivar' : 'Activar',
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
+                                  backgroundColor: AppColors.surface,
                                   foregroundColor: isActive
                                       ? AppColors.error
                                       : AppColors.success,

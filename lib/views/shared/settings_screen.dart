@@ -477,7 +477,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
-                  side: const BorderSide(color: AppColors.errorLight),
+                  side: BorderSide(color: AppColors.errorLight),
                 ),
               ),
             ),
@@ -598,8 +598,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
-                        children: const [
-                          Icon(LucideIcons.save, size: 14, color: Colors.white),
+                        children: [
+                          Icon(LucideIcons.save, size: 14, color: AppColors.surface),
                           SizedBox(width: 4),
                           Text(
                             'Guardar',
