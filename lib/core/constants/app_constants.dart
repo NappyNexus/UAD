@@ -287,18 +287,24 @@ class AppConstants {
       password: 'demo123',
       role: roleTeacher,
       name: 'Dr. Carlos Martínez',
+      photo:
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
     ),
     DemoUser(
       email: 'admin@unad.edu.do',
       password: 'demo123',
       role: roleAdmin,
       name: 'Admin UNAD',
+      photo:
+          'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
     ),
     DemoUser(
       email: 'registrar@unad.edu.do',
       password: 'demo123',
       role: roleRegistrar,
       name: 'Ana López',
+      photo:
+          'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face',
     ),
   ];
 }

@@ -13,7 +13,19 @@ class AdminProgramsScreen extends StatefulWidget {
 }
 
 class _AdminProgramsScreenState extends State<AdminProgramsScreen> {
-  final List<Map<String, dynamic>> _programList = List.from(programs);
+  final List<Map<String, dynamic>> _programList = programs
+      .map(
+        (p) => {
+          'id': p.id,
+          'name': p.name,
+          'faculty': p.faculty,
+          'credits': p.credits,
+          'duration': p.duration,
+          'students': p.students,
+          'status': p.status,
+        },
+      )
+      .toList();
 
   // States
   String? _confirmToggleId;

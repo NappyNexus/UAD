@@ -4,6 +4,7 @@ import '../../core/theme/app_colors.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 import '../../widgets/common/stat_card.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 final _tuitionData = [
   {'month': 'Ago', 'cobrado': 12500000, 'pendiente': 3200000},
@@ -104,55 +105,69 @@ class AdminReportsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          // Enrollment Trend Chart (Simulated Area Chart)
+          // Enrollment Trend Chart (Line Chart)
           _CardContainer(
             title: 'Tendencia de Matrícula',
             child: SizedBox(
-              height: 180,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: enrollmentTrend.map((t) {
-                  final val = t['students'] as int;
-                  final minVal = 1200.0;
-                  final maxVal = 1500.0;
-                  final pct = ((val - minVal) / (maxVal - minVal)).clamp(
-                    0.1,
-                    1.0,
-                  );
-                  return Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          '$val',
-                          style: TextStyle(
-                            fontSize: 9,
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Container(
-                          width: 32,
-                          height: 130 * pct,
-                          decoration: const BoxDecoration(
-                            color: AppColors.primary,
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(4),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          t['period'] as String,
-                          style: TextStyle(
-                            fontSize: 9,
-                            color: AppColors.textTertiary,
-                          ),
-                        ),
-                      ],
+              height: 200,
+              child: LineChart(
+                LineChartData(
+                  gridData: FlGridData(
+                    show: true,
+                    drawVerticalLine: false,
+                    horizontalInterval: 100,
+                    getDrawingHorizontalLine: (value) => FlLine(
+                      color: AppColors.borderMedium,
+                      strokeWidth: 1,
+                      dashArray: [3, 3],
                     ),
-                  );
-                }).toList(),
+                  ),
+                  titlesData: FlTitlesData(
+                    show: true,
+                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          if (value.toInt() >= 0 && value.toInt() < enrollmentTrend.length) {
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                enrollmentTrend[value.toInt()]['period'],
+                                style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
+                              ),
+                            );
+                          }
+                          return const Text('');
+                        },
+                      ),
+                    ),
+                  ),
+                  borderData: FlBorderData(show: false),
+                  minY: 1200,
+                  maxY: 1500,
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: enrollmentTrend.asMap().entries.map((e) {
+                        return FlSpot(e.key.toDouble(), (e.value['students'] as num).toDouble());
+                      }).toList(),
+                      isCurved: false,
+                      color: AppColors.primary,
+                      barWidth: 2.5,
+                      dotData: FlDotData(
+                        show: true,
+                        getDotPainter: (spot, percent, barData, index) {
+                          return FlDotCirclePainter(
+                            radius: 4,
+                            color: AppColors.primary,
+                            strokeWidth: 0,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -328,71 +343,73 @@ class AdminReportsScreen extends StatelessWidget {
           // Status breakdown
           _CardContainer(
             title: 'Estado de Estudiantes',
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 2.5,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-              ),
-              itemCount: statusBreakdown.length,
-              itemBuilder: (ctx, i) {
-                final s = statusBreakdown[i];
-                Color cColor;
-                try {
-                  cColor = Color(
-                    int.parse((s['color'] as String).replaceFirst('#', '0xFF')),
-                  );
-                } catch (_) {
-                  cColor = AppColors.primary;
-                }
-                return Container(
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppColors.background,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: cColor,
-                          shape: BoxShape.circle,
-                        ),
+            child: SizedBox(
+              height: 160,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: PieChart(
+                      PieChartData(
+                        sectionsSpace: 0,
+                        centerSpaceRadius: 40,
+                        sections: statusBreakdown.map((s) {
+                          final val = (s['value'] as num).toDouble();
+                          Color cColor;
+                          try {
+                            cColor = Color(int.parse((s['color'] as String).replaceFirst('#', '0xFF')));
+                          } catch (_) {
+                            cColor = AppColors.primary;
+                          }
+                          return PieChartSectionData(
+                            color: cColor,
+                            value: val,
+                            title: '',
+                            radius: 20,
+                          );
+                        }).toList(),
                       ),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: statusBreakdown.map((s) {
+                      Color cColor;
+                      try {
+                        cColor = Color(int.parse((s['color'] as String).replaceFirst('#', '0xFF')));
+                      } catch (_) {
+                        cColor = AppColors.primary;
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Row(
                           children: [
-                            Text(
-                              '${s['value']}',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.textPrimary,
+                            Container(
+                              width: 10,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                color: cColor,
+                                shape: BoxShape.circle,
                               ),
                             ),
+                            const SizedBox(width: 8),
                             Text(
                               s['name'] as String,
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: AppColors.textSecondary,
-                              ),
-                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              '${s['value']}',
+                              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                      );
+                    }).toList(),
                   ),
-                );
-              },
+                ],
+              ),
             ),
           ),
         ],

@@ -37,7 +37,6 @@ class _AppShellState extends ConsumerState<AppShell> {
     int currentIndex = bottomNavItems.indexWhere(
       (item) => currentLocation.startsWith(item.route),
     );
-    if (currentIndex == -1) currentIndex = 0;
 
     return Scaffold(
       // ── App Bar ──
@@ -225,7 +224,7 @@ class _AppShellState extends ConsumerState<AppShell> {
                     builder: (context) => _BottomNavItem(
                       icon: LucideIcons.moreHorizontal,
                       label: 'Más',
-                      isActive: false,
+                      isActive: currentIndex == -1,
                       onTap: () => Scaffold.of(context).openDrawer(),
                     ),
                   ),

@@ -6,6 +6,7 @@ import '../../core/theme/app_colors.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 import '../../widgets/common/stat_card.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class AdminDashboardScreen extends StatelessWidget {
   const AdminDashboardScreen({super.key});
@@ -73,6 +74,7 @@ class AdminDashboardScreen extends StatelessWidget {
 
     final enrollmentTrend = reportData['enrollmentTrend'] as List<dynamic>;
     final studentsByProgram = reportData['studentsByProgram'] as List<dynamic>;
+    final statusBreakdown = reportData['statusBreakdown'] as List<dynamic>;
 
     final recentActivity = [
       {
@@ -383,6 +385,99 @@ class AdminDashboardScreen extends StatelessWidget {
                     ),
                   );
                 }),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Status breakdown
+          Container(
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AppColors.border),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Estado de Estudiantes',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                SizedBox(height: 16),
+                SizedBox(
+                  height: 160,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: PieChart(
+                          PieChartData(
+                            sectionsSpace: 0,
+                            centerSpaceRadius: 40,
+                            sections: statusBreakdown.map((s) {
+                              final val = (s['value'] as num).toDouble();
+                              Color cColor;
+                              try {
+                                cColor = Color(int.parse((s['color'] as String).replaceFirst('#', '0xFF')));
+                              } catch (_) {
+                                cColor = AppColors.primary;
+                              }
+                              return PieChartSectionData(
+                                color: cColor,
+                                value: val,
+                                title: '',
+                                radius: 20,
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: statusBreakdown.map((s) {
+                          Color cColor;
+                          try {
+                            cColor = Color(int.parse((s['color'] as String).replaceFirst('#', '0xFF')));
+                          } catch (_) {
+                            cColor = AppColors.primary;
+                          }
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 10,
+                                  height: 10,
+                                  decoration: BoxDecoration(
+                                    color: cColor,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  s['name'] as String,
+                                  style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  '${s['value']}',
+                                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

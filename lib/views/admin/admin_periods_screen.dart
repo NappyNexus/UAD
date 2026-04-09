@@ -14,7 +14,18 @@ class AdminPeriodsScreen extends StatefulWidget {
 }
 
 class _AdminPeriodsScreenState extends State<AdminPeriodsScreen> {
-  final List<dynamic> _periods = List.from(academicPeriods);
+  final List<Map<String, dynamic>> _periods = academicPeriods
+      .map(
+        (p) => {
+          'id': p.id,
+          'name': p.name,
+          'startDate': p.startDate,
+          'endDate': p.endDate,
+          'status': p.status,
+          'enrollmentOpen': p.enrollmentOpen,
+        },
+      )
+      .toList();
   String? _toastMessage;
 
   void _showToast(String msg) {
@@ -412,20 +423,18 @@ class _ConfigFormState extends State<_ConfigForm> {
               Row(
                 children: [
                   Expanded(
-                    child: _input(
+                    child: _datePickerInput(
                       'Fecha de Inicio',
                       startDate,
-                      (v) => startDate = v,
-                      placeholder: 'YYYY-MM-DD',
+                      (v) => setState(() => startDate = v),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: _input(
+                    child: _datePickerInput(
                       'Fecha de Fin',
                       endDate,
-                      (v) => endDate = v,
-                      placeholder: 'YYYY-MM-DD',
+                      (v) => setState(() => endDate = v),
                     ),
                   ),
                 ],
@@ -499,6 +508,63 @@ class _ConfigFormState extends State<_ConfigForm> {
                 vertical: 12,
               ),
               isDense: true,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _datePickerInput(String label, String value, Function(String) onChanged) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          SizedBox(height: 4),
+          InkWell(
+            onTap: () async {
+              DateTime? initial;
+              try {
+                if (value.isNotEmpty) initial = DateTime.parse(value);
+              } catch (_) {}
+              final picked = await showDatePicker(
+                context: context,
+                initialDate: initial ?? DateTime.now(),
+                firstDate: DateTime(2000),
+                lastDate: DateTime(2100),
+              );
+              if (picked != null) {
+                onChanged('${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}');
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              decoration: BoxDecoration(
+                border: Border.all(color: AppColors.borderMedium),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    value.isNotEmpty ? value : 'Seleccionar',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: value.isNotEmpty ? AppColors.textPrimary : AppColors.textTertiary,
+                    ),
+                  ),
+                  Icon(LucideIcons.calendar, size: 16, color: AppColors.textSecondary),
+                ],
+              ),
             ),
           ),
         ],

@@ -456,7 +456,29 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
   }
 }
 
-class _NewStudentForm extends StatelessWidget {
+class _NewStudentForm extends StatefulWidget {
+  @override
+  State<_NewStudentForm> createState() => _NewStudentFormState();
+}
+
+class _NewStudentFormState extends State<_NewStudentForm> {
+  String _gender = 'Femenino';
+  String _nationality = 'Dominicana';
+  DateTime? _dob;
+  final _cedulaController = TextEditingController();
+  final _phoneController = TextEditingController();
+
+  Future<void> _pickDate() async {
+    final now = DateTime.now();
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _dob ?? DateTime(2000),
+      firstDate: DateTime(1950),
+      lastDate: now,
+    );
+    if (picked != null) setState(() => _dob = picked);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -483,12 +505,12 @@ class _NewStudentForm extends StatelessWidget {
                 child: ListView(
                   children: [
                     _input('Nombre Completo', 'Nombre completo'),
-                    _input('Cédula', '000-0000000-0'),
-                    _input('Fecha de Nacimiento', 'YYYY-MM-DD'),
-                    _input('Género', 'Femenino o Masculino'),
-                    _input('Nacionalidad', 'Dominicana'),
-                    _input('Correo', 'correo@ejemplo.com'),
-                    _input('Teléfono', '809-000-0000'),
+                    _formattedInput('Cédula', '000-0000000-0', _cedulaController, 13),
+                    _datePickerInput('Fecha de Nacimiento', _dob),
+                    _dropdown('Género', ['Femenino', 'Masculino'], _gender, (v) => setState(() => _gender = v!)),
+                    _dropdown('Nacionalidad', ['Dominicana', 'Extranjero'], _nationality, (v) => setState(() => _nationality = v!)),
+                    _input('Correo', 'correo@ejemplo.com', kbd: TextInputType.emailAddress),
+                    _formattedInput('Teléfono', '809-000-0000', _phoneController, 12, isPhone: true),
                     _input('Dirección', 'Dirección completa', maxLines: 2),
                     _input('Programa', 'Ing. en Sistemas'),
                     _input('Cohorte', 'Ej. 2024-2'),
@@ -517,7 +539,7 @@ class _NewStudentForm extends StatelessWidget {
     );
   }
 
-  Widget _input(String label, String hint, {int maxLines = 1}) {
+  Widget _input(String label, String hint, {int maxLines = 1, TextInputType kbd = TextInputType.text}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 12.0),
       child: Column(
@@ -534,6 +556,7 @@ class _NewStudentForm extends StatelessWidget {
           SizedBox(height: 4),
           TextField(
             maxLines: maxLines,
+            keyboardType: kbd,
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: TextStyle(fontSize: 13, color: AppColors.textTertiary),
@@ -546,6 +569,144 @@ class _NewStudentForm extends StatelessWidget {
                 vertical: 12,
               ),
               isDense: true,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _formattedInput(String label, String hint, TextEditingController ctrl, int maxLength, {bool isPhone = false}) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          SizedBox(height: 4),
+          TextField(
+            controller: ctrl,
+            keyboardType: TextInputType.number,
+            maxLength: maxLength,
+            onChanged: (v) {
+              String cleaned = v.replaceAll(RegExp(r'\D'), '');
+              String formatted = '';
+              if (isPhone) {
+                if (cleaned.isNotEmpty) formatted = cleaned.substring(0, cleaned.length > 3 ? 3 : cleaned.length);
+                if (cleaned.length > 3) formatted += '-${cleaned.substring(3, cleaned.length > 6 ? 6 : cleaned.length)}';
+                if (cleaned.length > 6) formatted += '-${cleaned.substring(6, cleaned.length > 10 ? 10 : cleaned.length)}';
+              } else {
+                if (cleaned.isNotEmpty) formatted = cleaned.substring(0, cleaned.length > 3 ? 3 : cleaned.length);
+                if (cleaned.length > 3) formatted += '-${cleaned.substring(3, cleaned.length > 10 ? 10 : cleaned.length)}';
+                if (cleaned.length > 10) formatted += '-${cleaned.substring(10, cleaned.length > 11 ? 11 : cleaned.length)}';
+              }
+              if (v != formatted) {
+                ctrl.value = ctrl.value.copyWith(
+                  text: formatted,
+                  selection: TextSelection.collapsed(offset: formatted.length),
+                );
+              }
+            },
+            decoration: InputDecoration(
+              hintText: hint,
+              counterText: '',
+              hintStyle: TextStyle(fontSize: 13, color: AppColors.textTertiary),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: AppColors.borderMedium),
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 12,
+              ),
+              isDense: true,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _datePickerInput(String label, DateTime? value) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          SizedBox(height: 4),
+          InkWell(
+            onTap: _pickDate,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              decoration: BoxDecoration(
+                border: Border.all(color: AppColors.borderMedium),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    value != null
+                        ? '${value.year}-${value.month.toString().padLeft(2, '0')}-${value.day.toString().padLeft(2, '0')}'
+                        : 'Seleccionar fecha',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: value != null ? AppColors.textPrimary : AppColors.textTertiary,
+                    ),
+                  ),
+                  Icon(LucideIcons.calendar, size: 16, color: AppColors.textSecondary),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _dropdown(String label, List<String> items, String value, Function(String?) onChanged) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          SizedBox(height: 4),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.borderMedium),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                isExpanded: true,
+                value: value,
+                items: items.map((i) => DropdownMenuItem(value: i, child: Text(i, style: TextStyle(fontSize: 13)))).toList(),
+                onChanged: onChanged,
+              ),
             ),
           ),
         ],
