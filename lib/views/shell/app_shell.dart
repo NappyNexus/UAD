@@ -48,6 +48,7 @@ class _AppShellState extends ConsumerState<AppShell> {
         leading: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const SizedBox(width: 8),
             Builder(
               builder: (context) => IconButton(
                 visualDensity: VisualDensity.compact,
