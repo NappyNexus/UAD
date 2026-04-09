@@ -4,6 +4,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../data/models/student_model.dart';
 import '../../widgets/common/page_header.dart';
@@ -32,7 +33,8 @@ class AcademicRecordScreen extends StatelessWidget {
             title: 'Récord Académico (Kardex)',
             subtitle: 'Historial completo de calificaciones',
             action: ElevatedButton.icon(
-              onPressed: () => _generatePdf(context, s, semesters, totalCredits),
+              onPressed: () =>
+                  _generatePdf(context, s, semesters, totalCredits),
               icon: const Icon(LucideIcons.download, size: 16),
               label: const Text('PDF'),
               style: ElevatedButton.styleFrom(
@@ -105,10 +107,7 @@ class AcademicRecordScreen extends StatelessWidget {
                 SizedBox(height: 2),
                 Text(
                   '${s.id} · Cohorte: ${s.cohort} · Estado: ${s.status}',
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: AppColors.textTertiary,
-                  ),
+                  style: TextStyle(fontSize: 11, color: AppColors.textTertiary),
                 ),
                 const SizedBox(height: 16),
                 GridView.count(
@@ -218,9 +217,16 @@ class AcademicRecordScreen extends StatelessWidget {
                     children: courses.map((c) {
                       final grade = c.finalGrade ?? 0.0;
                       return Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 12,
+                        ),
                         decoration: BoxDecoration(
-                          border: Border(bottom: BorderSide(color: AppColors.border.withValues(alpha: 0.5))),
+                          border: Border(
+                            bottom: BorderSide(
+                              color: AppColors.border.withValues(alpha: 0.5),
+                            ),
+                          ),
                         ),
                         child: Row(
                           children: [
@@ -237,11 +243,20 @@ class AcademicRecordScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     '${c.credits}',
-                                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textPrimary, height: 1.0),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
+                                      height: 1.0,
+                                    ),
                                   ),
                                   Text(
                                     'CR',
-                                    style: TextStyle(fontSize: 8, fontWeight: FontWeight.w600, color: AppColors.textTertiary),
+                                    style: TextStyle(
+                                      fontSize: 8,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.textTertiary,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -253,23 +268,38 @@ class AcademicRecordScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     c.courseName,
-                                    style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.textPrimary, fontSize: 13),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.textPrimary,
+                                      fontSize: 13,
+                                    ),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   SizedBox(height: 2),
                                   Text(
                                     c.courseId,
-                                    style: TextStyle(fontFamily: 'monospace', fontSize: 11, color: AppColors.textSecondary),
+                                    style: TextStyle(
+                                      fontFamily: 'monospace',
+                                      fontSize: 11,
+                                      color: AppColors.textSecondary,
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
                             const SizedBox(width: 12),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
                               decoration: BoxDecoration(
-                                color: grade >= 90 ? AppColors.successSurface : grade >= 70 ? AppColors.infoSurface : AppColors.errorSurface,
+                                color: grade >= 90
+                                    ? AppColors.successSurface
+                                    : grade >= 70
+                                    ? AppColors.infoSurface
+                                    : AppColors.errorSurface,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
@@ -277,7 +307,11 @@ class AcademicRecordScreen extends StatelessWidget {
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 14,
-                                  color: grade >= 90 ? AppColors.success : grade >= 70 ? AppColors.info : AppColors.error,
+                                  color: grade >= 90
+                                      ? AppColors.success
+                                      : grade >= 70
+                                      ? AppColors.info
+                                      : AppColors.error,
                                 ),
                               ),
                             ),
@@ -347,8 +381,21 @@ class AcademicRecordScreen extends StatelessWidget {
               child: pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
-                  pw.Text('Récord Académico', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-                  pw.Text('UNAD', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold, color: PdfColors.blue800)),
+                  pw.Text(
+                    'Récord Académico',
+                    style: pw.TextStyle(
+                      fontSize: 24,
+                      fontWeight: pw.FontWeight.bold,
+                    ),
+                  ),
+                  pw.Text(
+                    'UNAD',
+                    style: pw.TextStyle(
+                      fontSize: 24,
+                      fontWeight: pw.FontWeight.bold,
+                      color: PdfColors.blue800,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -362,39 +409,72 @@ class AcademicRecordScreen extends StatelessWidget {
               child: pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  pw.Text('Estudiante: ${s.name}', style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold)),
+                  pw.Text(
+                    'Estudiante: ${s.name}',
+                    style: pw.TextStyle(
+                      fontSize: 14,
+                      fontWeight: pw.FontWeight.bold,
+                    ),
+                  ),
                   pw.SizedBox(height: 4),
                   pw.Text('Matrícula: ${s.id}'),
                   pw.Text('Programa: ${s.program}'),
                   pw.Text('Estado: ${s.status}'),
                   pw.SizedBox(height: 4),
-                  pw.Text('Índice General: ${(s.gpa / 4.0 * 100).toStringAsFixed(1)} | Créditos Aprobados: $totalCredits'),
+                  pw.Text(
+                    'Índice General: ${(s.gpa / 4.0 * 100).toStringAsFixed(1)} | Créditos Aprobados: $totalCredits',
+                  ),
                 ],
               ),
             ),
             pw.SizedBox(height: 20),
             ...semesters.entries.map((entry) {
               final courses = entry.value;
-              final semCredits = courses.fold<int>(0, (a, c) => a + (c.credits as int));
-              final avgGrade = courses.fold<double>(0, (a, c) => a + (c.finalGrade ?? 0)) / courses.length;
+              final semCredits = courses.fold<int>(
+                0,
+                (a, c) => a + (c.credits as int),
+              );
+              final avgGrade =
+                  courses.fold<double>(0, (a, c) => a + (c.finalGrade ?? 0)) /
+                  courses.length;
 
               return pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  pw.Text('Período ${entry.key}', style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold)),
+                  pw.Text(
+                    'Período ${entry.key}',
+                    style: pw.TextStyle(
+                      fontSize: 14,
+                      fontWeight: pw.FontWeight.bold,
+                    ),
+                  ),
                   pw.SizedBox(height: 8),
                   pw.TableHelper.fromTextArray(
                     headers: ['Código', 'Materia', 'Créditos', 'Nota'],
-                    data: courses.map((c) => [
-                      c.courseId,
-                      c.courseName,
-                      '${c.credits}',
-                      '${(c.finalGrade ?? 0.0).toStringAsFixed(0)}',
-                    ]).toList(),
-                    headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.white),
-                    headerDecoration: const pw.BoxDecoration(color: PdfColors.blue800),
+                    data: courses
+                        .map(
+                          (c) => [
+                            c.courseId,
+                            c.courseName,
+                            '${c.credits}',
+                            '${(c.finalGrade ?? 0.0).toStringAsFixed(0)}',
+                          ],
+                        )
+                        .toList(),
+                    headerStyle: pw.TextStyle(
+                      fontWeight: pw.FontWeight.bold,
+                      color: PdfColors.white,
+                    ),
+                    headerDecoration: const pw.BoxDecoration(
+                      color: PdfColors.blue800,
+                    ),
                     rowDecoration: const pw.BoxDecoration(
-                      border: pw.Border(bottom: pw.BorderSide(color: PdfColors.grey300, width: 0.5)),
+                      border: pw.Border(
+                        bottom: pw.BorderSide(
+                          color: PdfColors.grey300,
+                          width: 0.5,
+                        ),
+                      ),
                     ),
                     cellAlignment: pw.Alignment.centerLeft,
                   ),

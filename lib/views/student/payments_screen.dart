@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../core/utils/formatters.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
@@ -514,9 +515,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                         fillColor: Colors.white,
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: AppColors.borderMedium,
-                          ),
+                          borderSide: BorderSide(color: AppColors.borderMedium),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -994,9 +993,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                         fillColor: Colors.white,
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: AppColors.borderMedium,
-                          ),
+                          borderSide: BorderSide(color: AppColors.borderMedium),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),

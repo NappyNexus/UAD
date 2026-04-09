@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../widgets/common/page_header.dart';
 
 class GradeRevisionsScreen extends StatefulWidget {
@@ -516,9 +517,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
           backgroundColor: isSelected ? AppColors.primary : Colors.white,
           foregroundColor: isSelected ? Colors.white : AppColors.textSecondary,
           elevation: 0,
-          side: isSelected
-              ? null
-              : BorderSide(color: AppColors.borderMedium),
+          side: isSelected ? null : BorderSide(color: AppColors.borderMedium),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

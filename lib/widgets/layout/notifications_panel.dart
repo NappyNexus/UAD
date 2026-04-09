@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 
 /// Notification filter tabs.
 const _tabs = ['Todas', 'Sin leer', 'Mensajes', 'Notas', 'Calendario'];
@@ -178,7 +179,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final c = context.appColors;
     final filtered = _filtered;
 
     return GestureDetector(
@@ -195,7 +196,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                   : MediaQuery.of(context).size.width,
               height: double.infinity,
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: c.cardColor,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black26,
@@ -305,9 +306,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: AppColors.border),
-                      ),
+                      border: Border(bottom: BorderSide(color: c.border)),
                     ),
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
@@ -326,7 +325,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                                 decoration: BoxDecoration(
                                   color: isActive
                                       ? AppColors.primary
-                                      : AppColors.background,
+                                      : c.inputFill,
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Row(
@@ -339,7 +338,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                                         fontWeight: FontWeight.w500,
                                         color: isActive
                                             ? Colors.white
-                                            : AppColors.textSecondary,
+                                            : c.textSecondary,
                                       ),
                                     ),
                                     if (tab == 'Sin leer' &&
@@ -471,8 +470,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                                                         fontWeight: notif.unread
                                                             ? FontWeight.w600
                                                             : FontWeight.w500,
-                                                        color: AppColors
-                                                            .textPrimary,
+                                                        color: c.textPrimary,
                                                       ),
                                                     ),
                                                   ),
@@ -494,10 +492,9 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                                               const SizedBox(height: 3),
                                               Text(
                                                 notif.message,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 12,
-                                                  color:
-                                                      AppColors.textSecondary,
+                                                  color: c.textSecondary,
                                                   height: 1.4,
                                                 ),
                                                 maxLines: 2,
@@ -541,7 +538,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                       vertical: 12,
                     ),
                     decoration: BoxDecoration(
-                      border: Border(top: BorderSide(color: AppColors.border)),
+                      border: Border(top: BorderSide(color: c.border)),
                     ),
                     child: Text(
                       'Las notificaciones se actualizan en tiempo real',

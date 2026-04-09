@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../viewmodels/app_preferences_viewmodel.dart';
 
@@ -24,7 +25,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   String _language = 'es-DO';
 
   late Map<String, String> _profile;
-  Map<String, bool> _notifs = {
+  final Map<String, bool> _notifs = {
     'grades': true,
     'payments': true,
     'announcements': true,
@@ -35,20 +36,72 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   };
 
   List<Map<String, dynamic>> _cards = [
-    {'id': 1, 'last4': '4532', 'brand': 'Visa', 'expiry': '08/27', 'holder': 'MARIA E RODRIGUEZ'},
-    {'id': 2, 'last4': '8821', 'brand': 'Mastercard', 'expiry': '03/26', 'holder': 'MARIA E RODRIGUEZ'},
+    {
+      'id': 1,
+      'last4': '4532',
+      'brand': 'Visa',
+      'expiry': '08/27',
+      'holder': 'MARIA E RODRIGUEZ',
+    },
+    {
+      'id': 2,
+      'last4': '8821',
+      'brand': 'Mastercard',
+      'expiry': '03/26',
+      'holder': 'MARIA E RODRIGUEZ',
+    },
   ];
 
-  final Map<String, String> _newCard = {'number': '', 'holder': '', 'expiry': '', 'cvv': ''};
+  final Map<String, String> _newCard = {
+    'number': '',
+    'holder': '',
+    'expiry': '',
+    'cvv': '',
+  };
 
   final List<Map<String, dynamic>> _menuSections = [
-    {'id': 'profile', 'label': 'Perfil Personal', 'icon': LucideIcons.user, 'color': Colors.blue},
-    {'id': 'notifications', 'label': 'Notificaciones', 'icon': LucideIcons.bell, 'color': Colors.amber},
-    {'id': 'security', 'label': 'Seguridad', 'icon': LucideIcons.shield, 'color': Colors.red},
-    {'id': 'cards', 'label': 'Mis Tarjetas', 'icon': LucideIcons.creditCard, 'color': Colors.indigo},
-    {'id': 'appearance', 'label': 'Apariencia', 'icon': LucideIcons.palette, 'color': Colors.purple},
-    {'id': 'language', 'label': 'Idioma y Región', 'icon': LucideIcons.globe, 'color': Colors.green},
-    {'id': 'help', 'label': 'Ayuda y Soporte', 'icon': LucideIcons.helpCircle, 'color': Colors.grey},
+    {
+      'id': 'profile',
+      'label': 'Perfil Personal',
+      'icon': LucideIcons.user,
+      'color': Colors.blue,
+    },
+    {
+      'id': 'notifications',
+      'label': 'Notificaciones',
+      'icon': LucideIcons.bell,
+      'color': Colors.amber,
+    },
+    {
+      'id': 'security',
+      'label': 'Seguridad',
+      'icon': LucideIcons.shield,
+      'color': Colors.red,
+    },
+    {
+      'id': 'cards',
+      'label': 'Mis Tarjetas',
+      'icon': LucideIcons.creditCard,
+      'color': Colors.indigo,
+    },
+    {
+      'id': 'appearance',
+      'label': 'Apariencia',
+      'icon': LucideIcons.palette,
+      'color': Colors.purple,
+    },
+    {
+      'id': 'language',
+      'label': 'Idioma y Región',
+      'icon': LucideIcons.globe,
+      'color': Colors.green,
+    },
+    {
+      'id': 'help',
+      'label': 'Ayuda y Soporte',
+      'icon': LucideIcons.helpCircle,
+      'color': Colors.grey,
+    },
   ];
 
   static const List<Map<String, String>> _accentColors = [
@@ -60,7 +113,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   ];
 
   static const List<Map<String, String>> _languages = [
-    {'flag': '🇩🇴', 'code': 'es-DO', 'label': 'Español (República Dominicana)'},
+    {
+      'flag': '🇩🇴',
+      'code': 'es-DO',
+      'label': 'Español (República Dominicana)',
+    },
     {'flag': '🇺🇸', 'code': 'en-US', 'label': 'English (United States)'},
     {'flag': '🇫🇷', 'code': 'fr-FR', 'label': 'Français (France)'},
     {'flag': '🇵🇹', 'code': 'pt-BR', 'label': 'Português (Brasil)'},
@@ -93,7 +150,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tc = AppColorsTheme.of(context);
+    final tc = context.appColors;
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
@@ -103,7 +160,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           children: [
             Text(
               'Configuración',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: tc.textPrimary),
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: tc.textPrimary,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
@@ -116,7 +177,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             if (_saved)
               Container(
                 margin: const EdgeInsets.only(bottom: 16),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.green.shade50,
                   borderRadius: BorderRadius.circular(12),
@@ -124,11 +188,18 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 ),
                 child: Row(
                   children: [
-                    Icon(LucideIcons.checkCircle, size: 16, color: Colors.green.shade700),
+                    Icon(
+                      LucideIcons.checkCircle,
+                      size: 16,
+                      color: Colors.green.shade700,
+                    ),
                     const SizedBox(width: 8),
                     Text(
                       'Cambios guardados exitosamente.',
-                      style: TextStyle(fontSize: 13, color: Colors.green.shade700),
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.green.shade700,
+                      ),
                     ),
                   ],
                 ),
@@ -149,21 +220,31 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: currentStudent.photo != null
-                            ? Image.network(currentStudent.photo!, width: 64, height: 64, fit: BoxFit.cover,
-                                errorBuilder: (c, e, s) => _avatarFallback())
+                            ? Image.network(
+                                currentStudent.photo!,
+                                width: 64,
+                                height: 64,
+                                fit: BoxFit.cover,
+                                errorBuilder: (c, e, s) => _avatarFallback(),
+                              )
                             : _avatarFallback(),
                       ),
                       Positioned(
                         bottom: -2,
                         right: -2,
                         child: Container(
-                          width: 24, height: 24,
+                          width: 24,
+                          height: 24,
                           decoration: BoxDecoration(
                             color: AppColors.primary,
                             shape: BoxShape.circle,
                             border: Border.all(color: Colors.white, width: 2),
                           ),
-                          child: const Icon(LucideIcons.camera, size: 12, color: Colors.white),
+                          child: const Icon(
+                            LucideIcons.camera,
+                            size: 12,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],
@@ -175,17 +256,27 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       children: [
                         Text(
                           _profile['name'] ?? '',
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                         const SizedBox(height: 2),
                         Text(
                           currentStudent.program,
-                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.primary),
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primary,
+                          ),
                         ),
                         const SizedBox(height: 2),
                         Text(
                           '${currentStudent.id} · Sem. ${currentStudent.semester}',
-                          style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                       ],
                     ),
@@ -210,19 +301,26 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 final s = _menuSections[i];
                 final active = _activeSection == s['id'];
                 return InkWell(
-                  onTap: () => setState(() => _activeSection = _activeSection == s['id'] ? null : s['id']),
+                  onTap: () => setState(
+                    () => _activeSection = _activeSection == s['id']
+                        ? null
+                        : s['id'],
+                  ),
                   borderRadius: BorderRadius.circular(16),
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
                       color: active ? AppColors.primarySurface : tc.cardColor,
-                      border: Border.all(color: active ? AppColors.primary : tc.border),
+                      border: Border.all(
+                        color: active ? AppColors.primary : tc.border,
+                      ),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Row(
                       children: [
                         Container(
-                          width: 36, height: 36,
+                          width: 36,
+                          height: 36,
                           decoration: BoxDecoration(
                             color: (s['color'] as Color).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(10),
@@ -236,7 +334,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: active ? AppColors.primary : AppColors.textPrimary,
+                              color: active
+                                  ? AppColors.primary
+                                  : AppColors.textPrimary,
                             ),
                           ),
                         ),
@@ -266,7 +366,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ElevatedButton.icon(
               onPressed: () {},
               icon: const Icon(LucideIcons.logOut, size: 18),
-              label: const Text('Cerrar Sesión', style: TextStyle(fontWeight: FontWeight.w600)),
+              label: const Text(
+                'Cerrar Sesión',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.errorSurface,
                 foregroundColor: AppColors.error,
@@ -278,8 +381,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 24),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24),
               child: Center(
                 child: Text(
                   'UNAD Sistema Académico · v3.2.1',
@@ -295,8 +398,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   Widget _avatarFallback() {
     return Container(
-      width: 64, height: 64,
-      decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(16)),
+      width: 64,
+      height: 64,
+      decoration: BoxDecoration(
+        color: AppColors.primary,
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: const Icon(LucideIcons.user, color: Colors.white, size: 28),
     );
   }
@@ -332,7 +439,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Información Personal', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const Text(
+              'Información Personal',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             if (!_editingProfile)
               InkWell(
                 onTap: () => setState(() => _editingProfile = true),
@@ -340,7 +450,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   children: const [
                     Icon(LucideIcons.edit2, size: 14, color: AppColors.primary),
                     SizedBox(width: 4),
-                    Text('Editar', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.primary)),
+                    Text(
+                      'Editar',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primary,
+                      ),
+                    ),
                   ],
                 ),
               )
@@ -351,21 +468,41 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     onTap: () => setState(() => _editingProfile = false),
                     child: Container(
                       padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(8)),
-                      child: const Icon(LucideIcons.x, size: 16, color: AppColors.textSecondary),
+                      decoration: BoxDecoration(
+                        color: AppColors.background,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(
+                        LucideIcons.x,
+                        size: 16,
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 8),
                   InkWell(
                     onTap: _handleSave,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(8)),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                       child: Row(
                         children: const [
                           Icon(LucideIcons.save, size: 14, color: Colors.white),
                           SizedBox(width: 4),
-                          Text('Guardar', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white)),
+                          Text(
+                            'Guardar',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -380,34 +517,55 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           {'label': 'Correo Electrónico', 'key': 'email'},
           {'label': 'Teléfono', 'key': 'phone'},
           {'label': 'Dirección', 'key': 'address'},
-        ].map((field) => Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    field['label']!.toUpperCase(),
-                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.textTertiary, letterSpacing: 0.5),
+        ].map(
+          (field) => Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  field['label']!.toUpperCase(),
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textTertiary,
+                    letterSpacing: 0.5,
                   ),
-                  const SizedBox(height: 6),
-                  if (_editingProfile)
-                    Container(
-                      decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(12)),
-                      child: TextField(
-                        controller: TextEditingController(text: _profile[field['key']]),
-                        onChanged: (v) => _profile[field['key']!] = v,
-                        style: const TextStyle(fontSize: 14),
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                ),
+                const SizedBox(height: 6),
+                if (_editingProfile)
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.background,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: TextField(
+                      controller: TextEditingController(
+                        text: _profile[field['key']],
+                      ),
+                      onChanged: (v) => _profile[field['key']!] = v,
+                      style: const TextStyle(fontSize: 14),
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 10,
                         ),
                       ),
-                    )
-                  else
-                    Text(_profile[field['key']!] ?? '', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
-                ],
-              ),
-            )),
+                    ),
+                  )
+                else
+                  Text(
+                    _profile[field['key']!] ?? '',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
         _readOnlyField('Cédula', currentStudent.cedula),
         _readOnlyField('Número de Matrícula', currentStudent.id),
       ],
@@ -420,13 +578,27 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label.toUpperCase(), style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.textTertiary, letterSpacing: 0.5)),
+          Text(
+            label.toUpperCase(),
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textTertiary,
+              letterSpacing: 0.5,
+            ),
+          ),
           const SizedBox(height: 4),
           Row(
             children: [
-              Text(value, style: TextStyle(fontSize: 14, color: AppColors.textSecondary)),
+              Text(
+                value,
+                style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
+              ),
               const SizedBox(width: 6),
-              Text('(no editable)', style: TextStyle(fontSize: 10, color: AppColors.textTertiary)),
+              Text(
+                '(no editable)',
+                style: TextStyle(fontSize: 10, color: AppColors.textTertiary),
+              ),
             ],
           ),
         ],
@@ -441,23 +613,61 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Preferencias de Notificaciones', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        const Text(
+          'Preferencias de Notificaciones',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 20),
         ...[
-          {'key': 'grades', 'label': 'Publicación de calificaciones', 'desc': 'Cuando un profesor publique notas'},
-          {'key': 'payments', 'label': 'Pagos y estados de cuenta', 'desc': 'Vencimientos y confirmaciones'},
-          {'key': 'announcements', 'label': 'Anuncios institucionales', 'desc': 'Comunicados de la universidad'},
-          {'key': 'requests', 'label': 'Actualización de solicitudes', 'desc': 'Cambios de estado en tus solicitudes'},
-          {'key': 'reminders', 'label': 'Recordatorios académicos', 'desc': 'Fechas de selección, retiro, etc.'},
-        ].map((item) => _notificationToggle(item['key']!, item['label']!, item['desc']!)),
+          {
+            'key': 'grades',
+            'label': 'Publicación de calificaciones',
+            'desc': 'Cuando un profesor publique notas',
+          },
+          {
+            'key': 'payments',
+            'label': 'Pagos y estados de cuenta',
+            'desc': 'Vencimientos y confirmaciones',
+          },
+          {
+            'key': 'announcements',
+            'label': 'Anuncios institucionales',
+            'desc': 'Comunicados de la universidad',
+          },
+          {
+            'key': 'requests',
+            'label': 'Actualización de solicitudes',
+            'desc': 'Cambios de estado en tus solicitudes',
+          },
+          {
+            'key': 'reminders',
+            'label': 'Recordatorios académicos',
+            'desc': 'Fechas de selección, retiro, etc.',
+          },
+        ].map(
+          (item) =>
+              _notificationToggle(item['key']!, item['label']!, item['desc']!),
+        ),
         const SizedBox(height: 16),
         const Divider(),
         const SizedBox(height: 12),
-        Text('CANALES', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.textTertiary, letterSpacing: 0.5)),
+        Text(
+          'CANALES',
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textTertiary,
+            letterSpacing: 0.5,
+          ),
+        ),
         const SizedBox(height: 12),
         _channelToggle('email', 'Correo electrónico', LucideIcons.mail),
         const SizedBox(height: 12),
-        _channelToggle('sms', 'Mensajes de texto (SMS)', LucideIcons.smartphone),
+        _channelToggle(
+          'sms',
+          'Mensajes de texto (SMS)',
+          LucideIcons.smartphone,
+        ),
       ],
     );
   }
@@ -471,16 +681,28 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+                Text(
+                  label,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 const SizedBox(height: 2),
-                Text(desc, style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                Text(
+                  desc,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
               ],
             ),
           ),
           Switch(
             value: _notifs[key] ?? false,
             onChanged: (v) => setState(() => _notifs[key] = v),
-            activeColor: AppColors.primary,
+            activeThumbColor: AppColors.primary,
           ),
         ],
       ),
@@ -496,7 +718,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         Switch(
           value: _notifs[key] ?? false,
           onChanged: (v) => setState(() => _notifs[key] = v),
-          activeColor: AppColors.primary,
+          activeThumbColor: AppColors.primary,
         ),
       ],
     );
@@ -509,13 +731,24 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Seguridad de la Cuenta', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        const Text(
+          'Seguridad de la Cuenta',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 20),
 
         // Password fields
-        _passwordField('Contraseña actual', _showCurrentPass, () => setState(() => _showCurrentPass = !_showCurrentPass)),
+        _passwordField(
+          'Contraseña actual',
+          _showCurrentPass,
+          () => setState(() => _showCurrentPass = !_showCurrentPass),
+        ),
         const SizedBox(height: 12),
-        _passwordField('Nueva contraseña', _showNewPass, () => setState(() => _showNewPass = !_showNewPass)),
+        _passwordField(
+          'Nueva contraseña',
+          _showNewPass,
+          () => setState(() => _showNewPass = !_showNewPass),
+        ),
         const SizedBox(height: 12),
         _passwordField('Confirmar nueva contraseña', false, null),
         const SizedBox(height: 16),
@@ -528,9 +761,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 12),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
-            child: const Text('Actualizar Contraseña', style: TextStyle(fontWeight: FontWeight.w600)),
+            child: const Text(
+              'Actualizar Contraseña',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
           ),
         ),
 
@@ -544,14 +782,28 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text('Autenticación de dos factores', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
-                  SizedBox(height: 2),
-                  Text('Agrega una capa extra de seguridad', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                children: [
+                  const Text(
+                    'Autenticación de dos factores',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    'Agrega una capa extra de seguridad',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
                 ],
               ),
             ),
-            Switch(value: false, onChanged: (v) {}, activeColor: AppColors.primary),
+            Switch(
+              value: false,
+              onChanged: (v) {},
+              activeThumbColor: AppColors.primary,
+            activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
+            ),
           ],
         ),
 
@@ -560,15 +812,35 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         // Active sessions
         Container(
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(12)),
+          decoration: BoxDecoration(
+            color: AppColors.background,
+            borderRadius: BorderRadius.circular(12),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Sesiones activas', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
+              Text(
+                'Sesiones activas',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textSecondary,
+                ),
+              ),
               const SizedBox(height: 12),
-              _sessionRow('Chrome · Windows 11', 'Bonao, RD', 'Ahora mismo', true),
+              _sessionRow(
+                'Chrome · Windows 11',
+                'Bonao, RD',
+                'Ahora mismo',
+                true,
+              ),
               const Divider(height: 20),
-              _sessionRow('App Móvil · Android', 'Bonao, RD', 'Hace 2 horas', false),
+              _sessionRow(
+                'App Móvil · Android',
+                'Bonao, RD',
+                'Hace 2 horas',
+                false,
+              ),
             ],
           ),
         ),
@@ -578,7 +850,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         const SizedBox(height: 12),
 
         // Danger zone
-        Text('ZONA DE PELIGRO', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.textTertiary, letterSpacing: 0.5)),
+        Text(
+          'ZONA DE PELIGRO',
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textTertiary,
+            letterSpacing: 0.5,
+          ),
+        ),
         const SizedBox(height: 12),
         InkWell(
           onTap: () => _showDeleteAccountDialog(),
@@ -593,17 +873,38 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             child: Row(
               children: [
                 Container(
-                  width: 32, height: 32,
-                  decoration: BoxDecoration(color: Colors.red.shade100, borderRadius: BorderRadius.circular(8)),
-                  child: Icon(LucideIcons.trash2, size: 16, color: Colors.red.shade600),
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade100,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    LucideIcons.trash2,
+                    size: 16,
+                    color: Colors.red.shade600,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Eliminar Cuenta', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.red.shade700)),
-                      Text('Esta acción no se puede deshacer', style: TextStyle(fontSize: 12, color: Colors.red.shade400)),
+                      Text(
+                        'Eliminar Cuenta',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.red.shade700,
+                        ),
+                      ),
+                      Text(
+                        'Esta acción no se puede deshacer',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.red.shade400,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -619,19 +920,40 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label.toUpperCase(), style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.textTertiary, letterSpacing: 0.5)),
+        Text(
+          label.toUpperCase(),
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textTertiary,
+            letterSpacing: 0.5,
+          ),
+        ),
         const SizedBox(height: 6),
         Container(
-          decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(12)),
+          decoration: BoxDecoration(
+            color: AppColors.background,
+            borderRadius: BorderRadius.circular(12),
+          ),
           child: TextField(
             obscureText: !showText,
             decoration: InputDecoration(
               hintText: '••••••••',
               hintStyle: TextStyle(color: AppColors.textTertiary),
               border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 10,
+              ),
               suffixIcon: onToggle != null
-                  ? IconButton(icon: Icon(showText ? LucideIcons.eyeOff : LucideIcons.eye, size: 16, color: AppColors.textSecondary), onPressed: onToggle)
+                  ? IconButton(
+                      icon: Icon(
+                        showText ? LucideIcons.eyeOff : LucideIcons.eye,
+                        size: 16,
+                        color: AppColors.textSecondary,
+                      ),
+                      onPressed: onToggle,
+                    )
                   : null,
             ),
           ),
@@ -640,28 +962,59 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
-  Widget _sessionRow(String device, String location, String time, bool isCurrent) {
+  Widget _sessionRow(
+    String device,
+    String location,
+    String time,
+    bool isCurrent,
+  ) {
     return Row(
       children: [
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(device, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
-              Text('$location · $time', style: TextStyle(fontSize: 11, color: AppColors.textSecondary)),
+              Text(
+                device,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                '$location · $time',
+                style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
+              ),
             ],
           ),
         ),
         if (isCurrent)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-            decoration: BoxDecoration(color: Colors.green.shade100, borderRadius: BorderRadius.circular(20)),
-            child: Text('Actual', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: Colors.green.shade700)),
+            decoration: BoxDecoration(
+              color: Colors.green.shade100,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              'Actual',
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: Colors.green.shade700,
+              ),
+            ),
           )
         else
           InkWell(
             onTap: () {},
-            child: Text('Cerrar', style: TextStyle(fontSize: 12, color: Colors.red.shade500, fontWeight: FontWeight.w500)),
+            child: Text(
+              'Cerrar',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.red.shade500,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
       ],
     );
@@ -675,45 +1028,125 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       backgroundColor: Colors.transparent,
       builder: (context) => StatefulBuilder(
         builder: (context, setSheetState) => Container(
-          padding: EdgeInsets.only(left: 24, right: 24, top: 24, bottom: MediaQuery.of(context).padding.bottom + 24),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          padding: EdgeInsets.only(
+            left: 24,
+            right: 24,
+            top: 24,
+            bottom: MediaQuery.of(context).padding.bottom + 24,
+          ),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(2)))),
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
               const SizedBox(height: 20),
               Container(
-                width: 48, height: 48,
-                decoration: BoxDecoration(color: Colors.red.shade100, borderRadius: BorderRadius.circular(16)),
-                child: Icon(LucideIcons.trash2, size: 22, color: Colors.red.shade600),
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: Colors.red.shade100,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Icon(
+                  LucideIcons.trash2,
+                  size: 22,
+                  color: Colors.red.shade600,
+                ),
               ),
               const SizedBox(height: 16),
-              const Text('Eliminar Cuenta', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const Text(
+                'Eliminar Cuenta',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
-              const Text.rich(TextSpan(children: [
-                TextSpan(text: 'Esta acción es ', style: TextStyle(fontSize: 14, color: AppColors.textSecondary)),
-                TextSpan(text: 'irreversible', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textSecondary)),
-                TextSpan(text: '. Se eliminarán todos tus datos académicos, historial de pagos y acceso a la plataforma.', style: TextStyle(fontSize: 14, color: AppColors.textSecondary)),
-              ])),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Esta acción es ',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'irreversible',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                    TextSpan(
+                      text:
+                          '. Se eliminarán todos tus datos académicos, historial de pagos y acceso a la plataforma.',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: 20),
-              Text.rich(TextSpan(children: [
-                const TextSpan(text: 'Escribe ', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.textTertiary)),
-                TextSpan(text: 'ELIMINAR', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.red.shade500)),
-                const TextSpan(text: ' para confirmar', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.textTertiary)),
-              ])),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Escribe ',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textTertiary,
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'ELIMINAR',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red.shade500,
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' para confirmar',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textTertiary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: 8),
               Container(
-                decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(12)),
+                decoration: BoxDecoration(
+                  color: AppColors.background,
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: TextField(
                   onChanged: (v) => setSheetState(() => confirmText = v),
                   decoration: const InputDecoration(
                     hintText: 'ELIMINAR',
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
                   ),
                 ),
               ),
@@ -721,15 +1154,22 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: confirmText == 'ELIMINAR' ? () => Navigator.pop(context) : null,
+                  onPressed: confirmText == 'ELIMINAR'
+                      ? () => Navigator.pop(context)
+                      : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red.shade600,
                     foregroundColor: Colors.white,
                     disabledBackgroundColor: Colors.red.shade200,
                     padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                  child: const Text('Eliminar mi cuenta permanentemente', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                  child: const Text(
+                    'Eliminar mi cuenta permanentemente',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
@@ -741,10 +1181,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     backgroundColor: AppColors.background,
                     foregroundColor: AppColors.textSecondary,
                     padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     elevation: 0,
                   ),
-                  child: const Text('Cancelar', style: TextStyle(fontWeight: FontWeight.w500)),
+                  child: const Text(
+                    'Cancelar',
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
                 ),
               ),
             ],
@@ -764,87 +1209,169 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Mis Tarjetas', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const Text(
+              'Mis Tarjetas',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             InkWell(
               onTap: () => setState(() => _addingCard = !_addingCard),
               child: Row(
                 children: [
-                  Icon(_addingCard ? LucideIcons.x : LucideIcons.plus, size: 14, color: AppColors.primary),
+                  Icon(
+                    _addingCard ? LucideIcons.x : LucideIcons.plus,
+                    size: 14,
+                    color: AppColors.primary,
+                  ),
                   const SizedBox(width: 4),
-                  Text(_addingCard ? 'Cancelar' : 'Agregar',
-                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.primary)),
+                  Text(
+                    _addingCard ? 'Cancelar' : 'Agregar',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primary,
+                    ),
+                  ),
                 ],
               ),
             ),
           ],
         ),
         const SizedBox(height: 16),
-        ..._cards.map((card) => Container(
-              margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(12)),
-              child: Row(
-                children: [
-                  Container(
-                    width: 40, height: 40,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [Colors.indigo.shade500, Colors.purple.shade600]),
-                      borderRadius: BorderRadius.circular(8),
+        ..._cards.map(
+          (card) => Container(
+            margin: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.background,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.indigo.shade500, Colors.purple.shade600],
                     ),
-                    child: const Icon(LucideIcons.creditCard, size: 18, color: Colors.white),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('${card['brand']} •••• ${card['last4']}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                        Text('Vence ${card['expiry']} · ${card['holder']}', style: TextStyle(fontSize: 11, color: AppColors.textSecondary)),
-                      ],
-                    ),
+                  child: const Icon(
+                    LucideIcons.creditCard,
+                    size: 18,
+                    color: Colors.white,
                   ),
-                  InkWell(
-                    onTap: () => setState(() => _cards = _cards.where((c) => c['id'] != card['id']).toList()),
-                    child: Icon(LucideIcons.trash2, size: 16, color: Colors.grey.shade400),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${card['brand']} •••• ${card['last4']}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        'Vence ${card['expiry']} · ${card['holder']}',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            )),
+                ),
+                InkWell(
+                  onTap: () => setState(
+                    () => _cards = _cards
+                        .where((c) => c['id'] != card['id'])
+                        .toList(),
+                  ),
+                  child: Icon(
+                    LucideIcons.trash2,
+                    size: 16,
+                    color: Colors.grey.shade400,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
         if (_cards.isEmpty)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            child: Center(child: Text('No tienes tarjetas guardadas.', style: TextStyle(fontSize: 13, color: AppColors.textSecondary))),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Center(
+              child: Text(
+                'No tienes tarjetas guardadas.',
+                style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
+              ),
+            ),
           ),
         if (_addingCard) ...[
           const Divider(height: 24),
-          Text('NUEVA TARJETA', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.textTertiary, letterSpacing: 0.5)),
+          Text(
+            'NUEVA TARJETA',
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textTertiary,
+              letterSpacing: 0.5,
+            ),
+          ),
           const SizedBox(height: 12),
           _cardInputField('Número de tarjeta', '0000 0000 0000 0000', 'number'),
           const SizedBox(height: 12),
-          _cardInputField('Nombre del titular', 'Como aparece en la tarjeta', 'holder'),
+          _cardInputField(
+            'Nombre del titular',
+            'Como aparece en la tarjeta',
+            'holder',
+          ),
           const SizedBox(height: 12),
           Row(
             children: [
-              Expanded(child: _cardInputField('Vencimiento', 'MM/AA', 'expiry')),
+              Expanded(
+                child: _cardInputField('Vencimiento', 'MM/AA', 'expiry'),
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('CVV', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.textTertiary)),
+                    Text(
+                      'CVV',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textTertiary,
+                      ),
+                    ),
                     const SizedBox(height: 6),
                     Container(
-                      decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(12)),
+                      decoration: BoxDecoration(
+                        color: AppColors.background,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       child: TextField(
                         obscureText: !_showCvv,
                         onChanged: (v) => _newCard['cvv'] = v,
                         decoration: InputDecoration(
                           hintText: '•••',
                           border: InputBorder.none,
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 10,
+                          ),
                           suffixIcon: IconButton(
-                            icon: Icon(_showCvv ? LucideIcons.eyeOff : LucideIcons.eye, size: 14, color: AppColors.textSecondary),
-                            onPressed: () => setState(() => _showCvv = !_showCvv),
+                            icon: Icon(
+                              _showCvv ? LucideIcons.eyeOff : LucideIcons.eye,
+                              size: 14,
+                              color: AppColors.textSecondary,
+                            ),
+                            onPressed: () =>
+                                setState(() => _showCvv = !_showCvv),
                           ),
                         ),
                       ),
@@ -863,7 +1390,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 setState(() {
                   _cards.add({
                     'id': DateTime.now().millisecondsSinceEpoch,
-                    'last4': last4.length >= 4 ? last4.substring(last4.length - 4) : last4,
+                    'last4': last4.length >= 4
+                        ? last4.substring(last4.length - 4)
+                        : last4,
                     'brand': 'Visa',
                     'expiry': _newCard['expiry'] ?? '',
                     'holder': (_newCard['holder'] ?? '').toUpperCase(),
@@ -876,9 +1405,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
-              child: const Text('Guardar Tarjeta', style: TextStyle(fontWeight: FontWeight.w600)),
+              child: const Text(
+                'Guardar Tarjeta',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],
@@ -890,16 +1424,29 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label.toUpperCase(), style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.textTertiary)),
+        Text(
+          label.toUpperCase(),
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textTertiary,
+          ),
+        ),
         const SizedBox(height: 6),
         Container(
-          decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(12)),
+          decoration: BoxDecoration(
+            color: AppColors.background,
+            borderRadius: BorderRadius.circular(12),
+          ),
           child: TextField(
             onChanged: (v) => _newCard[key] = v,
             decoration: InputDecoration(
               hintText: hint,
               border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 10,
+              ),
             ),
           ),
         ),
@@ -920,38 +1467,68 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Apariencia', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        const Text(
+          'Apariencia',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 20),
 
         // Dark mode
         Row(
           children: [
             Container(
-              width: 40, height: 40,
-              decoration: BoxDecoration(color: Colors.yellow.shade50, borderRadius: BorderRadius.circular(12)),
-              child: Icon(isDark ? LucideIcons.moon : LucideIcons.sun, size: 20, color: isDark ? Colors.blue : Colors.amber),
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.yellow.shade50,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                isDark ? LucideIcons.moon : LucideIcons.sun,
+                size: 20,
+                color: isDark ? Colors.blue : Colors.amber,
+              ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Modo Oscuro', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                  Text(isDark ? 'Tema oscuro activado' : 'Tema claro activado',
-                      style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                  const Text(
+                    'Modo Oscuro',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
+                  Text(
+                    isDark ? 'Tema oscuro activado' : 'Tema claro activado',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
                 ],
               ),
             ),
-            Switch(value: isDark, onChanged: (v) => prefsNotifier.setDarkMode(v), activeColor: AppColors.primary),
+            Switch(
+              value: isDark,
+              onChanged: (v) => prefsNotifier.setDarkMode(v),
+              activeThumbColor: AppColors.primary,
+            activeTrackColor: AppColors.primary.withValues(alpha: 0.5),
+            ),
           ],
         ),
 
         const SizedBox(height: 24),
 
         // Font size
-        const Text('Tamaño de fuente', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+        const Text(
+          'Tamaño de fuente',
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        ),
         const SizedBox(height: 4),
-        Text('Actual: ${fontLabels[fontSize]}', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+        Text(
+          'Actual: ${fontLabels[fontSize]}',
+          style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+        ),
         const SizedBox(height: 12),
         Row(
           children: List.generate(3, (i) {
@@ -964,7 +1541,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
                     color: active ? AppColors.primary : Colors.transparent,
-                    border: Border.all(color: active ? AppColors.primary : AppColors.borderMedium),
+                    border: Border.all(
+                      color: active
+                          ? AppColors.primary
+                          : AppColors.borderMedium,
+                    ),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Center(
@@ -983,13 +1564,18 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           }),
         ),
         const SizedBox(height: 8),
-        const Text('Vista previa del tamaño de texto seleccionado.',
-            style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+        Text(
+          'Vista previa del tamaño de texto seleccionado.',
+          style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+        ),
 
         const SizedBox(height: 24),
 
         // Accent color
-        const Text('Color de acento', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+        const Text(
+          'Color de acento',
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        ),
         const SizedBox(height: 12),
         Wrap(
           spacing: 12,
@@ -999,13 +1585,20 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             return GestureDetector(
               onTap: () => prefsNotifier.setAccentColor(c['value']!),
               child: Container(
-                width: 36, height: 36,
+                width: 36,
+                height: 36,
                 decoration: BoxDecoration(
                   color: color,
                   shape: BoxShape.circle,
                   border: Border.all(color: Colors.white, width: 2),
                   boxShadow: active
-                      ? [BoxShadow(color: color.withValues(alpha: 0.5), blurRadius: 0, spreadRadius: 3)]
+                      ? [
+                          BoxShadow(
+                            color: color.withValues(alpha: 0.5),
+                            blurRadius: 0,
+                            spreadRadius: 3,
+                          ),
+                        ]
                       : null,
                 ),
               ),
@@ -1015,16 +1608,44 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         const SizedBox(height: 12),
         Row(
           children: [
-            Expanded(child: Container(height: 8, decoration: BoxDecoration(color: _hexToColor(accentHex).withValues(alpha: 0.2), borderRadius: BorderRadius.circular(4)))),
+            Expanded(
+              child: Container(
+                height: 8,
+                decoration: BoxDecoration(
+                  color: _hexToColor(accentHex).withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+            ),
             const SizedBox(width: 4),
-            Expanded(child: Container(height: 8, decoration: BoxDecoration(color: _hexToColor(accentHex).withValues(alpha: 0.5), borderRadius: BorderRadius.circular(4)))),
+            Expanded(
+              child: Container(
+                height: 8,
+                decoration: BoxDecoration(
+                  color: _hexToColor(accentHex).withValues(alpha: 0.5),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+            ),
             const SizedBox(width: 4),
-            Expanded(child: Container(height: 8, decoration: BoxDecoration(color: _hexToColor(accentHex), borderRadius: BorderRadius.circular(4)))),
+            Expanded(
+              child: Container(
+                height: 8,
+                decoration: BoxDecoration(
+                  color: _hexToColor(accentHex),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 6),
         Text(
-          _accentColors.firstWhere((c) => c['value'] == accentHex, orElse: () => {'label': ''})['label'] ?? '',
+          _accentColors.firstWhere(
+                (c) => c['value'] == accentHex,
+                orElse: () => {'label': ''},
+              )['label'] ??
+              '',
           style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
         ),
       ],
@@ -1038,7 +1659,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Idioma y Región', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        const Text(
+          'Idioma y Región',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 20),
         ..._languages.map((l) {
           final active = _language == l['code'];
@@ -1048,18 +1672,36 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               onTap: () => setState(() => _language = l['code']!),
               borderRadius: BorderRadius.circular(12),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: active ? AppColors.primary : AppColors.borderMedium),
+                  border: Border.all(
+                    color: active ? AppColors.primary : AppColors.borderMedium,
+                  ),
                   color: active ? AppColors.primarySurface : null,
                 ),
                 child: Row(
                   children: [
                     Text(l['flag']!, style: const TextStyle(fontSize: 24)),
                     const SizedBox(width: 12),
-                    Expanded(child: Text(l['label']!, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500))),
-                    if (active) const Icon(LucideIcons.checkCircle, size: 16, color: AppColors.primary),
+                    Expanded(
+                      child: Text(
+                        l['label']!,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    if (active)
+                      const Icon(
+                        LucideIcons.checkCircle,
+                        size: 16,
+                        color: AppColors.primary,
+                      ),
                   ],
                 ),
               ),
@@ -1131,7 +1773,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Ayuda y Soporte', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        const Text(
+          'Ayuda y Soporte',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 16),
         ...helpItems.map((item) {
           final isOpen = _expandedHelp == item['id'];
@@ -1144,28 +1789,56 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             child: Column(
               children: [
                 InkWell(
-                  onTap: () => setState(() => _expandedHelp = isOpen ? null : item['id'] as String),
+                  onTap: () => setState(
+                    () => _expandedHelp = isOpen ? null : item['id'] as String,
+                  ),
                   borderRadius: BorderRadius.circular(12),
                   child: Padding(
                     padding: const EdgeInsets.all(14),
                     child: Row(
                       children: [
                         Container(
-                          width: 32, height: 32,
-                          decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(8)),
-                          child: Icon(item['icon'] as IconData, size: 15, color: AppColors.textSecondary),
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            color: AppColors.background,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(
+                            item['icon'] as IconData,
+                            size: 15,
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(item['label'] as String, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
-                              Text(item['desc'] as String, style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                              Text(
+                                item['label'] as String,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Text(
+                                item['desc'] as String,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.textSecondary,
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                        Icon(isOpen ? LucideIcons.chevronUp : LucideIcons.chevronRight, size: 16, color: AppColors.textSecondary),
+                        Icon(
+                          isOpen
+                              ? LucideIcons.chevronUp
+                              : LucideIcons.chevronRight,
+                          size: 16,
+                          color: AppColors.textSecondary,
+                        ),
                       ],
                     ),
                   ),
@@ -1176,7 +1849,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: AppColors.background,
-                      borderRadius: const BorderRadius.vertical(bottom: Radius.circular(12)),
+                      borderRadius: const BorderRadius.vertical(
+                        bottom: Radius.circular(12),
+                      ),
                     ),
                     child: _buildHelpContent(item['id'] as String),
                   ),
@@ -1192,52 +1867,122 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     switch (id) {
       case 'faq':
         return Column(
-          children: [
-            {'q': '¿Cómo selecciono mis materias?', 'a': 'Ve a la sección \'Selección\' en el menú principal durante el período de inscripciones.'},
-            {'q': '¿Dónde veo mis calificaciones?', 'a': 'En la sección \'Calificaciones\' encontrarás el historial completo y las notas del semestre actual.'},
-            {'q': '¿Cómo solicito un certificado?', 'a': 'En la sección \'Solicitudes\', elige \'Certificado de Estudios\' y completa el formulario.'},
-            {'q': '¿Cómo pago mi matrícula?', 'a': 'Ve a \'Pagos\', selecciona el concepto y utiliza tu tarjeta registrada o efectivo en caja.'},
-          ]
-              .map((item) => Container(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(item['q']!, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-                        const SizedBox(height: 4),
-                        Text(item['a']!, style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
-                      ],
+          children:
+              [
+                    {
+                      'q': '¿Cómo selecciono mis materias?',
+                      'a':
+                          'Ve a la sección \'Selección\' en el menú principal durante el período de inscripciones.',
+                    },
+                    {
+                      'q': '¿Dónde veo mis calificaciones?',
+                      'a':
+                          'En la sección \'Calificaciones\' encontrarás el historial completo y las notas del semestre actual.',
+                    },
+                    {
+                      'q': '¿Cómo solicito un certificado?',
+                      'a':
+                          'En la sección \'Solicitudes\', elige \'Certificado de Estudios\' y completa el formulario.',
+                    },
+                    {
+                      'q': '¿Cómo pago mi matrícula?',
+                      'a':
+                          'Ve a \'Pagos\', selecciona el concepto y utiliza tu tarjeta registrada o efectivo en caja.',
+                    },
+                  ]
+                  .map(
+                    (item) => Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.cardColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item['q']!,
+                            style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            item['a']!,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ))
-              .toList(),
+                  )
+                  .toList(),
         );
       case 'contact':
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('ASUNTO', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.textTertiary)),
+            Text(
+              'ASUNTO',
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textTertiary,
+              ),
+            ),
             const SizedBox(height: 6),
             Container(
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.borderMedium)),
+              decoration: BoxDecoration(
+                color: AppColors.cardColor,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.borderMedium),
+              ),
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   isExpanded: true,
                   value: 'Problema técnico',
-                  items: ['Problema técnico', 'Consulta académica', 'Problema con pagos', 'Otro']
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e, style: const TextStyle(fontSize: 13))))
-                      .toList(),
+                  items:
+                      [
+                            'Problema técnico',
+                            'Consulta académica',
+                            'Problema con pagos',
+                            'Otro',
+                          ]
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(
+                                e,
+                                style: const TextStyle(fontSize: 13),
+                              ),
+                            ),
+                          )
+                          .toList(),
                   onChanged: (_) {},
                 ),
               ),
             ),
             const SizedBox(height: 12),
-            Text('MENSAJE', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.textTertiary)),
+            Text(
+              'MENSAJE',
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textTertiary,
+              ),
+            ),
             const SizedBox(height: 6),
             Container(
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.borderMedium)),
+              decoration: BoxDecoration(
+                color: AppColors.cardColor,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.borderMedium),
+              ),
               child: const TextField(
                 maxLines: 4,
                 decoration: InputDecoration(
@@ -1256,42 +2001,92 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-                child: const Text('Enviar Mensaje', style: TextStyle(fontWeight: FontWeight.w600)),
+                child: const Text(
+                  'Enviar Mensaje',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
               ),
             ),
             const SizedBox(height: 12),
-            Text('📞 (809) 525-3080 ext. 200', style: TextStyle(fontSize: 12, color: AppColors.textTertiary)),
-            Text('✉️ soporte@unad.edu.do', style: TextStyle(fontSize: 12, color: AppColors.textTertiary)),
-            Text('🕐 Lun–Vie 8:00 am – 5:00 pm', style: TextStyle(fontSize: 12, color: AppColors.textTertiary)),
+            Text(
+              '📞 (809) 525-3080 ext. 200',
+              style: TextStyle(fontSize: 12, color: AppColors.textTertiary),
+            ),
+            Text(
+              '✉️ soporte@unad.edu.do',
+              style: TextStyle(fontSize: 12, color: AppColors.textTertiary),
+            ),
+            Text(
+              '🕐 Lun–Vie 8:00 am – 5:00 pm',
+              style: TextStyle(fontSize: 12, color: AppColors.textTertiary),
+            ),
           ],
         );
       case 'report':
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('TIPO DE PROBLEMA', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.textTertiary)),
+            Text(
+              'TIPO DE PROBLEMA',
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textTertiary,
+              ),
+            ),
             const SizedBox(height: 6),
             Container(
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.borderMedium)),
+              decoration: BoxDecoration(
+                color: AppColors.cardColor,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.borderMedium),
+              ),
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   isExpanded: true,
                   value: 'Error en pantalla',
-                  items: ['Error en pantalla', 'Datos incorrectos', 'Función no responde', 'Problema de rendimiento']
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e, style: const TextStyle(fontSize: 13))))
-                      .toList(),
+                  items:
+                      [
+                            'Error en pantalla',
+                            'Datos incorrectos',
+                            'Función no responde',
+                            'Problema de rendimiento',
+                          ]
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(
+                                e,
+                                style: const TextStyle(fontSize: 13),
+                              ),
+                            ),
+                          )
+                          .toList(),
                   onChanged: (_) {},
                 ),
               ),
             ),
             const SizedBox(height: 12),
-            Text('DESCRIPCIÓN', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.textTertiary)),
+            Text(
+              'DESCRIPCIÓN',
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textTertiary,
+              ),
+            ),
             const SizedBox(height: 6),
             Container(
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.borderMedium)),
+              decoration: BoxDecoration(
+                color: AppColors.cardColor,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.borderMedium),
+              ),
               child: const TextField(
                 maxLines: 3,
                 decoration: InputDecoration(
@@ -1310,9 +2105,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   backgroundColor: Colors.red.shade600,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-                child: const Text('Enviar Reporte', style: TextStyle(fontWeight: FontWeight.w600)),
+                child: const Text(
+                  'Enviar Reporte',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
               ),
             ),
           ],
@@ -1325,7 +2125,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             _aboutRow('Institución', 'UNAD'),
             _aboutRow('Año', '2024–2025'),
             const SizedBox(height: 8),
-            const Center(
+            Center(
               child: Text(
                 'Universidad Nacional Dominicana · Todos los derechos reservados',
                 style: TextStyle(fontSize: 11, color: AppColors.textTertiary),
@@ -1335,53 +2135,93 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ],
         );
       case 'terms':
-        return const Column(
+        return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('1. Uso Aceptable', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-            SizedBox(height: 4),
-            Text('Esta plataforma es de uso exclusivo para estudiantes, profesores y personal administrativo de la UNAD. El acceso no autorizado está prohibido.',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
-            SizedBox(height: 12),
-            Text('2. Responsabilidad del Usuario', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-            SizedBox(height: 4),
-            Text('El usuario es responsable de mantener la confidencialidad de sus credenciales de acceso.',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
-            SizedBox(height: 12),
-            Text('3. Propiedad Intelectual', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-            SizedBox(height: 4),
-            Text('Todo el contenido académico disponible en la plataforma es propiedad de la UNAD.',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
-            SizedBox(height: 12),
-            Text('4. Modificaciones', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-            SizedBox(height: 4),
-            Text('La institución se reserva el derecho de modificar estos términos con previo aviso de 30 días.',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+            const Text(
+              '1. Uso Aceptable',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Esta plataforma es de uso exclusivo para estudiantes, profesores y personal administrativo de la UNAD. El acceso no autorizado está prohibido.',
+              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              '2. Responsabilidad del Usuario',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'El usuario es responsable de mantener la confidencialidad de sus credenciales de acceso.',
+              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              '3. Propiedad Intelectual',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Todo el contenido académico disponible en la plataforma es propiedad de la UNAD.',
+              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              '4. Modificaciones',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'La institución se reserva el derecho de modificar estos términos con previo aviso de 30 días.',
+              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+            ),
           ],
         );
       case 'privacy':
-        return const Column(
+        return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Datos que recopilamos', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-            SizedBox(height: 4),
-            Text('Recopilamos información académica, de contacto y de uso de la plataforma para brindar los servicios institucionales.',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
-            SizedBox(height: 12),
-            Text('Uso de los datos', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-            SizedBox(height: 4),
-            Text('Tus datos son utilizados exclusivamente para gestionar tu expediente académico y brindarte los servicios de la universidad.',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
-            SizedBox(height: 12),
-            Text('No compartimos tus datos', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-            SizedBox(height: 4),
-            Text('No vendemos ni compartimos tu información personal con terceros sin tu consentimiento expreso.',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
-            SizedBox(height: 12),
-            Text('Tus derechos', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-            SizedBox(height: 4),
-            Text('Tienes derecho a solicitar acceso, rectificación o eliminación de tus datos personales contactando a registros@unad.edu.do.',
-                style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+            const Text(
+              'Datos que recopilamos',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Recopilamos información académica, de contacto y de uso de la plataforma para brindar los servicios institucionales.',
+              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Uso de los datos',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Tus datos son utilizados exclusivamente para gestionar tu expediente académico y brindarte los servicios de la universidad.',
+              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'No compartimos tus datos',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'No vendemos ni compartimos tu información personal con terceros sin tu consentimiento expreso.',
+              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Tus derechos',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Tienes derecho a solicitar acceso, rectificación o eliminación de tus datos personales contactando a registros@unad.edu.do.',
+              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+            ),
           ],
         );
       default:
@@ -1395,8 +2235,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(fontSize: 13, color: AppColors.textSecondary)),
-          Text(value, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+          Text(
+            label,
+            style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
+          ),
+          Text(
+            value,
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+          ),
         ],
       ),
     );

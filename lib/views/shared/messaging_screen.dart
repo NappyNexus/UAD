@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 
 class MessagingScreen extends StatefulWidget {
   const MessagingScreen({super.key});
@@ -193,10 +194,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           leading: IconButton(
-            icon: Icon(
-              LucideIcons.arrowLeft,
-              color: AppColors.textPrimary,
-            ),
+            icon: Icon(LucideIcons.arrowLeft, color: AppColors.textPrimary),
             onPressed: () => setState(() => _selectedContact = null),
           ),
           title: Row(

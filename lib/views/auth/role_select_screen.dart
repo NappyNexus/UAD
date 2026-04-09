@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../core/constants/app_constants.dart';
 import '../../viewmodels/auth_viewmodel.dart';
 
@@ -51,12 +52,12 @@ class RoleSelectScreen extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'UNAD',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w800,
-                    color: Colors.white,
+                    color: AppColors.cardColor,
                     letterSpacing: 2,
                   ),
                 ),
@@ -262,7 +263,7 @@ class _RoleCardState extends State<_RoleCard>
         },
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.cardColor,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
@@ -324,7 +325,10 @@ class _RoleCardState extends State<_RoleCard>
                       decoration: BoxDecoration(
                         gradient: LinearGradient(colors: widget.gradient),
                         borderRadius: BorderRadius.circular(7),
-                        border: Border.all(color: Colors.white, width: 2),
+                        border: Border.all(
+                          color: AppColors.cardColor,
+                          width: 2,
+                        ),
                       ),
                       child: Icon(widget.icon, size: 11, color: Colors.white),
                     ),
@@ -336,7 +340,7 @@ class _RoleCardState extends State<_RoleCard>
               // ── Label ──
               Text(
                 widget.label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,

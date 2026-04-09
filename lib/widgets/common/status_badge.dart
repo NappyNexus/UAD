@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 
 /// Color-coded status badge pill, ported from StatusBadge.jsx.
 /// Supports 21+ status variants with appropriate colors.

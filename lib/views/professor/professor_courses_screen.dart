@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 
@@ -118,9 +119,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: AppColors.borderMedium,
-                      ),
+                      borderSide: BorderSide(color: AppColors.borderMedium),
                     ),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 12,
@@ -605,10 +604,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
           SizedBox(height: 2),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 11,
-              color: AppColors.textSecondary,
-            ),
+            style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
           ),
         ],
       ),

@@ -27,7 +27,8 @@ class AppPreferencesState {
     }
   }
 
-  Color get accentColor => Color(int.parse(accentColorHex.replaceFirst('#', '0xFF')));
+  Color get accentColor =>
+      Color(int.parse(accentColorHex.replaceFirst('#', '0xFF')));
 
   AppPreferencesState copyWith({
     ThemeMode? themeMode,
@@ -66,7 +67,9 @@ class AppPreferencesNotifier extends StateNotifier<AppPreferencesState> {
   }
 
   Future<void> setDarkMode(bool enabled) async {
-    state = state.copyWith(themeMode: enabled ? ThemeMode.dark : ThemeMode.light);
+    state = state.copyWith(
+      themeMode: enabled ? ThemeMode.dark : ThemeMode.light,
+    );
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_keyDarkMode, enabled);
   }
@@ -87,5 +90,5 @@ class AppPreferencesNotifier extends StateNotifier<AppPreferencesState> {
 /// Provider for [AppPreferencesNotifier].
 final appPreferencesProvider =
     StateNotifierProvider<AppPreferencesNotifier, AppPreferencesState>(
-  (ref) => AppPreferencesNotifier(),
-);
+      (ref) => AppPreferencesNotifier(),
+    );

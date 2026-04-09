@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../widgets/common/page_header.dart';
 
 class AcademicCalendarScreen extends StatefulWidget {
@@ -535,7 +536,7 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 16),
 
             // Leyenda Card
@@ -549,25 +550,44 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Leyenda', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
-                  SizedBox(height: 16),
-                  ..._typeConf.values.map((tc) => Padding(
-                    padding: EdgeInsets.only(bottom: 12),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 10, height: 10,
-                          decoration: BoxDecoration(color: tc['color'], shape: BoxShape.circle),
-                        ),
-                        SizedBox(width: 12),
-                        Text(tc['label'], style: TextStyle(fontSize: 13, color: AppColors.textSecondary)),
-                      ],
+                  Text(
+                    'Leyenda',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
                     ),
-                  )),
+                  ),
+                  SizedBox(height: 16),
+                  ..._typeConf.values.map(
+                    (tc) => Padding(
+                      padding: EdgeInsets.only(bottom: 12),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 10,
+                            height: 10,
+                            decoration: BoxDecoration(
+                              color: tc['color'],
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          SizedBox(width: 12),
+                          Text(
+                            tc['label'],
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 16),
 
             // Sincronizar Calendario Card
@@ -581,18 +601,42 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Sincronizar calendario', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                  Text(
+                    'Sincronizar calendario',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
                   SizedBox(height: 8),
                   Text(
                     'Exporta tus eventos académicos a tu calendario personal',
-                    style: TextStyle(fontSize: 13, color: AppColors.textSecondary, height: 1.4),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: AppColors.textSecondary,
+                      height: 1.4,
+                    ),
                   ),
                   const SizedBox(height: 20),
-                  _buildSyncButton('Google Calendar', Colors.blue.shade700, Colors.blue.shade50),
+                  _buildSyncButton(
+                    'Google Calendar',
+                    Colors.blue.shade700,
+                    Colors.blue.shade50,
+                  ),
                   const SizedBox(height: 12),
-                  _buildSyncButton('Outlook Calendar', Colors.blue.shade700, Colors.blue.shade50),
+                  _buildSyncButton(
+                    'Outlook Calendar',
+                    Colors.blue.shade700,
+                    Colors.blue.shade50,
+                  ),
                   const SizedBox(height: 12),
-                  _buildSyncButton('Exportar .ics', AppColors.textSecondary, Colors.grey.shade50, AppColors.borderMedium),
+                  _buildSyncButton(
+                    'Exportar .ics',
+                    AppColors.textSecondary,
+                    Colors.grey.shade50,
+                    AppColors.borderMedium,
+                  ),
                 ],
               ),
             ),
@@ -617,7 +661,14 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(text, style: TextStyle(color: color, fontWeight: FontWeight.w600, fontSize: 13)),
+            Text(
+              text,
+              style: TextStyle(
+                color: color,
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
+              ),
+            ),
             Icon(LucideIcons.externalLink, color: color, size: 16),
           ],
         ),

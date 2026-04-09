@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 
@@ -303,10 +304,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
           ),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 10,
-              color: AppColors.textSecondary,
-            ),
+            style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
           ),
         ],
       ),
@@ -341,10 +339,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
               ),
               child: Text(
                 weight,
-                style: TextStyle(
-                  fontSize: 8,
-                  color: AppColors.textTertiary,
-                ),
+                style: TextStyle(fontSize: 8, color: AppColors.textTertiary),
               ),
             ),
           ],
@@ -617,10 +612,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
               padding: EdgeInsets.only(left: 4, top: 4),
               child: Text(
                 '${filtered.length} resultado(s)',
-                style: TextStyle(
-                  fontSize: 11,
-                  color: AppColors.textTertiary,
-                ),
+                style: TextStyle(fontSize: 11, color: AppColors.textTertiary),
               ),
             ),
           const SizedBox(height: 12),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../core/constants/app_constants.dart';
 
 /// Full-height navigation drawer, ported from AppDrawer.jsx.
@@ -20,9 +21,10 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final roleGradient = _getRoleGradient(currentRole);
+    final c = context.appColors;
 
     return Drawer(
-      backgroundColor: Colors.white,
+      backgroundColor: c.cardColor,
       shape: const RoundedRectangleBorder(),
       child: Column(
         children: [
@@ -157,7 +159,7 @@ class AppDrawer extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.textTertiary,
+                      color: c.textTertiary,
                       letterSpacing: 1.5,
                     ),
                   ),
@@ -187,7 +189,7 @@ class AppDrawer extends StatelessWidget {
                                 size: 18,
                                 color: isActive
                                     ? AppColors.gold
-                                    : AppColors.textSecondary,
+                                    : c.textSecondary,
                               ),
                               const SizedBox(width: 12),
                               Expanded(
@@ -200,7 +202,7 @@ class AppDrawer extends StatelessWidget {
                                         : FontWeight.w500,
                                     color: isActive
                                         ? Colors.white
-                                        : AppColors.textSecondary,
+                                        : c.textSecondary,
                                   ),
                                 ),
                               ),
@@ -245,7 +247,7 @@ class AppDrawer extends StatelessWidget {
                             size: 18,
                             color: currentRoute == AppConstants.routeSettings
                                 ? AppColors.gold
-                                : AppColors.textSecondary,
+                                : c.textSecondary,
                           ),
                           const SizedBox(width: 12),
                           Text(
@@ -255,7 +257,7 @@ class AppDrawer extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                               color: currentRoute == AppConstants.routeSettings
                                   ? Colors.white
-                                  : AppColors.textSecondary,
+                                  : c.textSecondary,
                             ),
                           ),
                         ],
@@ -291,7 +293,7 @@ class AppDrawer extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
-                                color: AppColors.textPrimary,
+                                color: c.textPrimary,
                               ),
                             ),
                             const SizedBox(height: 2),
@@ -299,7 +301,7 @@ class AppDrawer extends StatelessWidget {
                               'Bonao, Monseñor Nouel · RD',
                               style: TextStyle(
                                 fontSize: 10,
-                                color: AppColors.textTertiary,
+                                color: c.textTertiary,
                               ),
                             ),
                           ],

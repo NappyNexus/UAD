@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../widgets/common/page_header.dart';
 
 class SurveysScreen extends StatefulWidget {
@@ -11,14 +12,38 @@ class SurveysScreen extends StatefulWidget {
 }
 
 final List<Map<String, dynamic>> _courseQuestions = [
-  { 'id': 'q1', 'text': '¿Cómo evaluarías la claridad en la explicación de los temas?', 'type': 'rating' },
-  { 'id': 'q2', 'text': '¿El profesor demuestra dominio del contenido del curso?', 'type': 'rating' },
-  { 'id': 'q3', 'text': '¿Cómo calificarías la puntualidad y asistencia del profesor?', 'type': 'rating' },
-  { 'id': 'q4', 'text': '¿El profesor responde dudas de manera efectiva?', 'type': 'rating' },
-  { 'id': 'q5', 'text': '¿Las evaluaciones reflejan el contenido enseñado?', 'type': 'rating' },
-  { 'id': 'q6', 'text': '¿Recomendarías este profesor a otros estudiantes?', 'type': 'yesno' },
-  { 'id': 'q7', 'text': '¿Qué fue lo mejor del curso?', 'type': 'text' },
-  { 'id': 'q8', 'text': '¿Qué aspectos podrían mejorar?', 'type': 'text' },
+  {
+    'id': 'q1',
+    'text': '¿Cómo evaluarías la claridad en la explicación de los temas?',
+    'type': 'rating',
+  },
+  {
+    'id': 'q2',
+    'text': '¿El profesor demuestra dominio del contenido del curso?',
+    'type': 'rating',
+  },
+  {
+    'id': 'q3',
+    'text': '¿Cómo calificarías la puntualidad y asistencia del profesor?',
+    'type': 'rating',
+  },
+  {
+    'id': 'q4',
+    'text': '¿El profesor responde dudas de manera efectiva?',
+    'type': 'rating',
+  },
+  {
+    'id': 'q5',
+    'text': '¿Las evaluaciones reflejan el contenido enseñado?',
+    'type': 'rating',
+  },
+  {
+    'id': 'q6',
+    'text': '¿Recomendarías este profesor a otros estudiantes?',
+    'type': 'yesno',
+  },
+  {'id': 'q7', 'text': '¿Qué fue lo mejor del curso?', 'type': 'text'},
+  {'id': 'q8', 'text': '¿Qué aspectos podrían mejorar?', 'type': 'text'},
 ];
 
 class _SurveysScreenState extends State<SurveysScreen> {
@@ -26,7 +51,8 @@ class _SurveysScreenState extends State<SurveysScreen> {
     {
       'id': 1,
       'title': 'Evaluación Docente - Cálculo III',
-      'description': 'Evalúa el desempeño de tu profesor durante el actual cuatrimestre.',
+      'description':
+          'Evalúa el desempeño de tu profesor durante el actual cuatrimestre.',
       'professor': 'Dr. Carlos Martínez',
       'course': 'MAT-301',
       'type': 'course',
@@ -37,7 +63,8 @@ class _SurveysScreenState extends State<SurveysScreen> {
     {
       'id': 2,
       'title': 'Encuesta Satisfacción Estudiantil 2026',
-      'description': 'Encuesta general sobre los servicios de la universidad (biblioteca, cafetería, etc).',
+      'description':
+          'Encuesta general sobre los servicios de la universidad (biblioteca, cafetería, etc).',
       'type': 'general',
       'status': 'pending',
       'questions': 15,
@@ -46,7 +73,8 @@ class _SurveysScreenState extends State<SurveysScreen> {
     {
       'id': 3,
       'title': 'Evaluación Docente - Ética Profesional',
-      'description': 'Evalúa el desempeño de tu profesor durante el actual cuatrimestre.',
+      'description':
+          'Evalúa el desempeño de tu profesor durante el actual cuatrimestre.',
       'professor': 'Lic. Carmen Sosa',
       'course': 'HUM-200',
       'type': 'course',
@@ -60,8 +88,12 @@ class _SurveysScreenState extends State<SurveysScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final pending = _surveys.where((s) => s['status'] == 'pending').toList();
-    final completed = _surveys.where((s) => s['status'] == 'completed').toList();
-    final responseRate = _surveys.isEmpty ? 0 : (completed.length / _surveys.length * 100).round();
+    final completed = _surveys
+        .where((s) => s['status'] == 'completed')
+        .toList();
+    final responseRate = _surveys.isEmpty
+        ? 0
+        : (completed.length / _surveys.length * 100).round();
 
     void showSurveyModal(Map<String, dynamic> survey) {
       showModalBottomSheet(
@@ -86,7 +118,8 @@ class _SurveysScreenState extends State<SurveysScreen> {
           children: [
             const PageHeader(
               title: 'Encuestas y Evaluaciones',
-              subtitle: 'Tu opinión ayuda a mejorar la calidad académica de UNAD',
+              subtitle:
+                  'Tu opinión ayuda a mejorar la calidad académica de UNAD',
             ),
             const SizedBox(height: 16),
 
@@ -127,9 +160,13 @@ class _SurveysScreenState extends State<SurveysScreen> {
             const SizedBox(height: 24),
 
             if (pending.isNotEmpty) ...[
-               Row(
+              Row(
                 children: [
-                  Icon(LucideIcons.clock, size: 14, color: Colors.amber.shade500),
+                  Icon(
+                    LucideIcons.clock,
+                    size: 14,
+                    color: Colors.amber.shade500,
+                  ),
                   SizedBox(width: 8),
                   Text(
                     'Pendientes (${pending.length})',
@@ -143,10 +180,7 @@ class _SurveysScreenState extends State<SurveysScreen> {
               ),
               const SizedBox(height: 12),
               ...pending.map(
-                (s) => _SurveyPendingCard(
-                  s,
-                  onTap: () => showSurveyModal(s),
-                ),
+                (s) => _SurveyPendingCard(s, onTap: () => showSurveyModal(s)),
               ),
               const SizedBox(height: 24),
             ],
@@ -154,7 +188,11 @@ class _SurveysScreenState extends State<SurveysScreen> {
             if (completed.isNotEmpty) ...[
               Row(
                 children: [
-                  Icon(LucideIcons.checkCircle, size: 14, color: Colors.green.shade500),
+                  Icon(
+                    LucideIcons.checkCircle,
+                    size: 14,
+                    color: Colors.green.shade500,
+                  ),
                   SizedBox(width: 8),
                   Text(
                     'Completadas (${completed.length})',
@@ -203,13 +241,20 @@ class _StatCard extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(12)),
+            decoration: BoxDecoration(
+              color: bgColor,
+              borderRadius: BorderRadius.circular(12),
+            ),
             child: Icon(icon, size: 18, color: iconColor),
           ),
           SizedBox(height: 8),
           Text(
             value,
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimary,
+            ),
           ),
           Text(
             title,
@@ -254,7 +299,9 @@ class _SurveyPendingCard extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: isCourse ? AppColors.primary.withValues(alpha: 0.1) : Colors.blue.shade50,
+              color: isCourse
+                  ? AppColors.primary.withValues(alpha: 0.1)
+                  : Colors.blue.shade50,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Center(
@@ -272,34 +319,55 @@ class _SurveyPendingCard extends StatelessWidget {
               children: [
                 Text(
                   survey['title'],
-                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, height: 1.2),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    height: 1.2,
+                  ),
                 ),
                 if (survey['professor'] != null)
                   Padding(
                     padding: EdgeInsets.only(top: 2),
                     child: Text(
                       survey['professor'],
-                      style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                   ),
                 SizedBox(height: 4),
                 Text(
                   survey['description'],
-                  style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
+                  ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 8),
                 Row(
                   children: [
-                    Icon(LucideIcons.messageSquare, size: 10, color: AppColors.textSecondary),
+                    Icon(
+                      LucideIcons.messageSquare,
+                      size: 10,
+                      color: AppColors.textSecondary,
+                    ),
                     SizedBox(width: 4),
                     Text(
                       '${survey['questions']} preguntas',
-                      style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                     const SizedBox(width: 12),
-                    Icon(LucideIcons.clock, size: 10, color: Colors.amber.shade600),
+                    Icon(
+                      LucideIcons.clock,
+                      size: 10,
+                      color: Colors.amber.shade600,
+                    ),
                     const SizedBox(width: 4),
                     Text(
                       'Vence: ${survey['deadline']}',
@@ -316,21 +384,26 @@ class _SurveyPendingCard extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           ElevatedButton(
-             onPressed: onTap,
-             style: ElevatedButton.styleFrom(
-               backgroundColor: AppColors.primary,
-               foregroundColor: Colors.white,
-               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-             ),
-             child: Row(
-               mainAxisSize: MainAxisSize.min,
-               children: const [
-                 Text('Iniciar', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
-                 SizedBox(width: 4),
-                 Icon(LucideIcons.chevronRight, size: 14),
-               ],
-             ),
+            onPressed: onTap,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                Text(
+                  'Iniciar',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                ),
+                SizedBox(width: 4),
+                Icon(LucideIcons.chevronRight, size: 14),
+              ],
+            ),
           ),
         ],
       ),
@@ -363,20 +436,26 @@ class _SurveyCompletedCard extends StatelessWidget {
               children: [
                 Text(
                   survey['title'],
-                  style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 if (survey['professor'] != null)
                   Text(
                     survey['professor'],
-                    style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
                   ),
               ],
             ),
           ),
           const SizedBox(width: 12),
-           Container(
+          Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
               color: Colors.green.shade50,
@@ -428,10 +507,17 @@ class _SurveyModalState extends State<_SurveyModal> {
               SizedBox(height: 16),
               Text(
                 '¡Evaluación enviada!',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
               ),
               SizedBox(height: 8),
-              Text('Gracias por tu aporte.', style: TextStyle(color: AppColors.textSecondary)),
+              Text(
+                'Gracias por tu aporte.',
+                style: TextStyle(color: AppColors.textSecondary),
+              ),
             ],
           ),
         ),
@@ -463,13 +549,19 @@ class _SurveyModalState extends State<_SurveyModal> {
                     children: [
                       Text(
                         widget.survey['title'],
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       if (widget.survey['professor'] != null) ...[
                         SizedBox(height: 4),
                         Text(
                           widget.survey['professor'],
-                          style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                       ],
                     ],
@@ -486,7 +578,9 @@ class _SurveyModalState extends State<_SurveyModal> {
           // Content
           Expanded(
             child: ListView.separated(
-              padding: const EdgeInsets.all(20).copyWith(bottom: MediaQuery.of(context).viewInsets.bottom + 20),
+              padding: const EdgeInsets.all(
+                20,
+              ).copyWith(bottom: MediaQuery.of(context).viewInsets.bottom + 20),
               itemCount: _courseQuestions.length,
               separatorBuilder: (_, __) => Padding(
                 padding: EdgeInsets.symmetric(vertical: 24),
@@ -499,7 +593,11 @@ class _SurveyModalState extends State<_SurveyModal> {
                   children: [
                     Text(
                       q['text'],
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textPrimary,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     if (q['type'] == 'rating')
@@ -509,14 +607,17 @@ class _SurveyModalState extends State<_SurveyModal> {
                           final value = index + 1;
                           final isSelected = (_answers[q['id']] ?? 0) >= value;
                           return InkWell(
-                            onTap: () => setState(() => _answers[q['id']] = value),
+                            onTap: () =>
+                                setState(() => _answers[q['id']] = value),
                             borderRadius: BorderRadius.circular(20),
                             child: Padding(
                               padding: const EdgeInsets.all(4.0),
                               child: Icon(
                                 LucideIcons.star,
                                 size: 32,
-                                color: isSelected ? Colors.amber : Colors.grey.shade300,
+                                color: isSelected
+                                    ? Colors.amber
+                                    : Colors.grey.shade300,
                               ),
                             ),
                           );
@@ -528,8 +629,20 @@ class _SurveyModalState extends State<_SurveyModal> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Muy malo', style: TextStyle(fontSize: 10, color: AppColors.textSecondary)),
-                            Text('Excelente', style: TextStyle(fontSize: 10, color: AppColors.textSecondary)),
+                            Text(
+                              'Muy malo',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                            Text(
+                              'Excelente',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -541,15 +654,23 @@ class _SurveyModalState extends State<_SurveyModal> {
                           return Padding(
                             padding: const EdgeInsets.only(right: 12),
                             child: InkWell(
-                              onTap: () => setState(() => _answers[q['id']] = opt),
+                              onTap: () =>
+                                  setState(() => _answers[q['id']] = opt),
                               borderRadius: BorderRadius.circular(12),
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 10,
+                                ),
                                 decoration: BoxDecoration(
-                                  color: selected ? AppColors.primary : Colors.transparent,
+                                  color: selected
+                                      ? AppColors.primary
+                                      : Colors.transparent,
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
-                                    color: selected ? AppColors.primary : AppColors.borderMedium,
+                                    color: selected
+                                        ? AppColors.primary
+                                        : AppColors.borderMedium,
                                     width: 2,
                                   ),
                                 ),
@@ -558,7 +679,9 @@ class _SurveyModalState extends State<_SurveyModal> {
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
-                                    color: selected ? Colors.white : AppColors.textPrimary,
+                                    color: selected
+                                        ? Colors.white
+                                        : AppColors.textPrimary,
                                   ),
                                 ),
                               ),
@@ -578,7 +701,10 @@ class _SurveyModalState extends State<_SurveyModal> {
                           onChanged: (v) => _answers[q['id']] = v,
                           decoration: InputDecoration(
                             hintText: 'Escribe tu respuesta aquí...',
-                            hintStyle: TextStyle(fontSize: 13, color: AppColors.textTertiary),
+                            hintStyle: TextStyle(
+                              fontSize: 13,
+                              color: AppColors.textTertiary,
+                            ),
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(12),
                           ),
@@ -593,7 +719,9 @@ class _SurveyModalState extends State<_SurveyModal> {
           // Footer
           Container(
             padding: EdgeInsets.only(
-              left: 20, right: 20, top: 16,
+              left: 20,
+              right: 20,
+              top: 16,
               bottom: MediaQuery.of(context).padding.bottom + 16,
             ),
             decoration: BoxDecoration(
@@ -613,9 +741,14 @@ class _SurveyModalState extends State<_SurveyModal> {
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                 ),
-                child: const Text('Enviar Evaluación', style: TextStyle(fontWeight: FontWeight.bold)),
+                child: const Text(
+                  'Enviar Evaluación',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ),

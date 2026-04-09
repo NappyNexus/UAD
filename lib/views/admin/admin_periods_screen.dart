@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 import '../../widgets/common/status_badge.dart';
@@ -107,11 +108,7 @@ class _AdminPeriodsScreenState extends State<AdminPeriodsScreen> {
       case 'Abierto':
         return const Icon(LucideIcons.play, size: 16, color: AppColors.success);
       case 'Cerrado':
-        return Icon(
-          LucideIcons.lock,
-          size: 16,
-          color: AppColors.textTertiary,
-        );
+        return Icon(LucideIcons.lock, size: 16, color: AppColors.textTertiary);
       case 'Planificación':
         return const Icon(LucideIcons.settings, size: 16, color: Colors.purple);
       default:
@@ -494,10 +491,7 @@ class _ConfigFormState extends State<_ConfigForm> {
             style: TextStyle(fontSize: 13, color: AppColors.textPrimary),
             decoration: InputDecoration(
               hintText: placeholder,
-              hintStyle: TextStyle(
-                fontSize: 13,
-                color: AppColors.textTertiary,
-              ),
+              hintStyle: TextStyle(fontSize: 13, color: AppColors.textTertiary),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(color: AppColors.borderMedium),

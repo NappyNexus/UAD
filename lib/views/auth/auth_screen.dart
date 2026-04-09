@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../core/constants/app_constants.dart';
 import '../../viewmodels/auth_viewmodel.dart';
 
@@ -103,12 +104,12 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const Text(
+                  Text(
                     'UNAD',
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w800,
-                      color: Colors.white,
+                      color: AppColors.cardColor,
                       letterSpacing: 2,
                     ),
                   ),
@@ -128,7 +129,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     constraints: const BoxConstraints(maxWidth: 400),
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.cardColor,
                       borderRadius: BorderRadius.circular(24),
                       boxShadow: [
                         BoxShadow(
@@ -141,7 +142,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Iniciar Sesión',
                           style: TextStyle(
                             fontSize: 20,
@@ -150,7 +151,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        const Text(
+                        Text(
                           'Ingresa tus credenciales institucionales',
                           style: TextStyle(
                             fontSize: 13,
@@ -172,13 +173,13 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                             fillColor: AppColors.background,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.borderMedium,
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.borderMedium,
                               ),
                             ),
@@ -223,13 +224,13 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                             fillColor: AppColors.background,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.borderMedium,
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
+                              borderSide: BorderSide(
                                 color: AppColors.borderMedium,
                               ),
                             ),
@@ -279,12 +280,12 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                               elevation: 0,
                             ),
                             child: _isLoading
-                                ? const SizedBox(
+                                ? SizedBox(
                                     width: 20,
                                     height: 20,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
-                                      color: Colors.white,
+                                      color: AppColors.cardColor,
                                     ),
                                   )
                                 : const Text(
@@ -373,8 +374,8 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                                         child: Center(
                                           child: Text(
                                             user.name[0],
-                                            style: const TextStyle(
-                                              color: Colors.white,
+                                            style: TextStyle(
+                                              color: AppColors.cardColor,
                                               fontSize: 12,
                                               fontWeight: FontWeight.w700,
                                             ),
@@ -389,9 +390,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                                           children: [
                                             Text(
                                               user.email,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontSize: 11,
-                                                color: Colors.white,
+                                                color: AppColors.cardColor,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
@@ -440,7 +441,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   Widget _buildLabel(String text) {
     return Text(
       text,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 10,
         fontWeight: FontWeight.w600,
         color: AppColors.textSecondary,

@@ -1,83 +1,110 @@
 import 'package:flutter/material.dart';
 
 /// UNAD brand color palette — extracted from the React/Tailwind prototype.
+///
+/// Theme-dependent colors use a static [_isDark] flag set by the root widget
+/// so every existing `AppColors.textPrimary` reference automatically resolves
+/// to the correct value for the current brightness.
 class AppColors {
   AppColors._();
 
-  // ─── Primary (UNAD Green) ────────────────────────────────────────
+  // ─── Runtime theme resolver ──────────────────────────────────────
+  static bool _isDark = false;
+
+  /// Call from the root widget's build to sync the brightness flag.
+  static void updateBrightness(bool isDark) => _isDark = isDark;
+
+  // ─── Primary (UNAD Green) — fixed across themes ─────────────────
   static const Color primary = Color(0xFF026A45);
   static const Color primaryLight = Color(0xFF038556);
   static const Color primaryDark = Color(0xFF015A3A);
-  static const Color primarySurface = Color(0x0D026A45); // 5% opacity
+  static const Color primarySurface = Color(0x0D026A45);
 
-  // ─── Accent (UNAD Gold) ──────────────────────────────────────────
+  // ─── Accent (UNAD Gold) — fixed across themes ───────────────────
   static const Color gold = Color(0xFFF9C029);
   static const Color goldLight = Color(0xFFFAD45C);
   static const Color goldDark = Color(0xFFE5AC0E);
-  static const Color goldSurface = Color(0x1AF9C029); // 10% opacity
+  static const Color goldSurface = Color(0x1AF9C029);
 
-  // ─── Neutrals (Light mode) ───────────────────────────────────────
-  static const Color white = Color(0xFFFFFFFF);
-  static const Color background = Color(0xFFF9FAFB); // gray-50
-  static const Color surface = Color(0xFFFFFFFF);
-  static const Color border = Color(0xFFF3F4F6); // gray-100
-  static const Color borderMedium = Color(0xFFE5E7EB); // gray-200
-  static const Color divider = Color(0xFFF3F4F6);
+  // ─── Light-only constants (used internally) ─────────────────────
+  static const Color _lightBackground = Color(0xFFF9FAFB);
+  static const Color _lightSurface = Color(0xFFFFFFFF);
+  static const Color _lightBorder = Color(0xFFF3F4F6);
+  static const Color _lightBorderMedium = Color(0xFFE5E7EB);
+  static const Color _lightDivider = Color(0xFFF3F4F6);
+  static const Color _lightTextPrimary = Color(0xFF111827);
+  static const Color _lightTextSecondary = Color(0xFF6B7280);
+  static const Color _lightTextTertiary = Color(0xFF9CA3AF);
+  static const Color _lightTextDisabled = Color(0xFFD1D5DB);
 
-  // ─── Text (Light mode) ───────────────────────────────────────────
-  static const Color textPrimary = Color(0xFF111827); // gray-900
-  static const Color textSecondary = Color(0xFF6B7280); // gray-500
-  static const Color textTertiary = Color(0xFF9CA3AF); // gray-400
-  static const Color textDisabled = Color(0xFFD1D5DB); // gray-300
-
-  // ─── Dark Mode ───────────────────────────────────────────────────
+  // ─── Dark-only constants (used internally) ──────────────────────
   static const Color darkBackground = Color(0xFF0F172A);
   static const Color darkSurface = Color(0xFF1E293B);
   static const Color darkBorder = Color(0xFF334155);
   static const Color darkTextPrimary = Color(0xFFFFFFFF);
-  static const Color darkTextSecondary = Color(0xFF94A3B8); // slate-400
-  static const Color darkTextTertiary = Color(0xFF64748B); // slate-500
+  static const Color darkTextSecondary = Color(0xFF94A3B8);
+  static const Color darkTextTertiary = Color(0xFF64748B);
+  static const Color _darkTextDisabled = Color(0xFF475569);
 
-  // ─── Semantic Colors ─────────────────────────────────────────────
-  static const Color success = Color(0xFF059669); // emerald-600
-  static const Color successLight = Color(0xFFD1FAE5); // emerald-100
-  static const Color successSurface = Color(0xFFECFDF5); // emerald-50
-  static const Color successText = Color(0xFF047857); // emerald-700
+  // ─── Theme-aware neutrals ───────────────────────────────────────
+  static const Color white = Color(0xFFFFFFFF);
+  static Color get background => _isDark ? darkBackground : _lightBackground;
+  static Color get surface => _isDark ? darkSurface : _lightSurface;
+  static Color get border => _isDark ? darkBorder : _lightBorder;
+  static Color get borderMedium => _isDark ? darkBorder : _lightBorderMedium;
+  static Color get divider => _isDark ? darkBorder : _lightDivider;
+  static Color get cardColor => _isDark ? darkSurface : _lightSurface;
+  static Color get inputFill => _isDark ? darkBackground : _lightBackground;
 
-  static const Color warning = Color(0xFFD97706); // amber-600
-  static const Color warningLight = Color(0xFFFDE68A); // amber-200
-  static const Color warningSurface = Color(0xFFFFFBEB); // amber-50
-  static const Color warningText = Color(0xFFB45309); // amber-700
+  // ─── Theme-aware text ───────────────────────────────────────────
+  static Color get textPrimary => _isDark ? darkTextPrimary : _lightTextPrimary;
+  static Color get textSecondary =>
+      _isDark ? darkTextSecondary : _lightTextSecondary;
+  static Color get textTertiary =>
+      _isDark ? darkTextTertiary : _lightTextTertiary;
+  static Color get textDisabled =>
+      _isDark ? _darkTextDisabled : _lightTextDisabled;
 
-  static const Color error = Color(0xFFDC2626); // red-600
-  static const Color errorLight = Color(0xFFFECACA); // red-200
-  static const Color errorSurface = Color(0xFFFEF2F2); // red-50
-  static const Color errorText = Color(0xFFB91C1C); // red-700
+  // ─── Semantic Colors — fixed across themes ──────────────────────
+  static const Color success = Color(0xFF059669);
+  static const Color successLight = Color(0xFFD1FAE5);
+  static const Color successSurface = Color(0xFFECFDF5);
+  static const Color successText = Color(0xFF047857);
 
-  static const Color info = Color(0xFF2563EB); // blue-600
-  static const Color infoLight = Color(0xFFBFDBFE); // blue-200
-  static const Color infoSurface = Color(0xFFEFF6FF); // blue-50
-  static const Color infoText = Color(0xFF1D4ED8); // blue-700
+  static const Color warning = Color(0xFFD97706);
+  static const Color warningLight = Color(0xFFFDE68A);
+  static const Color warningSurface = Color(0xFFFFFBEB);
+  static const Color warningText = Color(0xFFB45309);
+
+  static const Color error = Color(0xFFDC2626);
+  static const Color errorLight = Color(0xFFFECACA);
+  static const Color errorSurface = Color(0xFFFEF2F2);
+  static const Color errorText = Color(0xFFB91C1C);
+
+  static const Color info = Color(0xFF2563EB);
+  static const Color infoLight = Color(0xFFBFDBFE);
+  static const Color infoSurface = Color(0xFFEFF6FF);
+  static const Color infoText = Color(0xFF1D4ED8);
 
   // ─── Role Gradients ──────────────────────────────────────────────
   static const List<Color> studentGradient = [
-    Color(0xFF10B981), // emerald-500
-    Color(0xFF026A45), // primary
+    Color(0xFF10B981),
+    Color(0xFF026A45),
   ];
 
   static const List<Color> professorGradient = [
-    Color(0xFF3B82F6), // blue-500
-    Color(0xFF1D4ED8), // blue-700
+    Color(0xFF3B82F6),
+    Color(0xFF1D4ED8),
   ];
 
   static const List<Color> adminGradient = [
-    Color(0xFF8B5CF6), // violet-500
-    Color(0xFF7C3AED), // purple-600
+    Color(0xFF8B5CF6),
+    Color(0xFF7C3AED),
   ];
 
   static const List<Color> registrarGradient = [
-    Color(0xFFF59E0B), // amber-400
-    Color(0xFFF97316), // orange-500
+    Color(0xFFF59E0B),
+    Color(0xFFF97316),
   ];
 
   // ─── Role-Specific ──────────────────────────────────────────────
@@ -217,28 +244,4 @@ class StatusBadgeColors {
   final Color border;
 
   const StatusBadgeColors(this.background, this.text, this.border);
-}
-
-/// Theme-aware color helper. Use `AppColors.of(context)` to get colors
-/// that automatically switch between light and dark mode.
-class ThemeColors {
-  final BuildContext _context;
-  const ThemeColors._(this._context);
-
-  bool get _isDark => Theme.of(_context).brightness == Brightness.dark;
-
-  Color get surface => _isDark ? AppColors.darkSurface : AppColors.surface;
-  Color get background => _isDark ? AppColors.darkBackground : AppColors.background;
-  Color get border => _isDark ? AppColors.darkBorder : AppColors.border;
-  Color get borderMedium => _isDark ? AppColors.darkBorder : AppColors.borderMedium;
-  Color get textPrimary => _isDark ? AppColors.darkTextPrimary : AppColors.textPrimary;
-  Color get textSecondary => _isDark ? AppColors.darkTextSecondary : AppColors.textSecondary;
-  Color get textTertiary => _isDark ? AppColors.darkTextTertiary : AppColors.textTertiary;
-  Color get cardColor => _isDark ? AppColors.darkSurface : Colors.white;
-  Color get inputFill => _isDark ? AppColors.darkBackground : AppColors.background;
-}
-
-/// Extension on AppColors to provide theme-aware colors.
-extension AppColorsTheme on AppColors {
-  static ThemeColors of(BuildContext context) => ThemeColors._(context);
 }

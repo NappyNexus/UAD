@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 
@@ -312,9 +313,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                       hintStyle: TextStyle(fontSize: 13),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: AppColors.borderMedium,
-                        ),
+                        borderSide: BorderSide(color: AppColors.borderMedium),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 12,
@@ -331,9 +330,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                       hintStyle: TextStyle(fontSize: 13),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: AppColors.borderMedium,
-                        ),
+                        borderSide: BorderSide(color: AppColors.borderMedium),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 12,
@@ -621,9 +618,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
           backgroundColor: isSelected ? AppColors.primary : Colors.white,
           foregroundColor: isSelected ? Colors.white : AppColors.textSecondary,
           elevation: 0,
-          side: isSelected
-              ? null
-              : BorderSide(color: AppColors.borderMedium),
+          side: isSelected ? null : BorderSide(color: AppColors.borderMedium),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 
@@ -220,9 +221,24 @@ class _ProgressScreenState extends State<ProgressScreen> {
                         centerSpaceRadius: 60,
                         startDegreeOffset: -90,
                         sections: [
-                          PieChartSectionData(color: AppColors.primary, value: _completedCredits.toDouble(), title: '', radius: 24),
-                          PieChartSectionData(color: const Color(0xFF2563EB), value: _inProgressCredits.toDouble(), title: '', radius: 24),
-                          PieChartSectionData(color: const Color(0xFFE5E7EB), value: _pendingCredits.toDouble(), title: '', radius: 24),
+                          PieChartSectionData(
+                            color: AppColors.primary,
+                            value: _completedCredits.toDouble(),
+                            title: '',
+                            radius: 24,
+                          ),
+                          PieChartSectionData(
+                            color: const Color(0xFF2563EB),
+                            value: _inProgressCredits.toDouble(),
+                            title: '',
+                            radius: 24,
+                          ),
+                          PieChartSectionData(
+                            color: const Color(0xFFE5E7EB),
+                            value: _pendingCredits.toDouble(),
+                            title: '',
+                            radius: 24,
+                          ),
                         ],
                       ),
                     ),
@@ -230,9 +246,17 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   const SizedBox(height: 24),
                   _distBar('Completados', _completedCredits, AppColors.primary),
                   const SizedBox(height: 10),
-                  _distBar('En curso', _inProgressCredits, const Color(0xFF2563EB)),
+                  _distBar(
+                    'En curso',
+                    _inProgressCredits,
+                    const Color(0xFF2563EB),
+                  ),
                   const SizedBox(height: 10),
-                  _distBar('Pendientes', _pendingCredits, const Color(0xFFE5E7EB)),
+                  _distBar(
+                    'Pendientes',
+                    _pendingCredits,
+                    const Color(0xFFE5E7EB),
+                  ),
                 ],
               ),
             ),
@@ -258,10 +282,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  SizedBox(
-                    height: 180,
-                    child: _buildGpaBarChart(),
-                  ),
+                  SizedBox(height: 180, child: _buildGpaBarChart()),
                 ],
               ),
             ),
@@ -290,23 +311,46 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  SizedBox(
-                    height: 180,
-                    child: _buildCreditsBarChart(),
-                  ),
+                  SizedBox(height: 180, child: _buildCreditsBarChart()),
                   SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(width: 12, height: 12, decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(4))),
+                      Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
                       SizedBox(width: 8),
-                      Text('Completado', style: TextStyle(fontSize: 12, color: AppColors.textPrimary)),
+                      Text(
+                        'Completado',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
                       const SizedBox(width: 20),
-                      Container(width: 12, height: 12, decoration: BoxDecoration(color: const Color(0xFF2563EB), borderRadius: BorderRadius.circular(4))),
+                      Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF2563EB),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
                       SizedBox(width: 8),
-                      Text('En curso', style: TextStyle(fontSize: 12, color: AppColors.textPrimary)),
+                      Text(
+                        'En curso',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -383,8 +427,12 @@ class _ProgressScreenState extends State<ProgressScreen> {
                               runSpacing: 6,
                               children: List.generate(courses.length, (index) {
                                 final c = courses[index];
-                                final isLastOdd = (courses.length % 2 != 0) && (index == courses.length - 1);
-                                final width = isLastOdd ? constraints.maxWidth : itemWidth;
+                                final isLastOdd =
+                                    (courses.length % 2 != 0) &&
+                                    (index == courses.length - 1);
+                                final width = isLastOdd
+                                    ? constraints.maxWidth
+                                    : itemWidth;
                                 final grade = (c.finalGrade ?? 0).round();
                                 final color = grade >= 90
                                     ? AppColors.success
@@ -414,7 +462,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                     ),
                                   ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         c.courseName,
@@ -487,10 +536,30 @@ class _ProgressScreenState extends State<ProgressScreen> {
                             centerSpaceRadius: 40,
                             startDegreeOffset: -90,
                             sections: [
-                              PieChartSectionData(color: AppColors.primary, value: 11, title: '', radius: 20),
-                              PieChartSectionData(color: const Color(0xFF2563EB), value: 5, title: '', radius: 20),
-                              PieChartSectionData(color: const Color(0xFFFBBF24), value: 4, title: '', radius: 20),
-                              PieChartSectionData(color: const Color(0xFFE5E7EB), value: 5, title: '', radius: 20),
+                              PieChartSectionData(
+                                color: AppColors.primary,
+                                value: 11,
+                                title: '',
+                                radius: 20,
+                              ),
+                              PieChartSectionData(
+                                color: const Color(0xFF2563EB),
+                                value: 5,
+                                title: '',
+                                radius: 20,
+                              ),
+                              PieChartSectionData(
+                                color: const Color(0xFFFBBF24),
+                                value: 4,
+                                title: '',
+                                radius: 20,
+                              ),
+                              PieChartSectionData(
+                                color: const Color(0xFFE5E7EB),
+                                value: 5,
+                                title: '',
+                                radius: 20,
+                              ),
                             ],
                           ),
                         ),
@@ -504,7 +573,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
                             const SizedBox(height: 8),
                             _distBar('En curso', 5, const Color(0xFF2563EB)),
                             const SizedBox(height: 8),
-                            _distBar('Generales (ok)', 4, const Color(0xFFFBBF24)),
+                            _distBar(
+                              'Generales (ok)',
+                              4,
+                              const Color(0xFFFBBF24),
+                            ),
                             const SizedBox(height: 8),
                             _distBar('Pendientes', 5, const Color(0xFFE5E7EB)),
                           ],
@@ -800,7 +873,13 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 if (val.toInt() >= 0 && val.toInt() < labels.length) {
                   return Padding(
                     padding: EdgeInsets.only(top: 8),
-                    child: Text(labels[val.toInt()], style: TextStyle(fontSize: 10, color: AppColors.textSecondary)),
+                    child: Text(
+                      labels[val.toInt()],
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
                   );
                 }
                 return const SizedBox.shrink();
@@ -812,17 +891,28 @@ class _ProgressScreenState extends State<ProgressScreen> {
               showTitles: true,
               interval: 25,
               reservedSize: 30,
-              getTitlesWidget: (val, meta) => Text('${val.toInt()}', style: TextStyle(fontSize: 10, color: AppColors.textSecondary)),
+              getTitlesWidget: (val, meta) => Text(
+                '${val.toInt()}',
+                style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
+              ),
             ),
           ),
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          rightTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
         ),
         gridData: FlGridData(
           show: true,
           drawVerticalLine: false,
           horizontalInterval: 25,
-          getDrawingHorizontalLine: (value) => FlLine(color: AppColors.border, strokeWidth: 1, dashArray: [4, 4]),
+          getDrawingHorizontalLine: (value) => FlLine(
+            color: AppColors.border,
+            strokeWidth: 1,
+            dashArray: [4, 4],
+          ),
         ),
         borderData: FlBorderData(
           show: true,
@@ -832,9 +922,45 @@ class _ProgressScreenState extends State<ProgressScreen> {
           ),
         ),
         barGroups: [
-          BarChartGroupData(x: 0, barRods: [BarChartRodData(toY: 95, color: AppColors.primary, width: 44, borderRadius: const BorderRadius.vertical(top: Radius.circular(4)))]),
-          BarChartGroupData(x: 1, barRods: [BarChartRodData(toY: 88, color: AppColors.primary, width: 44, borderRadius: const BorderRadius.vertical(top: Radius.circular(4)))]),
-          BarChartGroupData(x: 2, barRods: [BarChartRodData(toY: 92, color: AppColors.primary, width: 44, borderRadius: const BorderRadius.vertical(top: Radius.circular(4)))]),
+          BarChartGroupData(
+            x: 0,
+            barRods: [
+              BarChartRodData(
+                toY: 95,
+                color: AppColors.primary,
+                width: 44,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(4),
+                ),
+              ),
+            ],
+          ),
+          BarChartGroupData(
+            x: 1,
+            barRods: [
+              BarChartRodData(
+                toY: 88,
+                color: AppColors.primary,
+                width: 44,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(4),
+                ),
+              ),
+            ],
+          ),
+          BarChartGroupData(
+            x: 2,
+            barRods: [
+              BarChartRodData(
+                toY: 92,
+                color: AppColors.primary,
+                width: 44,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(4),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -853,11 +979,22 @@ class _ProgressScreenState extends State<ProgressScreen> {
             sideTitles: SideTitles(
               showTitles: true,
               getTitlesWidget: (val, meta) {
-                const labels = ['2023 1', '2023 2', '2024 1', '2024-2 (actual)'];
+                const labels = [
+                  '2023 1',
+                  '2023 2',
+                  '2024 1',
+                  '2024-2 (actual)',
+                ];
                 if (val.toInt() >= 0 && val.toInt() < labels.length) {
                   return Padding(
                     padding: EdgeInsets.only(top: 8),
-                    child: Text(labels[val.toInt()], style: TextStyle(fontSize: 9, color: AppColors.textSecondary)),
+                    child: Text(
+                      labels[val.toInt()],
+                      style: TextStyle(
+                        fontSize: 9,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
                   );
                 }
                 return const SizedBox.shrink();
@@ -869,17 +1006,28 @@ class _ProgressScreenState extends State<ProgressScreen> {
               showTitles: true,
               interval: 5,
               reservedSize: 24,
-              getTitlesWidget: (val, meta) => Text('${val.toInt()}', style: TextStyle(fontSize: 10, color: AppColors.textSecondary)),
+              getTitlesWidget: (val, meta) => Text(
+                '${val.toInt()}',
+                style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
+              ),
             ),
           ),
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          rightTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
         ),
         gridData: FlGridData(
           show: true,
           drawVerticalLine: false,
           horizontalInterval: 5,
-          getDrawingHorizontalLine: (value) => FlLine(color: AppColors.border, strokeWidth: 1, dashArray: [4, 4]),
+          getDrawingHorizontalLine: (value) => FlLine(
+            color: AppColors.border,
+            strokeWidth: 1,
+            dashArray: [4, 4],
+          ),
         ),
         borderData: FlBorderData(
           show: true,
@@ -889,10 +1037,58 @@ class _ProgressScreenState extends State<ProgressScreen> {
           ),
         ),
         barGroups: [
-          BarChartGroupData(x: 0, barRods: [BarChartRodData(toY: 14, color: AppColors.primary, width: 34, borderRadius: const BorderRadius.vertical(top: Radius.circular(4)))]),
-          BarChartGroupData(x: 1, barRods: [BarChartRodData(toY: 17, color: AppColors.primary, width: 34, borderRadius: const BorderRadius.vertical(top: Radius.circular(4)))]),
-          BarChartGroupData(x: 2, barRods: [BarChartRodData(toY: 17, color: AppColors.primary, width: 34, borderRadius: const BorderRadius.vertical(top: Radius.circular(4)))]),
-          BarChartGroupData(x: 3, barRods: [BarChartRodData(toY: 16, color: const Color(0xFF2563EB), width: 34, borderRadius: const BorderRadius.vertical(top: Radius.circular(4)))]),
+          BarChartGroupData(
+            x: 0,
+            barRods: [
+              BarChartRodData(
+                toY: 14,
+                color: AppColors.primary,
+                width: 34,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(4),
+                ),
+              ),
+            ],
+          ),
+          BarChartGroupData(
+            x: 1,
+            barRods: [
+              BarChartRodData(
+                toY: 17,
+                color: AppColors.primary,
+                width: 34,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(4),
+                ),
+              ),
+            ],
+          ),
+          BarChartGroupData(
+            x: 2,
+            barRods: [
+              BarChartRodData(
+                toY: 17,
+                color: AppColors.primary,
+                width: 34,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(4),
+                ),
+              ),
+            ],
+          ),
+          BarChartGroupData(
+            x: 3,
+            barRods: [
+              BarChartRodData(
+                toY: 16,
+                color: const Color(0xFF2563EB),
+                width: 34,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(4),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -913,10 +1109,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
         Expanded(
           child: Text(
             label,
-            style: TextStyle(
-              fontSize: 12,
-              color: AppColors.textSecondary,
-            ),
+            style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
           ),
         ),
         Text(

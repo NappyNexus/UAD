@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../core/constants/app_constants.dart';
 import '../../data/mock/mock_data.dart';
 
@@ -395,7 +396,7 @@ class ProfilePanel extends StatelessWidget {
                                                 children: [
                                                   Text(
                                                     link['label'] as String,
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                       fontSize: 13,
                                                       fontWeight:
                                                           FontWeight.w500,
@@ -405,7 +406,7 @@ class ProfilePanel extends StatelessWidget {
                                                   ),
                                                   Text(
                                                     link['desc'] as String,
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                       fontSize: 11,
                                                       color: AppColors
                                                           .textTertiary,

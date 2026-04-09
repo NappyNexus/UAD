@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 
 /// Page header with title, optional subtitle, and optional action button.
 /// Ported from PageHeader.jsx.
@@ -17,7 +18,7 @@ class PageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final c = context.appColors;
     return Padding(
       padding: EdgeInsets.only(bottom: 16),
       child: Row(
@@ -31,17 +32,14 @@ class PageHeader extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
+                    color: c.textPrimary,
                   ),
                 ),
                 if (subtitle != null) ...[
                   SizedBox(height: 4),
                   Text(
                     subtitle!,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: AppColors.textSecondary,
-                    ),
+                    style: TextStyle(fontSize: 13, color: c.textSecondary),
                   ),
                 ],
               ],

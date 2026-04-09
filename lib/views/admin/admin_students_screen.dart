@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../data/models/student_model.dart';
 import '../../widgets/common/page_header.dart';
@@ -538,10 +539,7 @@ class _NewStudentForm extends StatelessWidget {
             maxLines: maxLines,
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: TextStyle(
-                fontSize: 13,
-                color: AppColors.textTertiary,
-              ),
+              hintStyle: TextStyle(fontSize: 13, color: AppColors.textTertiary),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(color: AppColors.borderMedium),

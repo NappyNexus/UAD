@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_color_scheme.dart';
 import '../../core/constants/app_constants.dart';
 import '../../viewmodels/auth_viewmodel.dart';
 import '../../widgets/layout/app_drawer.dart';
@@ -25,7 +26,7 @@ class _AppShellState extends ConsumerState<AppShell> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final c = context.appColors;
     final auth = ref.watch(authProvider);
     final role = auth.currentRole ?? AppConstants.roleStudent;
     final navItems = AppConstants.getNavItems(role);
@@ -190,7 +191,7 @@ class _AppShellState extends ConsumerState<AppShell> {
       // ── Bottom Navigation ──
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
+          color: c.cardColor,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.08),
@@ -257,6 +258,7 @@ class _BottomNavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final c = context.appColors;
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -275,7 +277,7 @@ class _BottomNavItem extends StatelessWidget {
               child: Icon(
                 icon,
                 size: 20,
-                color: isActive ? AppColors.primary : AppColors.textTertiary,
+                color: isActive ? AppColors.primary : c.textTertiary,
               ),
             ),
             const SizedBox(height: 3),
@@ -284,7 +286,7 @@ class _BottomNavItem extends StatelessWidget {
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
-                color: isActive ? AppColors.primary : AppColors.textTertiary,
+                color: isActive ? AppColors.primary : c.textTertiary,
               ),
             ),
             if (isActive)
