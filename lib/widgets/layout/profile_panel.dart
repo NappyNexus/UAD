@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_color_scheme.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/theme/app_colors.dart';
 import '../../data/mock/mock_data.dart';
 
 /// Right-sliding profile panel, ported from ProfilePanel.jsx.
@@ -19,7 +18,6 @@ class ProfilePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final profile = _getProfile(currentRole);
     final quickLinks = _getQuickLinks(currentRole);
 

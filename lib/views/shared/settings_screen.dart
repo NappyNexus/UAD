@@ -5,6 +5,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../viewmodels/app_preferences_viewmodel.dart';
+import '../../viewmodels/auth_viewmodel.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -25,15 +26,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   String _language = 'es-DO';
 
   late Map<String, String> _profile;
-  final Map<String, bool> _notifs = {
-    'grades': true,
-    'payments': true,
-    'announcements': true,
-    'requests': false,
-    'reminders': true,
-    'email': true,
-    'sms': false,
-  };
+  late Map<String, bool> _notifs;
 
   List<Map<String, dynamic>> _cards = [
     {
@@ -59,50 +52,78 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     'cvv': '',
   };
 
-  final List<Map<String, dynamic>> _menuSections = [
-    {
-      'id': 'profile',
-      'label': 'Perfil Personal',
-      'icon': LucideIcons.user,
-      'color': Colors.blue,
-    },
-    {
-      'id': 'notifications',
-      'label': 'Notificaciones',
-      'icon': LucideIcons.bell,
-      'color': Colors.amber,
-    },
-    {
-      'id': 'security',
-      'label': 'Seguridad',
-      'icon': LucideIcons.shield,
-      'color': Colors.red,
-    },
-    {
-      'id': 'cards',
-      'label': 'Mis Tarjetas',
-      'icon': LucideIcons.creditCard,
-      'color': Colors.indigo,
-    },
-    {
-      'id': 'appearance',
-      'label': 'Apariencia',
-      'icon': LucideIcons.palette,
-      'color': Colors.purple,
-    },
-    {
-      'id': 'language',
-      'label': 'Idioma y Región',
-      'icon': LucideIcons.globe,
-      'color': Colors.green,
-    },
-    {
-      'id': 'help',
-      'label': 'Ayuda y Soporte',
-      'icon': LucideIcons.helpCircle,
-      'color': Colors.grey,
-    },
-  ];
+  static const Map<String, String> _currentAdmin = {
+    'name': 'Juan Administrador',
+    'email': 'admin@unad.edu.do',
+    'phone': '809-525-3080 ext. 100',
+    'address': 'UNAD, Bonao, Monseñor Nouel',
+    'id': 'ADM-001',
+    'department': 'Rectoría',
+    'photo':
+        'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
+  };
+
+  static const Map<String, String> _currentRegistrar = {
+    'name': 'Ana Registradora',
+    'email': 'registrar@unad.edu.do',
+    'phone': '809-525-3080 ext. 120',
+    'address': 'UNAD, Bonao, Monseñor Nouel',
+    'id': 'REG-001',
+    'department': 'Oficina de Registro',
+    'photo':
+        'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face',
+  };
+
+  List<Map<String, dynamic>> get _menuSections {
+    final role = ref.watch(authProvider).currentRole ?? 'student';
+    final isStudent = role == 'student';
+    final isAdmin = role == 'admin' || role == 'registrar';
+    return [
+      {
+        'id': 'profile',
+        'label': isAdmin ? 'Mi Perfil Admin' : (role == 'professor' ? 'Mi Perfil' : 'Perfil Personal'),
+        'icon': LucideIcons.user,
+        'color': Colors.blue,
+      },
+      {
+        'id': 'notifications',
+        'label': 'Notificaciones',
+        'icon': LucideIcons.bell,
+        'color': Colors.amber,
+      },
+      {
+        'id': 'security',
+        'label': 'Seguridad',
+        'icon': LucideIcons.shield,
+        'color': Colors.red,
+      },
+      if (isStudent)
+        {
+          'id': 'cards',
+          'label': 'Mis Tarjetas',
+          'icon': LucideIcons.creditCard,
+          'color': Colors.indigo,
+        },
+      {
+        'id': 'appearance',
+        'label': 'Apariencia',
+        'icon': LucideIcons.palette,
+        'color': Colors.purple,
+      },
+      {
+        'id': 'language',
+        'label': 'Idioma y Región',
+        'icon': LucideIcons.globe,
+        'color': Colors.green,
+      },
+      {
+        'id': 'help',
+        'label': 'Ayuda y Soporte',
+        'icon': LucideIcons.helpCircle,
+        'color': Colors.grey,
+      },
+    ];
+  }
 
   static const List<Map<String, String>> _accentColors = [
     {'value': '#026a45', 'label': 'Verde UNAD'},
@@ -126,12 +147,61 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-    _profile = {
-      'name': currentStudent.name,
-      'email': currentStudent.email,
-      'phone': currentStudent.phone,
-      'address': currentStudent.address,
-    };
+    final role = ref.read(authProvider).currentRole ?? 'student';
+    final isAdmin = role == 'admin' || role == 'registrar';
+    final isProfessor = role == 'professor';
+    final isRegistrar = role == 'registrar';
+
+    final adminData = isRegistrar ? _currentRegistrar : _currentAdmin;
+
+    if (isAdmin) {
+      _profile = {
+        'name': adminData['name']!,
+        'email': adminData['email']!,
+        'phone': adminData['phone']!,
+        'address': adminData['address']!,
+      };
+      _notifs = {
+        'system': true,
+        'requests': true,
+        'announcements': true,
+        'reports': false,
+        'reminders': true,
+        'email': true,
+        'sms': false,
+      };
+    } else if (isProfessor) {
+      _profile = {
+        'name': currentProfessor['name']!,
+        'email': currentProfessor['email']!,
+        'phone': '809-555-9876',
+        'address': 'Santiago, República Dominicana',
+      };
+      _notifs = {
+        'grades': true,
+        'announcements': true,
+        'requests': true,
+        'reminders': true,
+        'email': true,
+        'sms': false,
+      };
+    } else {
+      _profile = {
+        'name': currentStudent.name,
+        'email': currentStudent.email,
+        'phone': currentStudent.phone,
+        'address': currentStudent.address,
+      };
+      _notifs = {
+        'grades': true,
+        'payments': true,
+        'announcements': true,
+        'requests': false,
+        'reminders': true,
+        'email': true,
+        'sms': false,
+      };
+    }
   }
 
   void _handleSave() {
@@ -151,6 +221,23 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final tc = context.appColors;
+    final role = ref.watch(authProvider).currentRole ?? 'student';
+    final isAdmin = role == 'admin' || role == 'registrar';
+    final isProfessor = role == 'professor';
+    final isRegistrar = role == 'registrar';
+    final adminData = isRegistrar ? _currentRegistrar : _currentAdmin;
+
+    final String rolePhoto = isAdmin
+        ? adminData['photo']!
+        : (isProfessor ? currentProfessor['photo']! : currentStudent.photo ?? '');
+
+    final String roleSub1 = isAdmin
+        ? adminData['department']!
+        : (isProfessor ? 'Departamento de ${currentProfessor['department']}' : currentStudent.program);
+
+    final String roleSub2 = isAdmin
+        ? '${adminData['id']} · ${isRegistrar ? 'Registradora' : 'Administrador'}'
+        : (isProfessor ? '${currentProfessor['id']} · Profesor' : '${currentStudent.id} · Sem. ${currentStudent.semester}');
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
@@ -219,9 +306,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: currentStudent.photo != null
+                        child: rolePhoto.isNotEmpty
                             ? Image.network(
-                                currentStudent.photo!,
+                                rolePhoto,
                                 width: 64,
                                 height: 64,
                                 fit: BoxFit.cover,
@@ -263,7 +350,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          currentStudent.program,
+                          roleSub1,
                           style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
@@ -272,7 +359,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          '${currentStudent.id} · Sem. ${currentStudent.semester}',
+                          roleSub2,
                           style: TextStyle(
                             fontSize: 11,
                             color: AppColors.textSecondary,
@@ -433,6 +520,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   // PROFILE
   // ════════════════════════════════════════════════════
   Widget _buildProfileSection() {
+    final role = ref.watch(authProvider).currentRole ?? 'student';
+    final isAdmin = role == 'admin' || role == 'registrar';
+    final isProfessor = role == 'professor';
+    final isRegistrar = role == 'registrar';
+    final adminData = isRegistrar ? _currentRegistrar : _currentAdmin;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -566,8 +659,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
           ),
         ),
-        _readOnlyField('Cédula', currentStudent.cedula),
-        _readOnlyField('Número de Matrícula', currentStudent.id),
+        if (isAdmin) ...[
+          _readOnlyField('Departamento / Área', adminData['department']!),
+          _readOnlyField('ID de Administrador', adminData['id']!),
+        ] else if (isProfessor) ...[
+          _readOnlyField('Departamento', 'Departamento de ${currentProfessor['department']}'),
+          _readOnlyField('ID de Empleado', currentProfessor['id']!),
+        ] else ...[
+          _readOnlyField('Cédula', currentStudent.cedula),
+          _readOnlyField('Número de Matrícula', currentStudent.id),
+        ],
       ],
     );
   }
@@ -610,6 +711,89 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   // NOTIFICATIONS
   // ════════════════════════════════════════════════════
   Widget _buildNotificationsSection() {
+    final role = ref.watch(authProvider).currentRole ?? 'student';
+    final isAdmin = role == 'admin' || role == 'registrar';
+    final isProfessor = role == 'professor';
+
+    final notifOptions = isAdmin
+        ? [
+            {
+              'key': 'system',
+              'label': 'Alertas del sistema',
+              'desc': 'Errores, mantenimiento y actualizaciones',
+            },
+            {
+              'key': 'requests',
+              'label': 'Solicitudes de usuarios',
+              'desc': 'Nuevas solicitudes de estudiantes y profesores',
+            },
+            {
+              'key': 'announcements',
+              'label': 'Anuncios institucionales',
+              'desc': 'Comunicados institucionales importantes',
+            },
+            {
+              'key': 'reports',
+              'label': 'Reportes automáticos',
+              'desc': 'Resúmenes periódicos de estadísticas',
+            },
+            {
+              'key': 'reminders',
+              'label': 'Recordatorios administrativos',
+              'desc': 'Fechas de cierre de períodos, etc.',
+            },
+          ]
+        : (isProfessor
+            ? [
+                {
+                  'key': 'grades',
+                  'label': 'Recordatorio de calificaciones',
+                  'desc': 'Alertas de notas pendientes por publicar',
+                },
+                {
+                  'key': 'announcements',
+                  'label': 'Anuncios institucionales',
+                  'desc': 'Comunicados de la universidad',
+                },
+                {
+                  'key': 'requests',
+                  'label': 'Solicitudes de estudiantes',
+                  'desc': 'Cuando un estudiante te envíe una consulta',
+                },
+                {
+                  'key': 'reminders',
+                  'label': 'Recordatorios académicos',
+                  'desc': 'Fechas límite de calificaciones, etc.',
+                },
+              ]
+            : [
+                {
+                  'key': 'grades',
+                  'label': 'Publicación de calificaciones',
+                  'desc': 'Cuando un profesor publique notas',
+                },
+                {
+                  'key': 'payments',
+                  'label': 'Pagos y estados de cuenta',
+                  'desc': 'Vencimientos y confirmaciones',
+                },
+                {
+                  'key': 'announcements',
+                  'label': 'Anuncios institucionales',
+                  'desc': 'Comunicados de la universidad',
+                },
+                {
+                  'key': 'requests',
+                  'label': 'Actualización de solicitudes',
+                  'desc': 'Cambios de estado en tus solicitudes',
+                },
+                {
+                  'key': 'reminders',
+                  'label': 'Recordatorios académicos',
+                  'desc': 'Fechas de selección, retiro, etc.',
+                },
+              ]);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -618,33 +802,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 20),
-        ...[
-          {
-            'key': 'grades',
-            'label': 'Publicación de calificaciones',
-            'desc': 'Cuando un profesor publique notas',
-          },
-          {
-            'key': 'payments',
-            'label': 'Pagos y estados de cuenta',
-            'desc': 'Vencimientos y confirmaciones',
-          },
-          {
-            'key': 'announcements',
-            'label': 'Anuncios institucionales',
-            'desc': 'Comunicados de la universidad',
-          },
-          {
-            'key': 'requests',
-            'label': 'Actualización de solicitudes',
-            'desc': 'Cambios de estado en tus solicitudes',
-          },
-          {
-            'key': 'reminders',
-            'label': 'Recordatorios académicos',
-            'desc': 'Fechas de selección, retiro, etc.',
-          },
-        ].map(
+        ...notifOptions.map(
           (item) =>
               _notificationToggle(item['key']!, item['label']!, item['desc']!),
         ),

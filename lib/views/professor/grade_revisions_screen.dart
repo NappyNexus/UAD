@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_color_scheme.dart';
 import '../../widgets/common/page_header.dart';
 
 class GradeRevisionsScreen extends StatefulWidget {
@@ -111,7 +110,6 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final pending = _requests.where((r) => r['status'] == 'pending').length;
     final filtered = _filter == 'all'
         ? _requests

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_color_scheme.dart';
 import '../../widgets/common/page_header.dart';
 
 class ResourcesScreen extends StatefulWidget {
@@ -73,7 +72,6 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final filtered = _resources.where((r) {
       final ms =
           r['title'].toString().toLowerCase().contains(

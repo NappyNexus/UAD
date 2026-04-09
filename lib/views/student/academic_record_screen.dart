@@ -4,7 +4,6 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../data/models/student_model.dart';
 import '../../widgets/common/page_header.dart';
@@ -15,7 +14,6 @@ class AcademicRecordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final s = currentStudent;
     final allCourses = gradeHistory;
     final totalCredits = allCourses.fold<int>(0, (a, c) => a + c.credits);

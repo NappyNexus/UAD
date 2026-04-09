@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_color_scheme.dart';
 import '../../widgets/common/page_header.dart';
 
 class AcademicCalendarScreen extends StatefulWidget {
@@ -164,7 +163,6 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final daysInMonth = DateTime(_year, _month + 2, 0).day;
     final firstDay = DateTime(_year, _month + 1, 1).weekday % 7;
     final upcomingEvents =

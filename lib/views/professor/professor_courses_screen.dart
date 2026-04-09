@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 
@@ -305,7 +304,6 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final p = currentProfessor;
     final totalStudents = professorCourses.fold<int>(
       0,
@@ -380,7 +378,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
               ],
             ),
           ),
-
+          SizedBox(height: 16),
           const PageHeader(
             title: 'Mis Cursos',
             subtitle: 'Período Agosto - Diciembre 2024',

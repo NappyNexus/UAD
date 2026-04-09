@@ -175,6 +175,11 @@ class AppConstants {
       route: routeCourseCalendar,
     ),
     NavItem(
+      label: 'Perfil Curso',
+      icon: LucideIcons.bookMarked,
+      route: routeCourseProfile,
+    ),
+    NavItem(
       label: 'Revisiones',
       icon: LucideIcons.fileSearch,
       route: routeGradeRevisions,
@@ -184,11 +189,7 @@ class AppConstants {
       icon: LucideIcons.messageCircle,
       route: routeMessaging,
     ),
-    NavItem(
-      label: 'Recursos',
-      icon: LucideIcons.library,
-      route: routeResources,
-    ),
+
     NavItem(label: 'Encuestas', icon: LucideIcons.star, route: routeSurveys),
   ];
 

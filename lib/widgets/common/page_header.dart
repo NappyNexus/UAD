@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_color_scheme.dart';
 
 /// Page header with title, optional subtitle, and optional action button.

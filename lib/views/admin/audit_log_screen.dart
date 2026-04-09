@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_color_scheme.dart';
 import '../../widgets/common/page_header.dart';
 
 final _initialAuditLog = [
@@ -112,7 +111,6 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final filtered = _initialAuditLog.where((log) {
       final a = (log['action'] as String).toLowerCase();
       final u = (log['user'] as String).toLowerCase();

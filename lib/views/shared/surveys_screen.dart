@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_color_scheme.dart';
 import '../../widgets/common/page_header.dart';
 
 class SurveysScreen extends StatefulWidget {
@@ -86,7 +85,6 @@ class _SurveysScreenState extends State<SurveysScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final pending = _surveys.where((s) => s['status'] == 'pending').toList();
     final completed = _surveys
         .where((s) => s['status'] == 'completed')
@@ -582,7 +580,7 @@ class _SurveyModalState extends State<_SurveyModal> {
                 20,
               ).copyWith(bottom: MediaQuery.of(context).viewInsets.bottom + 20),
               itemCount: _courseQuestions.length,
-              separatorBuilder: (_, __) => Padding(
+              separatorBuilder: (_, _) => Padding(
                 padding: EdgeInsets.symmetric(vertical: 24),
                 child: Divider(height: 1, color: AppColors.borderMedium),
               ),
@@ -698,7 +696,7 @@ class _SurveyModalState extends State<_SurveyModal> {
                         ),
                         child: TextField(
                           maxLines: 3,
-                          onChanged: (v) => _answers[q['id']] = v,
+                          onChanged: (v) => setState(() => _answers[q['id']] = v),
                           decoration: InputDecoration(
                             hintText: 'Escribe tu respuesta aquí...',
                             hintStyle: TextStyle(

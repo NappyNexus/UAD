@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 
@@ -180,7 +179,6 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final filtered = _filter == 'all'
         ? _events
         : _events.where((e) => e['courseId'] == _filter).toList();
@@ -270,6 +268,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                             ),
                             SizedBox(height: 4),
                             DropdownButtonFormField<String>(
+                              isExpanded: true,
                               initialValue: _newCourseId,
                               decoration: InputDecoration(
                                 isDense: true,
@@ -319,6 +318,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                             ),
                             SizedBox(height: 4),
                             DropdownButtonFormField<String>(
+                              isExpanded: true,
                               initialValue: _newType,
                               decoration: InputDecoration(
                                 isDense: true,
@@ -385,7 +385,21 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                             ),
                             SizedBox(height: 4),
                             TextField(
-                              onChanged: (v) => setState(() => _newDate = v),
+                              readOnly: true,
+                              controller: TextEditingController(text: _newDate),
+                              onTap: () async {
+                                final date = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2020),
+                                  lastDate: DateTime(2030),
+                                );
+                                if (date != null) {
+                                  setState(() {
+                                    _newDate = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+                                  });
+                                }
+                              },
                               decoration: InputDecoration(
                                 hintText: 'YYYY-MM-DD',
                                 isDense: true,
@@ -421,7 +435,19 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                             ),
                             SizedBox(height: 4),
                             TextField(
-                              onChanged: (v) => setState(() => _newTime = v),
+                              readOnly: true,
+                              controller: TextEditingController(text: _newTime),
+                              onTap: () async {
+                                final time = await showTimePicker(
+                                  context: context,
+                                  initialTime: TimeOfDay.now(),
+                                );
+                                if (time != null) {
+                                  setState(() {
+                                    _newTime = time.format(context);
+                                  });
+                                }
+                              },
                               decoration: InputDecoration(
                                 hintText: 'ej. 10:00 AM',
                                 isDense: true,

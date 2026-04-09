@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 import '../../widgets/common/stat_card.dart';
@@ -22,13 +21,11 @@ final _gpaDistribution = [
   {'range': '3.0-3.5', 'count': 520},
   {'range': '3.5-4.0', 'count': 486},
 ];
-
 class AdminReportsScreen extends StatelessWidget {
   const AdminReportsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final enrollmentTrend = reportData['enrollmentTrend'] as List<dynamic>;
     final studentsByProgram = reportData['studentsByProgram'] as List<dynamic>;
     final statusBreakdown = reportData['statusBreakdown'] as List<dynamic>;

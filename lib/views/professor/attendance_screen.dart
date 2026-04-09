@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 
@@ -75,11 +74,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final cName =
         (professorCourses.firstWhere((c) => c['id'] == _selectedCourse)['name']
             as String);
-
     final dayDict = _attendanceData[_selectedCourse]?[_selectedDate] ?? {};
     int present = 0, absent = 0, late = 0;
     for (final s in dayDict.values) {

@@ -30,7 +30,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    context.appColors;
     final course = professorCourses.firstWhere(
       (c) => c['id'] == _selectedCourse,
       orElse: () => professorCourses[0],

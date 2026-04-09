@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 
@@ -122,7 +121,6 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final filtered = _filter == 'all'
         ? _announcements
         : _announcements.where((a) => a['courseId'] == _filter).toList();
@@ -205,6 +203,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                             ),
                             SizedBox(height: 4),
                             DropdownButtonFormField<String>(
+                              isExpanded: true,
                               initialValue: _newCourseId,
                               decoration: InputDecoration(
                                 isDense: true,
@@ -254,6 +253,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                             ),
                             SizedBox(height: 4),
                             DropdownButtonFormField<String>(
+                              isExpanded: true,
                               initialValue: _newType,
                               decoration: InputDecoration(
                                 isDense: true,

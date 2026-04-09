@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'dart:math';
 
 // Mock grades data
@@ -45,7 +45,6 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final grades = _mockGrades[_selectedCourse] ?? [];
     final hist = _buildHistogram(grades);
 
@@ -168,9 +167,9 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
           ),
           const SizedBox(height: 16),
 
-          // Histogram (Visual via simple bar layout)
+          // Histogram with fl_chart
           Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: AppColors.surface,
               borderRadius: BorderRadius.circular(16),
@@ -189,53 +188,242 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                 ),
                 SizedBox(height: 20),
                 SizedBox(
-                  height: 160,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: hist.map((r) {
-                      final count = r['count'] as int;
-                      final heightPct = grades.isEmpty
-                          ? 0.0
-                          : count / grades.length;
-                      return Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            if (count > 0)
-                              Text(
-                                '$count',
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.textSecondary,
-                                ),
-                              ),
-                            const SizedBox(height: 4),
-                            Container(
-                              width: 30,
-                              height: max(
-                                2,
-                                120 * heightPct,
-                              ), // Scale to max 120 height
-                              decoration: BoxDecoration(
-                                color: r['color'] as Color,
-                                borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(4),
-                                ),
-                              ),
+                  height: 180,
+                  child: BarChart(
+                    BarChartData(
+                      alignment: BarChartAlignment.spaceAround,
+                      maxY: (grades.isEmpty ? 4 : hist.map((e) => e['count'] as int).reduce(max).toDouble() + 1),
+                      barTouchData: BarTouchData(enabled: false),
+                      titlesData: FlTitlesData(
+                        show: true,
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: (value, meta) {
+                              if (value.toInt() >= 0 && value.toInt() < hist.length) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Text(
+                                    hist[value.toInt()]['label'] as String,
+                                    style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
+                                  ),
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                        ),
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 28,
+                            getTitlesWidget: (value, meta) {
+                              if (value % 1 == 0) {
+                                return Text(
+                                  value.toInt().toString(),
+                                  style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                        ),
+                        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      ),
+                      gridData: FlGridData(
+                        show: true,
+                        drawVerticalLine: false,
+                        horizontalInterval: 1,
+                        getDrawingHorizontalLine: (value) => FlLine(
+                          color: AppColors.border,
+                          strokeWidth: 1,
+                          dashArray: [4, 4],
+                        ),
+                      ),
+                      borderData: FlBorderData(
+                        show: true,
+                        border: Border(
+                          bottom: BorderSide(color: AppColors.textSecondary, width: 1),
+                          left: BorderSide(color: AppColors.textSecondary, width: 1),
+                        ),
+                      ),
+                      barGroups: List.generate(hist.length, (i) {
+                        return BarChartGroupData(
+                          x: i,
+                          barRods: [
+                            BarChartRodData(
+                              toY: (hist[i]['count'] as int).toDouble(),
+                              color: hist[i]['color'] as Color,
+                              width: 32,
+                              borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
                             ),
-                            SizedBox(height: 8),
-                            Text(
-                              r['label'] as String,
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: AppColors.textSecondary,
-                              ),
+                          ],
+                        );
+                      }),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 24),
+                // Legend
+                Wrap(
+                  spacing: 16,
+                  runSpacing: 8,
+                  children: hist.map((r) => Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: r['color'] as Color,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      SizedBox(width: 6),
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: '${r['label']}: ',
+                              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                            ),
+                            TextSpan(
+                              text: '${r['count']}',
+                              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
                             ),
                           ],
                         ),
-                      );
-                    }).toList(),
+                      ),
+                    ],
+                  )).toList(),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Tendencia por Parcial Line Chart
+          Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AppColors.border),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Tendencia por Parcial',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                SizedBox(height: 20),
+                SizedBox(
+                  height: 160,
+                  child: LineChart(
+                    LineChartData(
+                      minY: 50,
+                      maxY: 100,
+                      minX: 0,
+                      maxX: 2,
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: const [
+                            FlSpot(0, 75), // default mock data to match visual
+                            FlSpot(1, 80),
+                            FlSpot(2, 78),
+                          ],
+                          isCurved: true,
+                          color: AppColors.primary,
+                          barWidth: 3,
+                          isStrokeCapRound: true,
+                          dotData: FlDotData(
+                            show: true,
+                            getDotPainter: (spot, percent, barData, index) => FlDotCirclePainter(
+                              radius: 6,
+                              color: AppColors.primary,
+                              strokeWidth: 2,
+                              strokeColor: AppColors.surface,
+                            ),
+                          ),
+                        ),
+                      ],
+                      extraLinesData: ExtraLinesData(
+                        horizontalLines: [
+                          HorizontalLine(
+                            y: 70,
+                            color: AppColors.error,
+                            strokeWidth: 1,
+                            dashArray: [4, 4],
+                            label: HorizontalLineLabel(
+                              show: true,
+                              style: TextStyle(color: AppColors.error, fontSize: 10, fontWeight: FontWeight.w700),
+                              alignment: Alignment.center,
+                              labelResolver: (line) => '70',
+                              padding: const EdgeInsets.only(right: 5, bottom: 0),
+                            ),
+                          ),
+                        ],
+                      ),
+                      titlesData: FlTitlesData(
+                        show: true,
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            interval: 1,
+                            getTitlesWidget: (value, meta) {
+                              const titles = ['Parcial 1', 'Parcial 2', 'Final (est.)'];
+                              if (value >= 0 && value < titles.length) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Text(
+                                    titles[value.toInt()],
+                                    style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
+                                  ),
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                        ),
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            interval: 15,
+                            reservedSize: 28,
+                            getTitlesWidget: (value, meta) {
+                              return Text(
+                                value.toInt().toString(),
+                                style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
+                              );
+                            },
+                          ),
+                        ),
+                        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      ),
+                      gridData: FlGridData(
+                        show: true,
+                        drawVerticalLine: false,
+                        getDrawingHorizontalLine: (value) => FlLine(
+                          color: AppColors.border,
+                          strokeWidth: 1,
+                          dashArray: [4, 4],
+                        ),
+                      ),
+                      borderData: FlBorderData(
+                        show: true,
+                        border: Border(
+                          bottom: BorderSide(color: AppColors.textSecondary, width: 1),
+                          left: BorderSide(color: AppColors.textSecondary, width: 1),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],

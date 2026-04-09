@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_color_scheme.dart';
 import '../../data/mock/mock_data.dart';
 import '../../data/models/student_model.dart';
 import '../../widgets/common/page_header.dart';
@@ -26,7 +25,6 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
     'Graduando',
     'Retiro',
   ];
-  StudentModel? _selectedStudent;
 
   bool _exportDone = false;
 
@@ -207,7 +205,6 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final filtered = allStudents.where((s) {
       final nameStr = s.name.toLowerCase();
       final idStr = s.id.toLowerCase();
