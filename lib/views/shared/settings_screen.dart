@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_color_scheme.dart';
+import '../../core/constants/app_constants.dart';
 import '../../data/mock/mock_data.dart';
 import '../../viewmodels/app_preferences_viewmodel.dart';
 import '../../viewmodels/auth_viewmodel.dart';
+import 'package:go_router/go_router.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -459,7 +461,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
             // Logout
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                ref.read(authProvider.notifier).logout();
+                context.go(AppConstants.routeRoleSelect);
+              },
               icon: const Icon(LucideIcons.logOut, size: 18),
               label: const Text(
                 'Cerrar Sesión',
