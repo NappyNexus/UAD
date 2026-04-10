@@ -24,7 +24,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
       )
       .toList();
 
-  int get _totalCredits => _selected.fold(0, (sum, id) {
+  int get _totalCredits => _selected.fold<int>(0, (sum, id) {
     final c = availableCourses.firstWhere(
       (co) => co.id == id,
       orElse: () => availableCourses.first,

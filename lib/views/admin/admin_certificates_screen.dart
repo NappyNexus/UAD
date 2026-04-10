@@ -228,8 +228,8 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final emitidos = certificates.where((c) => c['status'] == 'Emitido').length;
-    final pendientes = certificates
+    final emitidos = allCertificates.where((c) => c['status'] == 'Emitido').length;
+    final pendientes = allCertificates
         .where((c) => c['status'] == 'Pendiente')
         .length;
 
@@ -345,7 +345,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                         child: Column(
                           children: [
                             Text(
-                              '${certificates.length}',
+                              '${allCertificates.length}',
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w700,
@@ -368,7 +368,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                 const SizedBox(height: 16),
 
                 // Certificates list
-                ...certificates.map((cert) {
+                ...allCertificates.map((cert) {
                   final isEmitido = cert['status'] == 'Emitido';
                   final student = allStudents.firstWhere(
                     (s) => s.id == cert['studentId'],

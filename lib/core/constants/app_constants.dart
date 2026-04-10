@@ -276,7 +276,7 @@ class AppConstants {
   static const List<DemoUser> demoUsers = [
     DemoUser(
       email: 'student@unad.edu.do',
-      password: 'demo123',
+      password: 'estudiante123',
       role: roleStudent,
       name: 'María E. Rodríguez',
       photo:
@@ -284,7 +284,7 @@ class AppConstants {
     ),
     DemoUser(
       email: 'professor@unad.edu.do',
-      password: 'demo123',
+      password: 'profesor123',
       role: roleTeacher,
       name: 'Dr. Carlos Martínez',
       photo:
@@ -292,7 +292,7 @@ class AppConstants {
     ),
     DemoUser(
       email: 'admin@unad.edu.do',
-      password: 'demo123',
+      password: 'admin123',
       role: roleAdmin,
       name: 'Admin UNAD',
       photo:
@@ -300,7 +300,7 @@ class AppConstants {
     ),
     DemoUser(
       email: 'registrar@unad.edu.do',
-      password: 'demo123',
+      password: 'registrar123',
       role: roleRegistrar,
       name: 'Ana López',
       photo:
