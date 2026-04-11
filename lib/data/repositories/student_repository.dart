@@ -38,11 +38,25 @@ class StudentRepository {
   }
 
   /// Fetch student requests
-  Future<List<Map<String, dynamic>>> getStudentRequests(String matricula) async {
+  Future<List<Map<String, dynamic>>> getStudentRequests(
+    String matricula,
+  ) async {
     // Simple mock for requests
     return [
-      { 'id': "REQ-001", 'type': "Certificado de Estudios", 'date': "2024-10-01", 'status': "Completada", 'details': "Certificado para beca externa" },
-      { 'id': "REQ-002", 'type': "Revisión de Calificación", 'date': "2024-10-05", 'status': "En proceso", 'details': "Revisión nota final" },
+      {
+        'id': "REQ-001",
+        'type': "Certificado de Estudios",
+        'date': "2024-10-01",
+        'status': "Completada",
+        'details': "Certificado para beca externa",
+      },
+      {
+        'id': "REQ-002",
+        'type': "Revisión de Calificación",
+        'date': "2024-10-05",
+        'status': "En proceso",
+        'details': "Revisión nota final",
+      },
     ];
   }
 

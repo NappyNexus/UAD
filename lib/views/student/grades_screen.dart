@@ -125,7 +125,7 @@ class _GradesScreenState extends State<GradesScreen> {
                         color: AppColors.primarySurface,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         LucideIcons.calendar,
                         size: 18,
                         color: AppColors.primary,
@@ -338,7 +338,7 @@ class _GradesScreenState extends State<GradesScreen> {
                               color: AppColors.primarySurface,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               LucideIcons.bookOpen,
                               size: 18,
                               color: AppColors.primary,

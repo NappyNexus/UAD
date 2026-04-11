@@ -283,7 +283,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         LucideIcons.users,
                         size: 16,
                         color: AppColors.primary,
@@ -345,7 +345,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                     .take(2)
                                     .map((e) => e[0])
                                     .join(''),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.primary,

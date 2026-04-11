@@ -3,6 +3,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
+import '../../core/services/export_service.dart';
 
 // Temporary type to track grades locally since mock data is constant
 class LocalStudent {
@@ -362,7 +363,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.primary, width: 2),
+              borderSide: BorderSide(color: AppColors.primary, width: 2),
             ),
           ),
           onChanged: onChanged,
@@ -401,7 +402,18 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               OutlinedButton.icon(
-                onPressed: () {},
+                onPressed: () async {
+                  final success = await ExportService.exportGradesToCsv(
+                    courseName,
+                    _students,
+                  );
+                  if (success && mounted) {
+                    setState(() => _csvStatusMsg = 'Lista exportada a CSV');
+                    Future.delayed(const Duration(seconds: 3), () {
+                      if (mounted) setState(() => _csvStatusMsg = null);
+                    });
+                  }
+                },
                 icon: const Icon(LucideIcons.download, size: 15),
                 label: const Text('CSV', style: TextStyle(fontSize: 12)),
                 style: OutlinedButton.styleFrom(
@@ -442,7 +454,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                 ),
                 label: Text(
                   _saved ? 'Guardado' : 'Guardar',
-                  style: const TextStyle(fontSize: 12),
+                  style: TextStyle(fontSize: 12),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
@@ -855,7 +867,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                             color: AppColors.primarySurface,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             LucideIcons.pencil,
                             size: 14,
                             color: AppColors.primary,

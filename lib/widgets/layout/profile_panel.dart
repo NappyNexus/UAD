@@ -54,11 +54,11 @@ class ProfilePanel extends StatelessWidget {
                       right: 16,
                       bottom: 20,
                     ),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [Color(0xFF026A45), Color(0xFF015A3A)],
+                        colors: [AppColors.primary, AppColors.primaryDark],
                       ),
                     ),
                     child: Column(
@@ -153,7 +153,7 @@ class ProfilePanel extends StatelessWidget {
                                         ),
                                         child: Text(
                                           profile['tag']!,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 10,
                                             fontWeight: FontWeight.w700,
                                             color: AppColors.primaryDark,
@@ -301,7 +301,7 @@ class ProfilePanel extends StatelessWidget {
                               ),
                               Text(
                                 '${profile['progress']}%',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.primary,
@@ -316,7 +316,7 @@ class ProfilePanel extends StatelessWidget {
                               value: (profile['progress'] as int) / 100,
                               minHeight: 8,
                               backgroundColor: AppColors.border,
-                              valueColor: const AlwaysStoppedAnimation(
+                              valueColor: AlwaysStoppedAnimation(
                                 AppColors.primary,
                               ),
                             ),
@@ -443,7 +443,7 @@ class ProfilePanel extends StatelessWidget {
                       child: TextButton.icon(
                         onPressed: () {
                           onClose();
-                          context.go(AppConstants.routeRoleSelect);
+                          context.go(AppConstants.routeAuth);
                         },
                         icon: const Icon(LucideIcons.logOut, size: 16),
                         label: const Text('Cerrar Sesión'),
@@ -492,8 +492,7 @@ class ProfilePanel extends StatelessWidget {
           'photo': currentStudent.photo,
           'tag': 'Estudiante',
           'program': currentStudent.program,
-          'programSub':
-              'Cohorte ${currentStudent.cohort} · ${currentStudent.id}',
+          'programSub': 'Matrícula: ${currentStudent.id}',
           'progress': currentStudent.progressPercent.round(),
           'progressLabel':
               '${currentStudent.cumulativeCredits} / ${currentStudent.totalCredits} créditos',

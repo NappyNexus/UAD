@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
 import '../../widgets/common/page_header.dart';
+import '../../widgets/common/push_toast.dart';
+import '../../core/services/export_service.dart';
 
 class AcademicCalendarScreen extends StatefulWidget {
   const AcademicCalendarScreen({super.key});
@@ -11,7 +13,17 @@ class AcademicCalendarScreen extends StatefulWidget {
 }
 
 class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
+  String? _toastMessage;
+
+  void _showToast(String msg) {
+    setState(() => _toastMessage = msg);
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) setState(() => _toastMessage = null);
+    });
+  }
+
   final List<String> _months = [
+    // ... (rest of the file stays same until build)
     "Enero",
     "Febrero",
     "Marzo",
@@ -171,482 +183,504 @@ class _AcademicCalendarScreenState extends State<AcademicCalendarScreen> {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
-        child: Column(
-          children: [
-            Row(
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
+            child: Column(
               children: [
-                const Expanded(
-                  child: PageHeader(
-                    title: 'Calendario',
-                    subtitle: 'Exámenes, entregas y eventos',
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.borderMedium),
-                  ),
-                  child: Row(
-                    children: ['month', 'list']
-                        .map(
-                          (v) => InkWell(
-                            onTap: () => setState(() => _view = v),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: _view == v
-                                    ? AppColors.primary
-                                    : Colors.transparent,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                v == 'month' ? 'Mes' : 'Lista',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: _view == v
-                                      ? Colors.white
-                                      : AppColors.textSecondary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 16),
-
-            // Layout (stacking on mobile, we can just use columns)
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: _view == 'month'
-                  ? Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                icon: const Icon(LucideIcons.chevronLeft),
-                                onPressed: _prevMonth,
-                              ),
-                              Text(
-                                '${_months[_month]} $_year',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(LucideIcons.chevronRight),
-                                onPressed: _nextMonth,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Divider(height: 1),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: _days
-                                .map(
-                                  (d) => Text(
-                                    d,
+                // ... (rest of the content)
+                Row(
+                  children: [
+                    const Expanded(
+                      child: PageHeader(
+                        title: 'Calendario',
+                        subtitle: 'Exámenes, entregas y eventos',
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppColors.borderMedium),
+                      ),
+                      child: Row(
+                        children: ['month', 'list']
+                            .map(
+                              (v) => InkWell(
+                                onTap: () => setState(() => _view = v),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: _view == v
+                                        ? AppColors.primary
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    v == 'month' ? 'Mes' : 'Lista',
                                     style: TextStyle(
                                       fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.textSecondary,
+                                      fontWeight: FontWeight.w600,
+                                      color: _view == v
+                                          ? Colors.white
+                                          : AppColors.textSecondary,
                                     ),
                                   ),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                        Divider(height: 1),
-                        GridView.builder(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: firstDay + daysInMonth,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 7,
-                                childAspectRatio: 0.8,
+                                ),
                               ),
-                          itemBuilder: (ctx, i) {
-                            if (i < firstDay) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    right: BorderSide(
-                                      color: AppColors.borderMedium,
-                                    ),
-                                    bottom: BorderSide(
-                                      color: AppColors.borderMedium,
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 16),
+
+                // Layout (stacking on mobile, we can just use columns)
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  child: _view == 'month'
+                      ? Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(LucideIcons.chevronLeft),
+                                    onPressed: _prevMonth,
+                                  ),
+                                  Text(
+                                    '${_months[_month]} $_year',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ),
-                              );
-                            }
-                            final day = i - firstDay + 1;
-                            final dateStr =
-                                '$_year-${(_month + 1).toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
-                            final today = dateStr == '2026-03-27';
-                            final selected = dateStr == _selectedDate;
-                            final evs = _getEventsForDate(dateStr);
-                            return InkWell(
-                              onTap: () =>
-                                  setState(() => _selectedDate = dateStr),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: selected
-                                      ? AppColors.primarySurface
-                                      : null,
-                                  border: Border(
-                                    right: BorderSide(
-                                      color: AppColors.borderMedium,
-                                    ),
-                                    bottom: BorderSide(
-                                      color: AppColors.borderMedium,
-                                    ),
+                                  IconButton(
+                                    icon: const Icon(LucideIcons.chevronRight),
+                                    onPressed: _nextMonth,
                                   ),
-                                ),
-                                padding: const EdgeInsets.all(4),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: today ? AppColors.primary : null,
-                                      ),
-                                      child: Text(
-                                        '$day',
+                                ],
+                              ),
+                            ),
+                            Divider(height: 1),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: _days
+                                    .map(
+                                      (d) => Text(
+                                        d,
                                         style: TextStyle(
-                                          fontSize: 10,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.bold,
-                                          color: today
-                                              ? Colors.white
-                                              : AppColors.textPrimary,
+                                          color: AppColors.textSecondary,
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                            Divider(height: 1),
+                            GridView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: firstDay + daysInMonth,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 7,
+                                    childAspectRatio: 0.8,
+                                  ),
+                              itemBuilder: (ctx, i) {
+                                if (i < firstDay) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(
+                                          color: AppColors.borderMedium,
+                                        ),
+                                        bottom: BorderSide(
+                                          color: AppColors.borderMedium,
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(height: 2),
-                                    ...evs
-                                        .take(2)
-                                        .map(
-                                          (e) => Container(
-                                            margin: const EdgeInsets.only(
-                                              bottom: 2,
-                                            ),
-                                            height: 4,
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  _typeConf[e['type']]!['color'],
-                                              borderRadius:
-                                                  BorderRadius.circular(2),
+                                  );
+                                }
+                                final day = i - firstDay + 1;
+                                final dateStr =
+                                    '$_year-${(_month + 1).toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
+                                final today = dateStr == '2026-03-27';
+                                final selected = dateStr == _selectedDate;
+                                final evs = _getEventsForDate(dateStr);
+                                return InkWell(
+                                  onTap: () =>
+                                      setState(() => _selectedDate = dateStr),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: selected
+                                          ? AppColors.primarySurface
+                                          : null,
+                                      border: Border(
+                                        right: BorderSide(
+                                          color: AppColors.borderMedium,
+                                        ),
+                                        bottom: BorderSide(
+                                          color: AppColors.borderMedium,
+                                        ),
+                                      ),
+                                    ),
+                                    padding: const EdgeInsets.all(4),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(4),
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: today
+                                                ? AppColors.primary
+                                                : null,
+                                          ),
+                                          child: Text(
+                                            '$day',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold,
+                                              color: today
+                                                  ? Colors.white
+                                                  : AppColors.textPrimary,
                                             ),
                                           ),
                                         ),
+                                        const SizedBox(height: 2),
+                                        ...evs
+                                            .take(2)
+                                            .map(
+                                              (e) => Container(
+                                                margin: const EdgeInsets.only(
+                                                  bottom: 2,
+                                                ),
+                                                height: 4,
+                                                width: double.infinity,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      _typeConf[e['type']]!['color'],
+                                                  borderRadius:
+                                                      BorderRadius.circular(2),
+                                                ),
+                                              ),
+                                            ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        )
+                      : ListView.separated(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: upcomingEvents.length,
+                          separatorBuilder: (_, _) => const Divider(height: 1),
+                          itemBuilder: (ctx, i) {
+                            final e = upcomingEvents[i];
+                            final tc = _typeConf[e['type']]!;
+                            return ListTile(
+                              contentPadding: const EdgeInsets.all(16),
+                              leading: Container(
+                                width: 12,
+                                height: 12,
+                                decoration: BoxDecoration(
+                                  color: tc['color'],
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              title: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      e['title'],
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 2,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: tc['bg'],
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      tc['label'],
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: tc['color'],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              subtitle: Padding(
+                                padding: EdgeInsets.only(top: 8),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      LucideIcons.calendar,
+                                      size: 12,
+                                      color: AppColors.textSecondary,
+                                    ),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      e['date'],
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: AppColors.textSecondary,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    if (e['time'] != null) ...[
+                                      Icon(
+                                        LucideIcons.clock,
+                                        size: 12,
+                                        color: AppColors.textSecondary,
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        e['time'],
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          color: AppColors.textSecondary,
+                                        ),
+                                      ),
+                                    ],
                                   ],
                                 ),
                               ),
                             );
                           },
                         ),
-                      ],
-                    )
-                  : ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: upcomingEvents.length,
-                      separatorBuilder: (_, _) => const Divider(height: 1),
-                      itemBuilder: (ctx, i) {
-                        final e = upcomingEvents[i];
+                ),
+
+                SizedBox(height: 16),
+                Container(
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _selectedDate == '2026-03-27' ? 'Hoy' : _selectedDate,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      ..._getEventsForDate(_selectedDate).map((e) {
                         final tc = _typeConf[e['type']]!;
-                        return ListTile(
-                          contentPadding: const EdgeInsets.all(16),
-                          leading: Container(
-                            width: 12,
-                            height: 12,
-                            decoration: BoxDecoration(
-                              color: tc['color'],
-                              shape: BoxShape.circle,
-                            ),
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 8),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: tc['bg'],
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          title: Row(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                child: Text(
-                                  e['title'],
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              Text(
+                                e['title'],
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: tc['color'],
                                 ),
                               ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 2,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: tc['bg'],
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  tc['label'],
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: tc['color'],
+                              if (e['time'] != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4),
+                                  child: Text(
+                                    '${e['time']}${e['location'] != null ? ' · ${e['location']}' : ''}',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: tc['color'],
+                                    ),
                                   ),
+                                ),
+                            ],
+                          ),
+                        );
+                      }),
+                      if (_getEventsForDate(_selectedDate).isEmpty)
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          child: Center(
+                            child: Text(
+                              'Sin eventos este día',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                // Leyenda Card
+                Container(
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Leyenda',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      ..._typeConf.values.map(
+                        (tc) => Padding(
+                          padding: EdgeInsets.only(bottom: 12),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 10,
+                                height: 10,
+                                decoration: BoxDecoration(
+                                  color: tc['color'],
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              SizedBox(width: 12),
+                              Text(
+                                tc['label'],
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: AppColors.textSecondary,
                                 ),
                               ),
                             ],
                           ),
-                          subtitle: Padding(
-                            padding: EdgeInsets.only(top: 8),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  LucideIcons.calendar,
-                                  size: 12,
-                                  color: AppColors.textSecondary,
-                                ),
-                                SizedBox(width: 4),
-                                Text(
-                                  e['date'],
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    color: AppColors.textSecondary,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                if (e['time'] != null) ...[
-                                  Icon(
-                                    LucideIcons.clock,
-                                    size: 12,
-                                    color: AppColors.textSecondary,
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    e['time'],
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                      color: AppColors.textSecondary,
-                                    ),
-                                  ),
-                                ],
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-            ),
-
-            SizedBox(height: 16),
-            Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _selectedDate == '2026-03-27' ? 'Hoy' : _selectedDate,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ..._getEventsForDate(_selectedDate).map((e) {
-                    final tc = _typeConf[e['type']]!;
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: tc['bg'],
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            e['title'],
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: tc['color'],
-                            ),
-                          ),
-                          if (e['time'] != null)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: Text(
-                                '${e['time']}${e['location'] != null ? ' · ${e['location']}' : ''}',
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: tc['color'],
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    );
-                  }),
-                  if (_getEventsForDate(_selectedDate).isEmpty)
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      child: Center(
-                        child: Text(
-                          'Sin eventos este día',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: AppColors.textSecondary,
-                          ),
                         ),
                       ),
-                    ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Leyenda Card
-            Container(
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Leyenda',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
-                    ),
+                    ],
                   ),
-                  SizedBox(height: 16),
-                  ..._typeConf.values.map(
-                    (tc) => Padding(
-                      padding: EdgeInsets.only(bottom: 12),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                              color: tc['color'],
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          SizedBox(width: 12),
-                          Text(
-                            tc['label'],
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                        ],
+                ),
+
+                const SizedBox(height: 16),
+
+                // Sincronizar Calendario Card
+                Container(
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Sincronizar calendario',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
-                    ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Exporta tus eventos académicos a tu calendario personal',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: AppColors.textSecondary,
+                          height: 1.4,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      _buildSyncButton(
+                        'Google Calendar',
+                        Colors.blue.shade700,
+                        Colors.blue.shade50,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildSyncButton(
+                        'Outlook Calendar',
+                        Colors.blue.shade700,
+                        Colors.blue.shade50,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildSyncButton(
+                        'Exportar .ics',
+                        AppColors.textSecondary,
+                        Colors.grey.shade50,
+                        AppColors.borderMedium,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-
-            const SizedBox(height: 16),
-
-            // Sincronizar Calendario Card
-            Container(
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Sincronizar calendario',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Exporta tus eventos académicos a tu calendario personal',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: AppColors.textSecondary,
-                      height: 1.4,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  _buildSyncButton(
-                    'Google Calendar',
-                    Colors.blue.shade700,
-                    Colors.blue.shade50,
-                  ),
-                  const SizedBox(height: 12),
-                  _buildSyncButton(
-                    'Outlook Calendar',
-                    Colors.blue.shade700,
-                    Colors.blue.shade50,
-                  ),
-                  const SizedBox(height: 12),
-                  _buildSyncButton(
-                    'Exportar .ics',
-                    AppColors.textSecondary,
-                    Colors.grey.shade50,
-                    AppColors.borderMedium,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+          if (_toastMessage != null) PushToast(message: _toastMessage!),
+        ],
       ),
     );
   }
 
   Widget _buildSyncButton(String text, Color color, Color bg, [Color? border]) {
+    final isIcs = text.contains('.ics');
+
     return InkWell(
-      onTap: () {},
+      onTap: () async {
+        if (isIcs) {
+          final success = await ExportService.exportCalendarToIcs(_events);
+          if (success && mounted) {
+            _showToast('✅ Calendario exportado (.ics)');
+          }
+        } else {
+          _showToast('Sincronizando con $text...');
+        }
+      },
       borderRadius: BorderRadius.circular(12),
       child: Container(
         width: double.infinity,

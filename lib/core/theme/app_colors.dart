@@ -14,11 +14,25 @@ class AppColors {
   /// Call from the root widget's build to sync the brightness flag.
   static void updateBrightness(bool isDark) => _isDark = isDark;
 
-  // ─── Primary (UNAD Green) — fixed across themes ─────────────────
-  static const Color primary = Color(0xFF026A45);
-  static const Color primaryLight = Color(0xFF038556);
-  static const Color primaryDark = Color(0xFF015A3A);
-  static const Color primarySurface = Color(0x0D026A45);
+  static Color _accent = const Color(0xFF026A45);
+
+  /// Update the global accent color and its variants.
+  static void updateAccent(Color color) => _accent = color;
+
+  // ─── Primary (Dynamic Accent) ───────────────────────────────────
+  static Color get primary => _accent;
+
+  static Color get primaryLight {
+    final hsl = HSLColor.fromColor(_accent);
+    return hsl.withLightness((hsl.lightness + 0.1).clamp(0.0, 1.0)).toColor();
+  }
+
+  static Color get primaryDark {
+    final hsl = HSLColor.fromColor(_accent);
+    return hsl.withLightness((hsl.lightness - 0.1).clamp(0.0, 1.0)).toColor();
+  }
+
+  static Color get primarySurface => _accent.withValues(alpha: 0.08);
 
   // ─── Accent (UNAD Gold) — fixed across themes ───────────────────
   static const Color gold = Color(0xFFF9C029);
@@ -67,23 +81,31 @@ class AppColors {
 
   // ─── Semantic Colors — fixed across themes ──────────────────────
   static const Color success = Color(0xFF059669);
-  static Color get successLight => _isDark ? success.withValues(alpha: 0.2) : const Color(0xFFD1FAE5);
-  static Color get successSurface => _isDark ? success.withValues(alpha: 0.1) : const Color(0xFFECFDF5);
+  static Color get successLight =>
+      _isDark ? success.withValues(alpha: 0.2) : const Color(0xFFD1FAE5);
+  static Color get successSurface =>
+      _isDark ? success.withValues(alpha: 0.1) : const Color(0xFFECFDF5);
   static const Color successText = Color(0xFF047857);
 
   static const Color warning = Color(0xFFD97706);
-  static Color get warningLight => _isDark ? warning.withValues(alpha: 0.2) : const Color(0xFFFDE68A);
-  static Color get warningSurface => _isDark ? warning.withValues(alpha: 0.1) : const Color(0xFFFFFBEB);
+  static Color get warningLight =>
+      _isDark ? warning.withValues(alpha: 0.2) : const Color(0xFFFDE68A);
+  static Color get warningSurface =>
+      _isDark ? warning.withValues(alpha: 0.1) : const Color(0xFFFFFBEB);
   static const Color warningText = Color(0xFFB45309);
 
   static const Color error = Color(0xFFDC2626);
-  static Color get errorLight => _isDark ? error.withValues(alpha: 0.2) : const Color(0xFFFECACA);
-  static Color get errorSurface => _isDark ? error.withValues(alpha: 0.1) : const Color(0xFFFEF2F2);
+  static Color get errorLight =>
+      _isDark ? error.withValues(alpha: 0.2) : const Color(0xFFFECACA);
+  static Color get errorSurface =>
+      _isDark ? error.withValues(alpha: 0.1) : const Color(0xFFFEF2F2);
   static const Color errorText = Color(0xFFB91C1C);
 
   static const Color info = Color(0xFF2563EB);
-  static Color get infoLight => _isDark ? info.withValues(alpha: 0.2) : const Color(0xFFBFDBFE);
-  static Color get infoSurface => _isDark ? info.withValues(alpha: 0.1) : const Color(0xFFEFF6FF);
+  static Color get infoLight =>
+      _isDark ? info.withValues(alpha: 0.2) : const Color(0xFFBFDBFE);
+  static Color get infoSurface =>
+      _isDark ? info.withValues(alpha: 0.1) : const Color(0xFFEFF6FF);
   static const Color infoText = Color(0xFF1D4ED8);
 
   // ─── Role Gradients ──────────────────────────────────────────────
@@ -228,21 +250,24 @@ class AppColors {
 
   /// Get status badge colors, with a gray fallback for unknown statuses.
   static StatusBadgeColors getStatusColors(String status) {
-    final base = statusColors[status] ??
+    final base =
+        statusColors[status] ??
         const StatusBadgeColors(
           Color(0xFFF9FAFB),
           Color(0xFF6B7280),
           Color(0xFFE5E7EB),
         );
-        
+
     if (_isDark) {
       return StatusBadgeColors(
         base.text.withValues(alpha: 0.15),
-        base.text.withAlpha(200), // Slightly subdued white-ish if we prefer or just text tone
+        base.text.withAlpha(
+          200,
+        ), // Slightly subdued white-ish if we prefer or just text tone
         base.text.withValues(alpha: 0.3),
       );
     }
-    
+
     return base;
   }
 }

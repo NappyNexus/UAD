@@ -1,106 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import '../../core/theme/app_colors.dart';
+import '../../data/models/chat_model.dart';
+import '../../viewmodels/messaging_viewmodel.dart';
 
-class MessagingScreen extends StatefulWidget {
+class MessagingScreen extends ConsumerStatefulWidget {
   const MessagingScreen({super.key});
 
   @override
-  State<MessagingScreen> createState() => _MessagingScreenState();
+  ConsumerState<MessagingScreen> createState() => _MessagingScreenState();
 }
 
-class _MessagingScreenState extends State<MessagingScreen> {
-  final List<Map<String, dynamic>> _contacts = [
-    {
-      'id': 1,
-      'name': 'Dr. Carlos Martínez',
-      'role': 'Profesor · Cálculo III',
-      'initials': 'CM',
-      'lastMessage': 'El examen final será el próximo viernes.',
-      'time': '10:32',
-      'unread': 2,
-      'online': true,
-    },
-    {
-      'id': 2,
-      'name': 'Ing. Ana Pérez',
-      'role': 'Profesora · Base de Datos II',
-      'initials': 'AP',
-      'lastMessage': 'Recuerden entregar el proyecto.',
-      'time': 'Ayer',
-      'unread': 0,
-      'online': false,
-    },
-    {
-      'id': 3,
-      'name': 'Oficina de Registro',
-      'role': 'Administración',
-      'initials': 'OR',
-      'lastMessage': 'Su solicitud ha sido procesada.',
-      'time': 'Lun',
-      'unread': 1,
-      'online': true,
-    },
-  ];
-
-  Map<String, dynamic>? _selectedContact;
+class _MessagingScreenState extends ConsumerState<MessagingScreen> {
   final TextEditingController _msgCtrl = TextEditingController();
-
-  final Map<int, List<Map<String, dynamic>>> _messages = {
-    1: [
-      {
-        'sender': 'them',
-        'text': 'Buenos días María, ¿cómo van con el tema?',
-        'time': '09:15',
-      },
-      {
-        'sender': 'me',
-        'text': 'Buenos días Dr., estamos estudiando.',
-        'time': '09:18',
-      },
-      {
-        'sender': 'them',
-        'text': 'Perfecto, horas de oficina mañana.',
-        'time': '09:20',
-      },
-      {'sender': 'me', 'text': 'Excelente, ahí estaremos!', 'time': '09:22'},
-      {
-        'sender': 'them',
-        'text': 'El examen final será el próximo viernes.',
-        'time': '10:32',
-      },
-    ],
-    3: [
-      {
-        'sender': 'me',
-        'text': 'Buenos días, quisiera solicitar un certificado.',
-        'time': 'Lun 08:00',
-      },
-      {
-        'sender': 'them',
-        'text': 'Claro, hemos recibido su solicitud.',
-        'time': 'Lun 09:30',
-      },
-      {
-        'sender': 'them',
-        'text': 'Su solicitud ha sido procesada.',
-        'time': 'Lun 11:00',
-      },
-    ],
-  };
+  final ImagePicker _picker = ImagePicker();
 
   void _sendMessage() {
-    if (_msgCtrl.text.trim().isEmpty || _selectedContact == null) return;
-    setState(() {
-      final cid = _selectedContact!['id'];
-      if (_messages[cid] == null) _messages[cid] = [];
-      _messages[cid]!.add({
-        'sender': 'me',
-        'text': _msgCtrl.text.trim(),
-        'time': 'Ahora',
-      });
-      _msgCtrl.clear();
-    });
+    if (_msgCtrl.text.trim().isEmpty) return;
+    ref.read(messagingProvider.notifier).sendMessage(_msgCtrl.text.trim());
+    _msgCtrl.clear();
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final XFile? image = await _picker.pickImage(source: source);
+    if (image != null) {
+      ref
+          .read(messagingProvider.notifier)
+          .sendMessage(
+            'Imagen enviada',
+            type: MessageType.image,
+            fileName: image.name,
+            fileSize: '1.2 MB', // Mock size
+          );
+      if (mounted) Navigator.pop(context);
+    }
+  }
+
+  Future<void> _pickFile() async {
+    final result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      final file = result.files.first;
+      ref
+          .read(messagingProvider.notifier)
+          .sendMessage(
+            'Documento enviado',
+            type: MessageType.file,
+            fileName: file.name,
+            fileSize: '${(file.size / 1024).toStringAsFixed(1)} KB',
+          );
+      if (mounted) Navigator.pop(context);
+    }
   }
 
   void _showAttachmentOptions(BuildContext context) {
@@ -136,7 +88,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                 'Galería',
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
               ),
-              onTap: () => Navigator.pop(context),
+              onTap: () => _pickImage(ImageSource.gallery),
             ),
             ListTile(
               leading: Container(
@@ -155,7 +107,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                 'Documentos',
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
               ),
-              onTap: () => Navigator.pop(context),
+              onTap: _pickFile,
             ),
             ListTile(
               leading: Container(
@@ -174,7 +126,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
                 'Cámara',
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
               ),
-              onTap: () => Navigator.pop(context),
+              onTap: () => _pickImage(ImageSource.camera),
             ),
             const SizedBox(height: 8),
           ],
@@ -185,50 +137,77 @@ class _MessagingScreenState extends State<MessagingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_selectedContact != null) {
-      final msgs = _messages[_selectedContact!['id']] ?? [];
+    final state = ref.watch(messagingProvider);
+    final selectedContactId = state.selectedContactId;
+    final selectedContact = selectedContactId != null
+        ? state.contacts.cast<ChatContact?>().firstWhere(
+            (c) => c?.id == selectedContactId,
+            orElse: () => null,
+          )
+        : null;
+
+    if (selectedContact != null) {
+      final msgs = state.messagesByContact[selectedContact.id] ?? [];
       return Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
           backgroundColor: AppColors.surface,
+          elevation: 0,
           leading: IconButton(
             icon: Icon(LucideIcons.arrowLeft, color: AppColors.textPrimary),
-            onPressed: () => setState(() => _selectedContact = null),
+            onPressed: () => ref
+                .read(messagingProvider.notifier)
+                .selectContact(''), // Deselect
           ),
           title: Row(
             children: [
-              CircleAvatar(
-                backgroundColor: AppColors.primary,
-                radius: 16,
-                child: Text(
-                  _selectedContact!['initials'],
-                  style: TextStyle(
-                    color: AppColors.surface,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Stack(
                 children: [
-                  Text(
-                    _selectedContact!['name'],
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
-                    ),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(selectedContact.photo),
+                    radius: 18,
                   ),
-                  Text(
-                    _selectedContact!['role'],
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: AppColors.textSecondary,
+                  if (selectedContact.online)
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        width: 10,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppColors.surface,
+                            width: 2,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
                 ],
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      selectedContact.name,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    Text(
+                      selectedContact.role,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -259,64 +238,17 @@ class _MessagingScreenState extends State<MessagingScreen> {
                 itemCount: msgs.length,
                 itemBuilder: (ctx, i) {
                   final m = msgs[i];
-                  final isMe = m['sender'] == 'me';
-                  return Align(
-                    alignment: isMe
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isMe ? AppColors.primary : AppColors.surface,
-                        borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(16),
-                          topRight: const Radius.circular(16),
-                          bottomLeft: Radius.circular(isMe ? 16 : 4),
-                          bottomRight: Radius.circular(isMe ? 4 : 16),
-                        ),
-                        border: isMe
-                            ? null
-                            : Border.all(color: AppColors.border),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: isMe
-                            ? CrossAxisAlignment.end
-                            : CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            m['text'],
-                            style: TextStyle(
-                              color: isMe
-                                  ? Colors.white
-                                  : AppColors.textPrimary,
-                              fontSize: 13,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            m['time'],
-                            style: TextStyle(
-                              color: isMe
-                                  ? Colors.white70
-                                  : AppColors.textTertiary,
-                              fontSize: 10,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                  return _buildMessageBubble(m);
                 },
               ),
             ),
             Container(
-              padding: const EdgeInsets.all(
+              padding: EdgeInsets.fromLTRB(
                 16,
-              ).copyWith(bottom: 16 + MediaQuery.of(context).padding.bottom),
+                16,
+                16,
+                16 + MediaQuery.of(context).padding.bottom,
+              ),
               decoration: BoxDecoration(
                 color: AppColors.surface,
                 border: Border(top: BorderSide(color: AppColors.borderMedium)),
@@ -332,10 +264,10 @@ class _MessagingScreenState extends State<MessagingScreen> {
                   ),
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
                         color: AppColors.background,
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(24),
                       ),
                       child: TextField(
                         controller: _msgCtrl,
@@ -349,13 +281,14 @@ class _MessagingScreenState extends State<MessagingScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   CircleAvatar(
                     backgroundColor: AppColors.primary,
+                    radius: 20,
                     child: IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         LucideIcons.send,
-                        color: AppColors.surface,
+                        color: Colors.white,
                         size: 18,
                       ),
                       onPressed: _sendMessage,
@@ -372,61 +305,76 @@ class _MessagingScreenState extends State<MessagingScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              // padding: const EdgeInsets.symmetric(vertical: 8.0, bottom: 16.0),
-              padding: EdgeInsets.only(bottom: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Mensajes',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Mensajes',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
                   ),
-                  ElevatedButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(LucideIcons.plus, size: 16),
-                    label: const Text('Nuevo chat'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    LucideIcons.plusCircle,
+                    color: AppColors.primary,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.borderMedium),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    LucideIcons.search,
+                    size: 18,
+                    color: AppColors.textTertiary,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Buscar chats...',
+                        hintStyle: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.textTertiary,
+                        ),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.borderMedium),
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  prefixIcon: Icon(
-                    LucideIcons.search,
-                    size: 18,
-                    color: AppColors.textTertiary,
-                  ),
-                  hintText: 'Buscar...',
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                ),
+            const SizedBox(height: 24),
+            Text(
+              'CONVERSACIONES',
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textTertiary,
+                letterSpacing: 1.5,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 12),
             Container(
               decoration: BoxDecoration(
                 color: AppColors.surface,
@@ -436,139 +384,259 @@ class _MessagingScreenState extends State<MessagingScreen> {
               child: ListView.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: _contacts.length,
-                separatorBuilder: (_, _) =>
+                itemCount: state.contacts.length,
+                separatorBuilder: (ctx, i) =>
                     Divider(height: 1, color: AppColors.borderMedium),
                 itemBuilder: (ctx, i) {
-                  final c = _contacts[i];
-                  return InkWell(
-                    onTap: () {
-                      setState(() {
-                        c['unread'] = 0;
-                        _selectedContact = c;
-                      });
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Row(
-                        children: [
-                          Stack(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: AppColors.primary,
-                                radius: 24,
-                                child: Text(
-                                  c['initials'],
-                                  style: TextStyle(
-                                    color: AppColors.surface,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              if (c['online'])
-                                Positioned(
-                                  right: 0,
-                                  bottom: 0,
-                                  child: Container(
-                                    width: 12,
-                                    height: 12,
-                                    decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: AppColors.surface,
-                                        width: 2,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                            ],
+                  final contact = state.contacts[i];
+                  return _buildContactTile(contact);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContactTile(ChatContact contact) {
+    final timeStr =
+        "${contact.lastMessageTime.hour}:${contact.lastMessageTime.minute.toString().padLeft(2, '0')}";
+
+    return InkWell(
+      onTap: () =>
+          ref.read(messagingProvider.notifier).selectContact(contact.id),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Stack(
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(contact.photo),
+                  radius: 26,
+                ),
+                if (contact.online)
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      width: 14,
+                      height: 14,
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppColors.surface, width: 2),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        contact.name,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: contact.unreadCount > 0
+                              ? FontWeight.w700
+                              : FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      Text(
+                        timeStr,
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: contact.unreadCount > 0
+                              ? AppColors.primary
+                              : AppColors.textTertiary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          contact.lastMessage,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: contact.unreadCount > 0
+                                ? AppColors.textPrimary
+                                : AppColors.textSecondary,
+                            fontWeight: contact.unreadCount > 0
+                                ? FontWeight.w500
+                                : FontWeight.normal,
                           ),
-                          SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      c['name'],
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: (c['unread'] > 0)
-                                            ? FontWeight.bold
-                                            : FontWeight.w600,
-                                        color: AppColors.textPrimary,
-                                      ),
-                                    ),
-                                    Text(
-                                      c['time'],
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        color: c['unread'] > 0
-                                            ? AppColors.primary
-                                            : AppColors.textTertiary,
-                                        fontWeight: c['unread'] > 0
-                                            ? FontWeight.bold
-                                            : FontWeight.normal,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 4),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        c['lastMessage'],
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: c['unread'] > 0
-                                              ? AppColors.textPrimary
-                                              : AppColors.textSecondary,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    if (c['unread'] > 0)
-                                      Container(
-                                        padding: const EdgeInsets.all(4),
-                                        decoration: const BoxDecoration(
-                                          color: AppColors.primary,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Text(
-                                          '${c['unread']}',
-                                          style: TextStyle(
-                                            color: AppColors.surface,
-                                            fontSize: 9,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  c['role'],
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: AppColors.textTertiary,
-                                  ),
-                                ),
-                              ],
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      if (contact.unreadCount > 0)
+                        Container(
+                          margin: const EdgeInsets.only(left: 8),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            '${contact.unreadCount}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMessageBubble(ChatMessage m) {
+    return Align(
+      alignment: m.isMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.75,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: m.isMe ? AppColors.primary : AppColors.surface,
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(16),
+            topRight: const Radius.circular(16),
+            bottomLeft: Radius.circular(m.isMe ? 16 : 4),
+            bottomRight: Radius.circular(m.isMe ? 4 : 16),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 5,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: m.isMe
+              ? CrossAxisAlignment.end
+              : CrossAxisAlignment.start,
+          children: [
+            if (m.type == MessageType.text)
+              Text(
+                m.content,
+                style: TextStyle(
+                  color: m.isMe ? Colors.white : AppColors.textPrimary,
+                  fontSize: 14,
+                ),
+              )
+            else if (m.type == MessageType.image)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Container(
+                      height: 150,
+                      width: double.infinity,
+                      color: m.isMe
+                          ? Colors.white.withValues(alpha: 0.2)
+                          : AppColors.background,
+                      child: Icon(
+                        LucideIcons.image,
+                        color: m.isMe ? Colors.white : AppColors.primary,
+                        size: 40,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    m.fileName ?? 'Imagen.jpg',
+                    style: TextStyle(
+                      color: m.isMe
+                          ? Colors.white.withValues(alpha: 0.8)
+                          : AppColors.textSecondary,
+                      fontSize: 11,
+                    ),
+                  ),
+                ],
+              )
+            else if (m.type == MessageType.file)
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: m.isMe
+                      ? Colors.white.withValues(alpha: 0.1)
+                      : AppColors.background,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      LucideIcons.fileText,
+                      color: m.isMe ? Colors.white : AppColors.primary,
+                      size: 24,
+                    ),
+                    const SizedBox(width: 12),
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            m.fileName ?? 'Documento.pdf',
+                            style: TextStyle(
+                              color: m.isMe
+                                  ? Colors.white
+                                  : AppColors.textPrimary,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            m.fileSize ?? '0 KB',
+                            style: TextStyle(
+                              color: m.isMe
+                                  ? Colors.white.withValues(alpha: 0.7)
+                                  : AppColors.textTertiary,
+                              fontSize: 11,
                             ),
                           ),
                         ],
                       ),
                     ),
-                  );
-                },
+                  ],
+                ),
+              ),
+            const SizedBox(height: 4),
+            Text(
+              "${m.timestamp.hour}:${m.timestamp.minute.toString().padLeft(2, '0')}",
+              style: TextStyle(
+                color: m.isMe
+                    ? Colors.white.withValues(alpha: 0.7)
+                    : AppColors.textTertiary,
+                fontSize: 10,
               ),
             ),
           ],

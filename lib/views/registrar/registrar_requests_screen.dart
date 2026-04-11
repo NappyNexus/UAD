@@ -153,7 +153,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                     const SizedBox(height: 8),
                     Text(
                       'Estudiante: ${s.name}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: AppColors.primary,
@@ -187,7 +187,14 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                     .where((st) => st != r['status'])
                     .map(
                       (st) => ActionChip(
-                        label: Text(st),
+                        label: Text(
+                          st,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
                         onPressed: () => _changeStatus(r['id'], st),
                         backgroundColor: AppColors.surface,
                         side: BorderSide(color: AppColors.borderMedium),
@@ -418,10 +425,14 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                                         vertical: 2,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: priorityColor.withOpacity(0.1),
+                                        color: priorityColor.withValues(
+                                          alpha: 0.1,
+                                        ),
                                         borderRadius: BorderRadius.circular(4),
                                         border: Border.all(
-                                          color: priorityColor.withOpacity(0.3),
+                                          color: priorityColor.withValues(
+                                            alpha: 0.3,
+                                          ),
                                         ),
                                       ),
                                       child: Text(
@@ -445,7 +456,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                                 const SizedBox(height: 8),
                                 Text(
                                   s.name,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 13,
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w600,

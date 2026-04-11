@@ -63,7 +63,7 @@ class StudyPlanScreen extends StatelessWidget {
                     ),
                     Text(
                       '$progress%',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: AppColors.primary,
@@ -78,7 +78,7 @@ class StudyPlanScreen extends StatelessWidget {
                     value: progress / 100,
                     minHeight: 12,
                     backgroundColor: AppColors.border,
-                    valueColor: const AlwaysStoppedAnimation(AppColors.primary),
+                    valueColor: AlwaysStoppedAnimation(AppColors.primary),
                   ),
                 ),
                 SizedBox(height: 8),
@@ -145,7 +145,7 @@ class StudyPlanScreen extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        const Icon(
+                        Icon(
                           LucideIcons.bookMarked,
                           size: 16,
                           color: AppColors.primary,
@@ -153,7 +153,7 @@ class StudyPlanScreen extends StatelessWidget {
                         const SizedBox(width: 8),
                         Text(
                           'Semestre $semNum',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                             color: AppColors.primary,
@@ -219,7 +219,11 @@ class StudyPlanScreen extends StatelessWidget {
                               color: iconColor,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Icon(icon, size: 14, color: AppColors.surface),
+                            child: Icon(
+                              icon,
+                              size: 14,
+                              color: AppColors.surface,
+                            ),
                           ),
                           SizedBox(width: 10),
                           Expanded(

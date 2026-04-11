@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/constants/app_constants.dart';
+import '../data/mock/mock_data.dart';
 
 /// Auth state for the application.
 class AuthState {
@@ -39,12 +39,13 @@ class AuthViewModel extends StateNotifier<AuthState> {
   AuthViewModel() : super(const AuthState());
 
   /// Attempt login with credentials. Returns true if successful.
-  bool login(String email, String password) {
-    final user = AppConstants.demoUsers.where(
-      (u) => u.email == email && u.password == password,
+  bool login(String identifier, String password) {
+    // Validate by cedula (ID) as requested
+    final userMatches = demoUsers.where(
+      (u) => u.cedula == identifier && u.password == password,
     );
-    if (user.isNotEmpty) {
-      final matched = user.first;
+    if (userMatches.isNotEmpty) {
+      final matched = userMatches.first;
       state = AuthState(
         isAuthenticated: true,
         currentRole: matched.role,
@@ -55,21 +56,6 @@ class AuthViewModel extends StateNotifier<AuthState> {
       return true;
     }
     return false;
-  }
-
-  /// Select a role directly (used from RoleSelectScreen).
-  void selectRole(String role) {
-    final user = AppConstants.demoUsers.firstWhere(
-      (u) => u.role == role,
-      orElse: () => AppConstants.demoUsers.first,
-    );
-    state = AuthState(
-      isAuthenticated: true,
-      currentRole: role,
-      userName: user.name,
-      userEmail: user.email,
-      userPhoto: user.photo,
-    );
   }
 
   /// Update the user photo.

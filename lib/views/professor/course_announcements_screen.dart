@@ -576,7 +576,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
                                   color: AppColors.primarySurface,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: const Text(
+                                child: Text(
                                   '📌 Fijado',
                                   style: TextStyle(
                                     fontSize: 10,

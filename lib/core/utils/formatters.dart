@@ -6,30 +6,23 @@ class Formatters {
 
   /// Dominican Peso formatted currency (e.g., "RD$45,000.00").
   static String currency(double amount) {
-    final formatter = NumberFormat.currency(
-      locale: 'es_DO',
-      symbol: 'RD\$',
-      decimalDigits: 2,
-    );
-    return formatter.format(amount);
+    final val = NumberFormat('#,##0.00', 'es_DO').format(amount);
+    return 'RD\$ $val';
   }
 
   /// Currency without decimals (e.g., "RD$45,000").
   static String currencyShort(double amount) {
-    final formatter = NumberFormat.currency(
-      locale: 'es_DO',
-      symbol: 'RD\$',
-      decimalDigits: 0,
-    );
-    return formatter.format(amount);
+    // Standardizing manually to ensure RD$ is ALWAYS a prefix
+    final val = NumberFormat('#,##0', 'es_DO').format(amount);
+    return 'RD\$ $val';
   }
 
   /// Compact currency for large numbers (e.g., "RD$45.2M").
   static String currencyCompact(double amount) {
     if (amount >= 1000000) {
-      return 'RD\$${(amount / 1000000).toStringAsFixed(1)}M';
+      return 'RD\$ ${(amount / 1000000).toStringAsFixed(1)}M';
     } else if (amount >= 1000) {
-      return 'RD\$${(amount / 1000).toStringAsFixed(0)}K';
+      return 'RD\$ ${(amount / 1000).toStringAsFixed(0)}K';
     }
     return currencyShort(amount);
   }

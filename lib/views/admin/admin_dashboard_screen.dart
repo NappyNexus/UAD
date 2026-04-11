@@ -180,7 +180,7 @@ class AdminDashboardScreen extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              childAspectRatio: 1.4,
+              childAspectRatio: 1.3,
             ),
             itemCount: modules.length,
             itemBuilder: (ctx, i) {
@@ -290,9 +290,9 @@ class AdminDashboardScreen extends StatelessWidget {
                             Container(
                               width: 24,
                               height: 100 * pct,
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                 color: AppColors.primary,
-                                borderRadius: BorderRadius.vertical(
+                                borderRadius: const BorderRadius.vertical(
                                   top: Radius.circular(4),
                                 ),
                               ),
@@ -362,7 +362,7 @@ class AdminDashboardScreen extends StatelessWidget {
                               value: val / maxVal,
                               minHeight: 6,
                               backgroundColor: AppColors.background,
-                              valueColor: const AlwaysStoppedAnimation(
+                              valueColor: AlwaysStoppedAnimation(
                                 AppColors.primary,
                               ),
                             ),
@@ -528,7 +528,7 @@ class AdminDashboardScreen extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () => context.push(AppConstants.routeAuditLog),
-                      child: const Row(
+                      child: Row(
                         children: [
                           Text(
                             'Ver todo',

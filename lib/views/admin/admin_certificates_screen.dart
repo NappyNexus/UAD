@@ -5,6 +5,7 @@ import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 import '../../widgets/common/status_badge.dart';
 import '../../widgets/common/push_toast.dart';
+import '../../core/services/pdf_service.dart';
 
 class AdminCertificatesScreen extends StatefulWidget {
   const AdminCertificatesScreen({super.key});
@@ -26,7 +27,12 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
     });
   }
 
-  void _handleAction(String id, bool isPrint) {
+  void _handleAction(String id, bool isPrint, Map<String, dynamic> cert) async {
+    final student = allStudents.firstWhere(
+      (s) => s.id == cert['studentId'],
+      orElse: () => currentStudent,
+    );
+
     setState(() {
       if (isPrint) {
         _printedMap[id] = true;
@@ -35,17 +41,22 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
       }
     });
 
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        setState(() {
-          if (isPrint) {
-            _printedMap[id] = false;
-          } else {
-            _exportedMap[id] = false;
-          }
-        });
-      }
-    });
+    await PdfService.generateCertificate(
+      student: student,
+      type: cert['type'] as String,
+      certId: cert['id'] as String,
+      date: cert['date'] as String,
+    );
+
+    if (mounted) {
+      setState(() {
+        if (isPrint) {
+          _printedMap[id] = false;
+        } else {
+          _exportedMap[id] = false;
+        }
+      });
+    }
   }
 
   void _showCertificatePreview(Map<String, dynamic> cert) {
@@ -90,14 +101,14 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                         color: AppColors.warning,
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         LucideIcons.award,
                         size: 28,
                         color: AppColors.primary,
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
+                    Text(
                       'UNIVERSIDAD ADVENTISTA DOMINICANA',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -164,7 +175,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                     child: ElevatedButton.icon(
                       onPressed: () {
                         Navigator.pop(ctx);
-                        _handleAction(cert['id'], false);
+                        _handleAction(cert['id'] as String, false, cert);
                         _showToast('Certificado exportado correctamente');
                       },
                       icon: const Icon(LucideIcons.download, size: 14),
@@ -184,7 +195,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                     child: ElevatedButton.icon(
                       onPressed: () {
                         Navigator.pop(ctx);
-                        _handleAction(cert['id'], true);
+                        _handleAction(cert['id'] as String, true, cert);
                         _showToast('Impresión enviada');
                       },
                       icon: const Icon(LucideIcons.printer, size: 14),
@@ -228,7 +239,9 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final emitidos = allCertificates.where((c) => c['status'] == 'Emitido').length;
+    final emitidos = allCertificates
+        .where((c) => c['status'] == 'Emitido')
+        .length;
     final pendientes = allCertificates
         .where((c) => c['status'] == 'Pendiente')
         .length;
@@ -286,7 +299,7 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                           children: [
                             Text(
                               '$emitidos',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.primary,
@@ -468,8 +481,11 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                             ),
                             const SizedBox(width: 8),
                             ElevatedButton.icon(
-                              onPressed: () =>
-                                  _handleAction(cert['id'] as String, false),
+                              onPressed: () => _handleAction(
+                                cert['id'] as String,
+                                false,
+                                cert,
+                              ),
                               icon: Icon(
                                 isExported
                                     ? LucideIcons.checkCircle
@@ -499,8 +515,11 @@ class _AdminCertificatesScreenState extends State<AdminCertificatesScreen> {
                             ),
                             const SizedBox(width: 8),
                             ElevatedButton.icon(
-                              onPressed: () =>
-                                  _handleAction(cert['id'] as String, true),
+                              onPressed: () => _handleAction(
+                                cert['id'] as String,
+                                true,
+                                cert,
+                              ),
                               icon: Icon(
                                 isPrinted
                                     ? LucideIcons.checkCircle

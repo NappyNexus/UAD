@@ -293,7 +293,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
                                         ),
                                         Text(
                                           '${req['requestedGrade']}',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 11,
                                             fontWeight: FontWeight.w700,
                                             color: AppColors.primary,

@@ -35,7 +35,6 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
       'status': 'Pendiente',
       'email': 'laura.santana@gmail.com',
       'phone': '809-444-1122',
-      'cohort': '2025-1',
       'docs': true,
     },
     {
@@ -47,7 +46,6 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
       'status': 'En revisión',
       'email': 'carlos.marte@gmail.com',
       'phone': '829-555-3344',
-      'cohort': '2025-1',
       'docs': false,
     },
     {
@@ -59,7 +57,6 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
       'status': 'Pendiente',
       'email': 'yesenia.pujols@gmail.com',
       'phone': '849-666-5566',
-      'cohort': '2025-1',
       'docs': true,
     },
     {
@@ -71,7 +68,6 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
       'status': 'Aprobado',
       'email': 'roberto.jimenez@gmail.com',
       'phone': '809-777-7788',
-      'cohort': '2025-1',
       'docs': true,
     },
     {
@@ -83,7 +79,6 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
       'status': 'Rechazado',
       'email': 'ana.feliz@gmail.com',
       'phone': '829-888-9900',
-      'cohort': '2025-1',
       'docs': false,
     },
     {
@@ -95,7 +90,6 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
       'status': 'Pendiente',
       'email': 'miguel.vasquez@gmail.com',
       'phone': '849-999-0011',
-      'cohort': '2025-1',
       'docs': true,
     },
   ];
@@ -251,7 +245,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                 children: [
                   Expanded(child: _detailBox('Programa', adm['program'])),
                   const SizedBox(width: 8),
-                  Expanded(child: _detailBox('Cohorte', adm['cohort'])),
+                  Expanded(child: const SizedBox.shrink()),
                 ],
               ),
               const SizedBox(height: 16),
@@ -620,7 +614,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                                 ),
                                 SizedBox(height: 2),
                                 Text(
-                                  '${a['program']} · Cohorte ${a['cohort']}',
+                                  '${a['program']}',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: AppColors.primary,
@@ -767,7 +761,6 @@ class _NewAdmissionFormState extends State<_NewAdmissionForm> {
                             'date': '2025-04-07',
                             'status': 'Pendiente',
                             'docs': false,
-                            'cohort': '2025-1',
                           });
                         }
                       },

@@ -8,6 +8,7 @@ import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 import '../../widgets/common/stat_card.dart';
 import '../../widgets/common/status_badge.dart';
+import '../../core/services/pdf_service.dart';
 
 class PaymentsScreen extends StatefulWidget {
   const PaymentsScreen({super.key});
@@ -183,21 +184,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                         color: AppColors.textPrimary,
                       ),
                     ),
-                    OutlinedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(LucideIcons.download, size: 14),
-                      label: const Text('PDF', style: TextStyle(fontSize: 11)),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 6,
-                        ),
-                        minimumSize: Size.zero,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
+                    const SizedBox(width: 8),
                   ],
                 ),
                 SizedBox(height: 12),
@@ -271,7 +258,29 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                               ),
                             ),
                             const SizedBox(height: 6),
-                            StatusBadge(status: p.status),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (p.isPaid)
+                                  IconButton(
+                                    visualDensity: VisualDensity.compact,
+                                    padding: EdgeInsets.zero,
+                                    constraints: const BoxConstraints(),
+                                    icon: Icon(
+                                      LucideIcons.download,
+                                      size: 14,
+                                      color: AppColors.primary,
+                                    ),
+                                    onPressed: () =>
+                                        PdfService.generatePaymentReceipt(
+                                          student: s,
+                                          payment: p,
+                                        ),
+                                  ),
+                                const SizedBox(width: 4),
+                                StatusBadge(status: p.status),
+                              ],
+                            ),
                           ],
                         ),
                       ],
@@ -337,9 +346,9 @@ class PaymentModalContent extends StatefulWidget {
 }
 
 class _PaymentModalContentState extends State<PaymentModalContent> {
-  String _selectedConcept = 'Cuota 3/4 - Colegiatura (RD\$12,500)';
+  String _selectedConcept = 'Cuota 3/4 - Colegiatura (RD\$ 12,500)';
   final TextEditingController _montoController = TextEditingController(
-    text: 'RD\$12,500.00',
+    text: 'RD\$ 12,500.00',
   );
   final TextEditingController _customConceptController =
       TextEditingController();
@@ -354,8 +363,8 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
   bool _saveCard = true;
 
   final List<String> _concepts = [
-    'Cuota 3/4 - Colegiatura (RD\$12,500)',
-    'Cuota 4/4 - Colegiatura (RD\$12,500)',
+    'Cuota 3/4 - Colegiatura (RD\$ 12,500)',
+    'Cuota 4/4 - Colegiatura (RD\$ 12,500)',
     'Monto Personalizado',
   ];
 
@@ -382,9 +391,9 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
     if (val == null) return;
     setState(() {
       _selectedConcept = val;
-      if (val == 'Cuota 3/4 - Colegiatura (RD\$12,500)' ||
-          val == 'Cuota 4/4 - Colegiatura (RD\$12,500)') {
-        _montoController.text = 'RD\$12,500.00';
+      if (val == 'Cuota 3/4 - Colegiatura (RD\$ 12,500)' ||
+          val == 'Cuota 4/4 - Colegiatura (RD\$ 12,500)') {
+        _montoController.text = 'RD\$ 12,500.00';
       } else {
         _montoController.text = '';
       }
@@ -517,7 +526,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
+                          borderSide: BorderSide(
                             color: AppColors.primary,
                             width: 1.5,
                           ),
@@ -559,9 +568,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                       child: ElevatedButton(
                         onPressed: () => Navigator.pop(context),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(
-                            0xFF1B704C,
-                          ), // Assuming AppColors.primary is this green
+                          backgroundColor: AppColors.primary,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -603,10 +610,10 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: active ? const Color(0xFF1B704C) : AppColors.surface,
+            color: active ? AppColors.primary : AppColors.surface,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: active ? const Color(0xFF1B704C) : AppColors.borderMedium,
+              color: active ? AppColors.primary : AppColors.borderMedium,
             ),
           ),
           child: Text(
@@ -627,18 +634,18 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF2F6FA),
+        color: AppColors.inputFill,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'DATOS DE TRANSFERENCIA',
             style: TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF1F51E5),
+              color: AppColors.infoText,
               letterSpacing: 1.0,
             ),
           ),
@@ -735,9 +742,9 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
             child: Container(
               padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: AppColors.background,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: const Color(0xFFCFE1FF)),
+                border: Border.all(color: AppColors.border),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -815,7 +822,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color: AppColors.primary, width: 1.5),
         ),
       ),
     );
@@ -825,7 +832,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF9F9FB),
+        color: AppColors.inputFill,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -906,20 +913,20 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
               _buildLabel('NUEVA TARJETA'),
               GestureDetector(
                 onTap: () => setState(() => _isAddingNewCard = false),
-                child: const Row(
+                child: Row(
                   children: [
                     Icon(
                       LucideIcons.arrowLeft,
                       size: 14,
-                      color: Color(0xFF1B704C),
+                      color: AppColors.primary,
                     ),
-                    SizedBox(width: 4),
+                    const SizedBox(width: 4),
                     Text(
                       'Volver',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF1B704C),
+                        color: AppColors.primary,
                       ),
                     ),
                   ],
@@ -997,7 +1004,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
+                          borderSide: BorderSide(
                             color: AppColors.primary,
                             width: 1.5,
                           ),
@@ -1019,12 +1026,10 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                   width: 16,
                   height: 16,
                   decoration: BoxDecoration(
-                    color: _saveCard ? const Color(0xFF1B704C) : AppColors.surface,
+                    color: _saveCard ? AppColors.primary : AppColors.surface,
                     borderRadius: BorderRadius.circular(4),
                     border: Border.all(
-                      color: _saveCard
-                          ? const Color(0xFF1B704C)
-                          : AppColors.borderMedium,
+                      color: _saveCard ? AppColors.primary : AppColors.borderMedium,
                     ),
                   ),
                   child: _saveCard
@@ -1117,7 +1122,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(
+                borderSide: BorderSide(
                   color: AppColors.primary,
                   width: 1.5,
                 ),
@@ -1129,16 +1134,16 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
         const SizedBox(height: 16),
         GestureDetector(
           onTap: () => setState(() => _isAddingNewCard = true),
-          child: const Row(
+          child: Row(
             children: [
-              Icon(LucideIcons.plus, size: 16, color: Color(0xFF1B704C)),
+              Icon(LucideIcons.plus, size: 16, color: AppColors.primary),
               SizedBox(width: 6),
               Text(
                 'Usar otra tarjeta',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF1B704C),
+                  color: AppColors.primary,
                 ),
               ),
             ],
@@ -1178,9 +1183,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: isSelected
-                      ? const Color(0xFF1B704C)
-                      : AppColors.borderMedium,
+                  color: isSelected ? AppColors.primary : AppColors.borderMedium,
                   width: isSelected ? 5 : 1,
                 ),
               ),
@@ -1269,18 +1272,14 @@ class CurrencyInputFormatter extends TextInputFormatter {
     String digits = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
     if (digits.isEmpty) {
       return const TextEditingValue(
-        text: 'RD\$0',
-        selection: TextSelection.collapsed(offset: 4),
+        text: 'RD\$ 0',
+        selection: TextSelection.collapsed(offset: 5),
       );
     }
 
     double value = double.parse(digits);
-    final formatter = NumberFormat.currency(
-      locale: 'en_US',
-      symbol: 'RD\$',
-      decimalDigits: 0,
-    );
-    String newText = formatter.format(value);
+    final valStr = NumberFormat('#,##0', 'en_US').format(value);
+    String newText = 'RD\$ $valStr';
 
     return newValue.copyWith(
       text: newText,

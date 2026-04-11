@@ -342,7 +342,9 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                     borderRadius: BorderRadius.circular(10),
                     child: p['photo'] != null
                         ? Image.network(p['photo'] as String, fit: BoxFit.cover)
-                        : Container(color: AppColors.surface.withValues(alpha: 0.2)),
+                        : Container(
+                            color: AppColors.surface.withValues(alpha: 0.2),
+                          ),
                   ),
                 ),
                 SizedBox(width: 16),
@@ -423,7 +425,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                           ],
                         ),
                       ),
-                      const Icon(
+                      Icon(
                         LucideIcons.chevronRight,
                         size: 20,
                         color: AppColors.primary,
@@ -476,7 +478,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                         ),
                         child: Row(
                           children: [
-                            const Icon(
+                            Icon(
                               LucideIcons.users,
                               size: 14,
                               color: AppColors.primary,
@@ -484,7 +486,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                             const SizedBox(width: 6),
                             Text(
                               '${c['enrolled']} estudiantes',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.primary,
@@ -593,7 +595,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
         children: [
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w700,
               color: AppColors.primary,

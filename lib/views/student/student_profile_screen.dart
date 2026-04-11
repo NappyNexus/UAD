@@ -100,12 +100,6 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
           },
           {
             'icon': LucideIcons.calendar,
-            'label': 'Cohorte',
-            'value': s.cohort,
-            'editable': false,
-          },
-          {
-            'icon': LucideIcons.calendar,
             'label': 'Semestre Actual',
             'value': '${s.semester}°',
             'editable': false,
@@ -141,7 +135,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
               ),
               label: Text(_editing ? 'Guardar' : 'Editar'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: _editing ? AppColors.primary : AppColors.surface,
+                backgroundColor: _editing
+                    ? AppColors.primary
+                    : AppColors.surface,
                 foregroundColor: _editing
                     ? Colors.white
                     : AppColors.textPrimary,
@@ -160,10 +156,10 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
             width: double.infinity,
             // padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Color(0xFF026A45), Color(0xFF038556)],
+                colors: [AppColors.primary, AppColors.primaryLight],
               ),
               borderRadius: BorderRadius.circular(16),
             ),
@@ -200,7 +196,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                           child: s.photo != null
                               ? Image.network(s.photo!, fit: BoxFit.cover)
                               : Container(
-                                  color: AppColors.surface.withValues(alpha: 0.2),
+                                  color: AppColors.surface.withValues(
+                                    alpha: 0.2,
+                                  ),
                                   child: Center(
                                     child: Text(
                                       s.name[0],
@@ -246,7 +244,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                     vertical: 3,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: AppColors.surface.withValues(alpha: 0.2),
+                                    color: AppColors.surface.withValues(
+                                      alpha: 0.2,
+                                    ),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Text(
@@ -263,7 +263,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                   'Indice: ${s.gpa}',
                                   style: TextStyle(
                                     fontSize: 11,
-                                    color: AppColors.surface.withValues(alpha: 0.6),
+                                    color: AppColors.surface.withValues(
+                                      alpha: 0.6,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -362,7 +364,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                       fontWeight: FontWeight.w500,
                                       color: AppColors.textPrimary,
                                     ),
-                                    decoration: const InputDecoration(
+                                    decoration: InputDecoration(
                                       isDense: true,
                                       contentPadding: EdgeInsets.only(
                                         bottom: 4,

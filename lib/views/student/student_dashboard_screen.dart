@@ -225,7 +225,9 @@ class StudentDashboardScreen extends ConsumerWidget {
                                   'Bienvenida 👋',
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: AppColors.surface.withValues(alpha: 0.7),
+                                    color: AppColors.surface.withValues(
+                                      alpha: 0.7,
+                                    ),
                                   ),
                                 ),
                                 Text(
@@ -280,7 +282,7 @@ class StudentDashboardScreen extends ConsumerWidget {
             physics: const NeverScrollableScrollPhysics(),
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
-            childAspectRatio: size.width < 380 ? 1.4 : 1.6,
+            childAspectRatio: size.width < 380 ? 1.4 : 1.5, // Taller boxes (1.5 instead of 1.6)
             children: [
               StatCard(
                 icon: LucideIcons.trendingUp,
@@ -661,7 +663,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                   ),
                 ],
               ),
-              const Text(
+              Text(
                 'Ver todos (4)',
                 style: TextStyle(
                   fontSize: 12,
@@ -793,7 +795,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                         ),
                         child: Text(
                           '${course.credits} cr.',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
                             color: AppColors.primary,
@@ -961,7 +963,7 @@ class _AnnouncementCardState extends State<_AnnouncementCard> {
                                   color: AppColors.primarySurface,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: const Text(
+                                child: Text(
                                   '📌 Fijado',
                                   style: TextStyle(
                                     fontSize: 9,

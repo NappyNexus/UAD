@@ -44,7 +44,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
           Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: const Color(0xFFF3F4F6),
+              color: AppColors.background,
+              border: Border.all(color: AppColors.border),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -135,7 +136,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                             strokeWidth: 12,
                             strokeCap: StrokeCap.round,
                             backgroundColor: AppColors.border,
-                            valueColor: const AlwaysStoppedAnimation(
+                            valueColor: AlwaysStoppedAnimation(
                               AppColors.primary,
                             ),
                           ),
@@ -146,7 +147,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                             children: [
                               Text(
                                 '$_progressPct%',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 28,
                                   fontWeight: FontWeight.w800,
                                   color: AppColors.primary,
@@ -232,7 +233,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                             radius: 24,
                           ),
                           PieChartSectionData(
-                            color: const Color(0xFFE5E7EB),
+                            color: AppColors.border,
                             value: _pendingCredits.toDouble(),
                             title: '',
                             radius: 24,
@@ -250,11 +251,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     const Color(0xFF2563EB),
                   ),
                   const SizedBox(height: 10),
-                  _distBar(
-                    'Pendientes',
-                    _pendingCredits,
-                    const Color(0xFFE5E7EB),
-                  ),
+                  _distBar('Pendientes', _pendingCredits, AppColors.border),
                 ],
               ),
             ),
@@ -406,7 +403,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                 const SizedBox(width: 8),
                                 Text(
                                   'Índice ${avgGrade.toStringAsFixed(0)}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w700,
                                     color: AppColors.primary,
@@ -553,7 +550,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                 radius: 20,
                               ),
                               PieChartSectionData(
-                                color: const Color(0xFFE5E7EB),
+                                color: AppColors.border,
                                 value: 5,
                                 title: '',
                                 radius: 20,
@@ -577,7 +574,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                               const Color(0xFFFBBF24),
                             ),
                             const SizedBox(height: 8),
-                            _distBar('Pendientes', 5, const Color(0xFFE5E7EB)),
+                            _distBar('Pendientes', 5, AppColors.border),
                           ],
                         ),
                       ),
@@ -618,7 +615,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                         ),
                         Text(
                           '$done/${courses.length} completadas',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w500,
                             color: AppColors.primary,
@@ -633,7 +630,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                         value: pct / 100,
                         minHeight: 6,
                         backgroundColor: AppColors.border,
-                        valueColor: const AlwaysStoppedAnimation(
+                        valueColor: AlwaysStoppedAnimation(
                           AppColors.primary,
                         ),
                       ),

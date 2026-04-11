@@ -5,6 +5,7 @@ import '../../data/mock/mock_data.dart';
 import '../../data/models/student_model.dart';
 import '../../widgets/common/page_header.dart';
 import '../../widgets/common/status_badge.dart';
+import '../../core/services/export_service.dart';
 
 class AdminStudentsScreen extends StatefulWidget {
   const AdminStudentsScreen({super.key});
@@ -28,11 +29,14 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
 
   bool _exportDone = false;
 
-  void _handleExport() {
-    setState(() => _exportDone = true);
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) setState(() => _exportDone = false);
-    });
+  void _handleExport() async {
+    final success = await ExportService.exportStudentsToCsv(allStudents);
+    if (success && mounted) {
+      setState(() => _exportDone = true);
+      Future.delayed(const Duration(seconds: 2), () {
+        if (mounted) setState(() => _exportDone = false);
+      });
+    }
   }
 
   void _showNewStudentModal() {
@@ -133,7 +137,7 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
               _detailData(
                 'Balance',
                 st.balance > 0
-                    ? 'RD\$${st.balance.toStringAsFixed(2)}'
+                    ? 'RD\$${_formatCurrency(st.balance)}'
                     : 'Al día',
                 isAlert: st.balance > 0,
               ),
@@ -202,6 +206,14 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
           ),
         ],
       );
+
+  String _formatCurrency(double amount) {
+    String value = amount.toStringAsFixed(0);
+    return value.replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (Match m) => '${m[1]},',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -424,7 +436,7 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                             children: [
                               Text(
                                 balance > 0
-                                    ? 'RD\$${balance.toStringAsFixed(0)}'
+                                    ? 'RD\$${_formatCurrency(balance)}'
                                     : 'Al día',
                                 style: TextStyle(
                                   fontSize: 12,
@@ -635,29 +647,35 @@ class _NewStudentFormState extends State<_NewStudentForm> {
               String cleaned = v.replaceAll(RegExp(r'\D'), '');
               String formatted = '';
               if (isPhone) {
-                if (cleaned.isNotEmpty)
+                if (cleaned.isNotEmpty) {
                   formatted = cleaned.substring(
                     0,
                     cleaned.length > 3 ? 3 : cleaned.length,
                   );
-                if (cleaned.length > 3)
+                }
+                if (cleaned.length > 3) {
                   formatted +=
                       '-${cleaned.substring(3, cleaned.length > 6 ? 6 : cleaned.length)}';
-                if (cleaned.length > 6)
+                }
+                if (cleaned.length > 6) {
                   formatted +=
                       '-${cleaned.substring(6, cleaned.length > 10 ? 10 : cleaned.length)}';
+                }
               } else {
-                if (cleaned.isNotEmpty)
+                if (cleaned.isNotEmpty) {
                   formatted = cleaned.substring(
                     0,
                     cleaned.length > 3 ? 3 : cleaned.length,
                   );
-                if (cleaned.length > 3)
+                }
+                if (cleaned.length > 3) {
                   formatted +=
                       '-${cleaned.substring(3, cleaned.length > 10 ? 10 : cleaned.length)}';
-                if (cleaned.length > 10)
+                }
+                if (cleaned.length > 10) {
                   formatted +=
                       '-${cleaned.substring(10, cleaned.length > 11 ? 11 : cleaned.length)}';
+                }
               }
               if (v != formatted) {
                 ctrl.value = ctrl.value.copyWith(

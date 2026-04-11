@@ -14,21 +14,25 @@ class UnadApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
     final prefs = ref.watch(appPreferencesProvider);
 
-    // Sync the static brightness flag so every AppColors getter resolves correctly.
+    // Sync theme flags so every AppColors getter resolves correctly.
     AppColors.updateBrightness(prefs.isDarkMode);
+    AppColors.updateAccent(prefs.accentColor);
 
-    return MediaQuery(
-      data: MediaQuery.of(
-        context,
-      ).copyWith(textScaler: TextScaler.linear(prefs.fontScaleFactor)),
-      child: MaterialApp.router(
-        title: 'UniPortal ADU',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightWithAccent(prefs.accentColor),
-        darkTheme: AppTheme.darkWithAccent(prefs.accentColor),
-        themeMode: prefs.themeMode,
-        routerConfig: router,
-      ),
+    return MaterialApp.router(
+      title: 'UniPortal ADU',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightWithAccent(prefs.accentColor),
+      darkTheme: AppTheme.darkWithAccent(prefs.accentColor),
+      themeMode: prefs.themeMode,
+      routerConfig: router,
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(
+            context,
+          ).copyWith(textScaler: TextScaler.linear(prefs.fontScaleFactor)),
+          child: child!,
+        );
+      },
     );
   }
 }

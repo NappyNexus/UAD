@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
 import '../../core/theme/app_colors.dart';
 import '../../data/mock/mock_data.dart';
-import '../../data/models/student_model.dart';
 import '../../widgets/common/page_header.dart';
 import '../../widgets/common/stat_card.dart';
+import '../../core/services/pdf_service.dart';
 
 class AcademicRecordScreen extends StatelessWidget {
   const AcademicRecordScreen({super.key});
@@ -31,8 +28,11 @@ class AcademicRecordScreen extends StatelessWidget {
             title: 'Récord Académico (Kardex)',
             subtitle: 'Historial completo de calificaciones',
             action: ElevatedButton.icon(
-              onPressed: () =>
-                  _generatePdf(context, s, semesters, totalCredits),
+              onPressed: () => PdfService.generateAcademicRecord(
+                student: s,
+                semesters: semesters,
+                totalCredits: totalCredits,
+              ),
               icon: const Icon(LucideIcons.download, size: 16),
               label: const Text('PDF'),
               style: ElevatedButton.styleFrom(
@@ -75,7 +75,7 @@ class AcademicRecordScreen extends StatelessWidget {
                             child: Center(
                               child: Text(
                                 s.name[0],
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 28,
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.primary,
@@ -104,7 +104,7 @@ class AcademicRecordScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 2),
                 Text(
-                  '${s.id} · Cohorte: ${s.cohort} · Estado: ${s.status}',
+                  '${s.id} · Estado: ${s.status}',
                   style: TextStyle(fontSize: 11, color: AppColors.textTertiary),
                 ),
                 const SizedBox(height: 16),
@@ -114,7 +114,7 @@ class AcademicRecordScreen extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
-                  childAspectRatio: 1.6,
+                  childAspectRatio: 1.5,
                   children: [
                     StatCard(
                       icon: LucideIcons.trendingUp,
@@ -193,7 +193,7 @@ class AcademicRecordScreen extends StatelessWidget {
                       children: [
                         Text(
                           'Período $semName',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                             color: AppColors.primary,
@@ -201,7 +201,7 @@ class AcademicRecordScreen extends StatelessWidget {
                         ),
                         Text(
                           'Índice: ${avgGrade.toStringAsFixed(0)}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                             color: AppColors.primary,
@@ -343,7 +343,7 @@ class AcademicRecordScreen extends StatelessWidget {
                         ),
                         Text(
                           '$semCredits créditos · Índice ${avgGrade.toStringAsFixed(0)}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
                             color: AppColors.primary,
@@ -358,141 +358,6 @@ class AcademicRecordScreen extends StatelessWidget {
           }),
         ],
       ),
-    );
-  }
-
-  Future<void> _generatePdf(
-    BuildContext context,
-    StudentModel s,
-    Map<String, List<dynamic>> semesters,
-    int totalCredits,
-  ) async {
-    final pdf = pw.Document();
-
-    pdf.addPage(
-      pw.MultiPage(
-        pageFormat: PdfPageFormat.letter,
-        build: (pw.Context context) {
-          return [
-            pw.Header(
-              level: 0,
-              child: pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Text(
-                    'Récord Académico',
-                    style: pw.TextStyle(
-                      fontSize: 24,
-                      fontWeight: pw.FontWeight.bold,
-                    ),
-                  ),
-                  pw.Text(
-                    'UNAD',
-                    style: pw.TextStyle(
-                      fontSize: 24,
-                      fontWeight: pw.FontWeight.bold,
-                      color: PdfColors.blue800,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            pw.SizedBox(height: 20),
-            pw.Container(
-              padding: const pw.EdgeInsets.all(10),
-              decoration: pw.BoxDecoration(
-                border: pw.Border.all(color: PdfColors.grey400),
-                borderRadius: const pw.BorderRadius.all(pw.Radius.circular(8)),
-              ),
-              child: pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  pw.Text(
-                    'Estudiante: ${s.name}',
-                    style: pw.TextStyle(
-                      fontSize: 14,
-                      fontWeight: pw.FontWeight.bold,
-                    ),
-                  ),
-                  pw.SizedBox(height: 4),
-                  pw.Text('Matrícula: ${s.id}'),
-                  pw.Text('Programa: ${s.program}'),
-                  pw.Text('Estado: ${s.status}'),
-                  pw.SizedBox(height: 4),
-                  pw.Text(
-                    'Índice General: ${(s.gpa / 4.0 * 100).toStringAsFixed(1)} | Créditos Aprobados: $totalCredits',
-                  ),
-                ],
-              ),
-            ),
-            pw.SizedBox(height: 20),
-            ...semesters.entries.map((entry) {
-              final courses = entry.value;
-              final semCredits = courses.fold<int>(
-                0,
-                (a, c) => a + (c.credits as int),
-              );
-              final avgGrade =
-                  courses.fold<double>(0, (a, c) => a + (c.finalGrade ?? 0)) /
-                  courses.length;
-
-              return pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  pw.Text(
-                    'Período ${entry.key}',
-                    style: pw.TextStyle(
-                      fontSize: 14,
-                      fontWeight: pw.FontWeight.bold,
-                    ),
-                  ),
-                  pw.SizedBox(height: 8),
-                  pw.TableHelper.fromTextArray(
-                    headers: ['Código', 'Materia', 'Créditos', 'Nota'],
-                    data: courses
-                        .map(
-                          (c) => [
-                            c.courseId,
-                            c.courseName,
-                            '${c.credits}',
-                            '${(c.finalGrade ?? 0.0).toStringAsFixed(0)}',
-                          ],
-                        )
-                        .toList(),
-                    headerStyle: pw.TextStyle(
-                      fontWeight: pw.FontWeight.bold,
-                      color: PdfColors.white,
-                    ),
-                    headerDecoration: const pw.BoxDecoration(
-                      color: PdfColors.blue800,
-                    ),
-                    rowDecoration: const pw.BoxDecoration(
-                      border: pw.Border(
-                        bottom: pw.BorderSide(
-                          color: PdfColors.grey300,
-                          width: 0.5,
-                        ),
-                      ),
-                    ),
-                    cellAlignment: pw.Alignment.centerLeft,
-                  ),
-                  pw.SizedBox(height: 8),
-                  pw.Text(
-                    'Total Período: $semCredits créditos | Índice: ${avgGrade.toStringAsFixed(0)}',
-                    style: const pw.TextStyle(fontSize: 12),
-                  ),
-                  pw.SizedBox(height: 20),
-                ],
-              );
-            }),
-          ];
-        },
-      ),
-    );
-
-    await Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async => pdf.save(),
-      name: 'Record_Academico_${s.id}.pdf',
     );
   }
 }

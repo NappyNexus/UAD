@@ -12,20 +12,36 @@ final _dayMap = {
   'S': 'Sábado',
 };
 final _days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-final _colors = [
-  [
-    const Color(0xFF026A45).withValues(alpha: 0.1),
-    const Color(0xFF026A45).withValues(alpha: 0.3),
-    const Color(0xFF026A45),
-  ],
-  [AppColors.infoSurface, AppColors.infoLight, const Color(0xFF1D4ED8)],
-  [const Color(0xFFF5F3FF), const Color(0xFFDDD6FE), const Color(0xFF7C3AED)],
-  [AppColors.warningSurface, const Color(0xFFFDE68A), const Color(0xFFB45309)],
-  [const Color(0xFFFFF1F2), const Color(0xFFFECDD3), const Color(0xFFF43F5E)],
-];
-
 class ScheduleScreen extends StatelessWidget {
   const ScheduleScreen({super.key});
+
+  List<Color> _getCourseColors(int index, BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final baseColors = [
+      AppColors.primary,
+      AppColors.info,
+      const Color(0xFF7C3AED), // Purple
+      AppColors.warning,
+      const Color(0xFFF43F5E), // Rose
+    ];
+
+    final color = baseColors[index % baseColors.length];
+
+    if (isDark) {
+      return [
+        color.withValues(alpha: 0.15),
+        color.withValues(alpha: 0.4),
+        color.withValues(alpha: 0.9),
+      ];
+    } else {
+      return [
+        color.withValues(alpha: 0.08),
+        color.withValues(alpha: 0.2),
+        color,
+      ];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +59,7 @@ class ScheduleScreen extends StatelessWidget {
         for (final d in dayLetters) {
           final dayName = _dayMap[d] ?? d;
           scheduleByDay[dayName]?.add({
-            ...{'course': course, 'time': time, 'colorIdx': i % _colors.length},
+            ...{'course': course, 'time': time, 'colorIdx': i},
           });
         }
       }
@@ -68,7 +84,7 @@ class ScheduleScreen extends StatelessWidget {
             children: currentCourses.asMap().entries.map((entry) {
               final i = entry.key;
               final c = entry.value;
-              final clrs = _colors[i % _colors.length];
+              final clrs = _getCourseColors(i, context);
               return Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
@@ -117,7 +133,7 @@ class ScheduleScreen extends StatelessWidget {
                 const SizedBox(height: 6),
                 ...courses.map((slot) {
                   final course = slot['course'];
-                  final clrs = _colors[slot['colorIdx'] as int];
+                  final clrs = _getCourseColors(slot['colorIdx'] as int, context);
                   return Container(
                     margin: const EdgeInsets.only(bottom: 8),
                     padding: const EdgeInsets.all(14),
@@ -269,7 +285,7 @@ class ScheduleScreen extends StatelessWidget {
       children: [
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w700,
             color: AppColors.primary,

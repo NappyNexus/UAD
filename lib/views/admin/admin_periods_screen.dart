@@ -122,7 +122,7 @@ class _AdminPeriodsScreenState extends State<AdminPeriodsScreen> {
       case 'Planificación':
         return const Icon(LucideIcons.settings, size: 16, color: Colors.purple);
       default:
-        return const Icon(
+        return Icon(
           LucideIcons.calendar,
           size: 16,
           color: AppColors.primary,

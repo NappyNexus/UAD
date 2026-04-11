@@ -14,7 +14,6 @@ class StudentModel {
   final int cumulativeCredits;
   final int totalCredits;
   final double balance;
-  final String cohort;
   final String? photo;
   final String? emergencyContact;
 
@@ -33,7 +32,6 @@ class StudentModel {
     required this.cumulativeCredits,
     required this.totalCredits,
     required this.balance,
-    required this.cohort,
     this.photo,
     this.emergencyContact,
   });
@@ -57,7 +55,6 @@ class StudentModel {
     int? cumulativeCredits,
     int? totalCredits,
     double? balance,
-    String? cohort,
     String? photo,
     String? emergencyContact,
   }) {
@@ -76,7 +73,6 @@ class StudentModel {
       cumulativeCredits: cumulativeCredits ?? this.cumulativeCredits,
       totalCredits: totalCredits ?? this.totalCredits,
       balance: balance ?? this.balance,
-      cohort: cohort ?? this.cohort,
       photo: photo ?? this.photo,
       emergencyContact: emergencyContact ?? this.emergencyContact,
     );
@@ -98,7 +94,6 @@ class StudentModel {
       cumulativeCredits: json['cumulative_credits'] as int? ?? 0,
       totalCredits: json['total_credits'] as int? ?? 0,
       balance: (json['balance'] as num?)?.toDouble() ?? 0,
-      cohort: json['cohort'] as String? ?? '',
       photo: json['photo'] as String?,
       emergencyContact: json['emergency_contact'] as String?,
     );
@@ -119,7 +114,6 @@ class StudentModel {
     'cumulative_credits': cumulativeCredits,
     'total_credits': totalCredits,
     'balance': balance,
-    'cohort': cohort,
     'photo': photo,
     'emergency_contact': emergencyContact,
   };

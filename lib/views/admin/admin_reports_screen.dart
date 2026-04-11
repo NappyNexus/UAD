@@ -5,6 +5,7 @@ import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 import '../../widgets/common/stat_card.dart';
 import 'package:fl_chart/fl_chart.dart';
+import '../../core/services/pdf_service.dart';
 
 final _tuitionData = [
   {'month': 'Ago', 'cobrado': 12500000, 'pendiente': 3200000},
@@ -46,7 +47,12 @@ class AdminReportsScreen extends StatelessWidget {
                 ),
               ),
               ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: () => PdfService.generateAdminReport(
+                  title: 'Análisis del período Ago-Dic 2024',
+                  enrollmentTrend: enrollmentTrend,
+                  studentsByProgram: studentsByProgram,
+                  statusBreakdown: statusBreakdown,
+                ),
                 icon: const Icon(LucideIcons.printer, size: 14),
                 label: const Text(
                   'Exportar PDF',
@@ -109,6 +115,8 @@ class AdminReportsScreen extends StatelessWidget {
           // Enrollment Trend Chart (Line Chart)
           _CardContainer(
             title: 'Tendencia de Matrícula',
+            onPdfPressed: () =>
+                PdfService.generateEnrollmentTrendReport(enrollmentTrend),
             child: SizedBox(
               height: 200,
               child: LineChart(
@@ -188,6 +196,8 @@ class AdminReportsScreen extends StatelessWidget {
           // Students by Program
           _CardContainer(
             title: 'Estudiantes por Programa',
+            onPdfPressed: () =>
+                PdfService.generateProgramDistributionReport(studentsByProgram),
             child: Column(
               children: studentsByProgram.map((p) {
                 final maxVal = 350.0;
@@ -215,7 +225,7 @@ class AdminReportsScreen extends StatelessWidget {
                             value: val / maxVal,
                             minHeight: 8,
                             backgroundColor: AppColors.background,
-                            valueColor: const AlwaysStoppedAnimation(
+                            valueColor: AlwaysStoppedAnimation(
                               AppColors.primary,
                             ),
                           ),
@@ -245,6 +255,8 @@ class AdminReportsScreen extends StatelessWidget {
           // Tuition Collection (Stacked simulation)
           _CardContainer(
             title: 'Cobranza de Matrícula (M = Millones)',
+            onPdfPressed: () =>
+                PdfService.generateTuitionCollectionReport(_tuitionData),
             child: SizedBox(
               height: 180,
               child: Row(
@@ -261,7 +273,7 @@ class AdminReportsScreen extends StatelessWidget {
                       children: [
                         Text(
                           '${c.toStringAsFixed(1)}M',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 9,
                             color: AppColors.primary,
                             fontWeight: FontWeight.w700,
@@ -281,7 +293,7 @@ class AdminReportsScreen extends StatelessWidget {
                         Container(
                           width: 24,
                           height: totalHeight * (c / maxVal),
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             color: AppColors.primary,
                           ),
                         ),
@@ -305,6 +317,8 @@ class AdminReportsScreen extends StatelessWidget {
           // GPA Distribution
           _CardContainer(
             title: 'Distribución de Índice',
+            onPdfPressed: () =>
+                PdfService.generateGpaDistributionReport(_gpaDistribution),
             child: SizedBox(
               height: 160,
               child: Row(
@@ -328,7 +342,7 @@ class AdminReportsScreen extends StatelessWidget {
                         Container(
                           width: 30,
                           height: 110 * pct,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             color: AppColors.primary,
                             borderRadius: BorderRadius.vertical(
                               top: Radius.circular(4),
@@ -355,6 +369,8 @@ class AdminReportsScreen extends StatelessWidget {
           // Status breakdown
           _CardContainer(
             title: 'Estado de Estudiantes',
+            onPdfPressed: () =>
+                PdfService.generateStatusBreakdownReport(statusBreakdown),
             child: SizedBox(
               height: 160,
               child: Row(
@@ -451,8 +467,13 @@ class AdminReportsScreen extends StatelessWidget {
 class _CardContainer extends StatelessWidget {
   final String title;
   final Widget child;
+  final VoidCallback? onPdfPressed;
 
-  const _CardContainer({required this.title, required this.child});
+  const _CardContainer({
+    required this.title,
+    required this.child,
+    this.onPdfPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -478,7 +499,7 @@ class _CardContainer extends StatelessWidget {
                 ),
               ),
               InkWell(
-                onTap: () {},
+                onTap: onPdfPressed,
                 child: Row(
                   children: [
                     Icon(

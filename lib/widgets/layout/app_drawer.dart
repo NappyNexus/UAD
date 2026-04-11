@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_color_scheme.dart';
 import '../../core/constants/app_constants.dart';
+import 'package:uad/viewmodels/messaging_viewmodel.dart';
+import 'package:uad/data/models/chat_model.dart';
 
 /// Full-height navigation drawer, ported from AppDrawer.jsx.
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends ConsumerWidget {
   final List<NavItem> navItems;
   final String currentRoute;
   final String currentRole;
@@ -19,9 +22,14 @@ class AppDrawer extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final roleGradient = _getRoleGradient(currentRole);
     final c = context.appColors;
+    final msgState = ref.watch(messagingProvider);
+    final int totalUnread = msgState.contacts.fold<int>(
+      0,
+      (sum, contact) => sum + (contact.unreadCount as int),
+    );
 
     return Drawer(
       backgroundColor: c.cardColor,
@@ -100,7 +108,9 @@ class AppDrawer extends StatelessWidget {
                         color: Colors.white,
                       ),
                       style: IconButton.styleFrom(
-                        backgroundColor: AppColors.surface.withValues(alpha: 0.1),
+                        backgroundColor: AppColors.surface.withValues(
+                          alpha: 0.1,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -166,6 +176,8 @@ class AppDrawer extends StatelessWidget {
                 ),
                 ...navItems.map((item) {
                   final isActive = currentRoute.startsWith(item.route);
+                  final isMessaging = item.route == AppConstants.routeMessaging;
+
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 2),
                     child: Material(
@@ -206,7 +218,30 @@ class AppDrawer extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              if (isActive)
+                              if (isMessaging && totalUnread > 0)
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                    vertical: 2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: isActive
+                                        ? Colors.white
+                                        : AppColors.primary,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    '$totalUnread',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w700,
+                                      color: isActive
+                                          ? AppColors.primary
+                                          : Colors.white,
+                                    ),
+                                  ),
+                                )
+                              else if (isActive)
                                 Container(
                                   width: 6,
                                   height: 6,
@@ -316,7 +351,7 @@ class AppDrawer extends StatelessWidget {
                   child: TextButton.icon(
                     onPressed: () {
                       Navigator.of(context).pop();
-                      context.go(AppConstants.routeRoleSelect);
+                      context.go(AppConstants.routeAuth);
                     },
                     icon: const Icon(LucideIcons.logOut, size: 16),
                     label: const Text('Cerrar Sesión'),

@@ -62,8 +62,8 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
             width: double.infinity,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFF026A45), Color(0xFF038556)],
+              gradient: LinearGradient(
+                colors: [AppColors.primary, AppColors.primaryLight],
               ),
               borderRadius: BorderRadius.circular(16),
             ),
@@ -212,7 +212,9 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
               margin: const EdgeInsets.only(bottom: 8),
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.primarySurface : AppColors.surface,
+                color: isSelected
+                    ? AppColors.primarySurface
+                    : AppColors.surface,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: isSelected
@@ -477,7 +479,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                 ),
                 Text(
                   '$_totalCredits',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                     color: AppColors.primary,
@@ -492,7 +494,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pop(ctx);
-                  // Implementation for actual confirmation would go here
+                  _showSuccessDialog();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
@@ -505,6 +507,69 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                   'Confirmar Selección',
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.successSurface,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                LucideIcons.checkCircle,
+                size: 40,
+                color: AppColors.success,
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Selección Exitosa',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Has seleccionado $_totalCredits créditos para el período Enero - Mayo 2025.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Tu solicitud ha sido enviada a Coordinación Académica para su validación final.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 13, color: AppColors.textTertiary),
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+                setState(() => _selected.clear());
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text(
+                'Aceptar',
+                style: TextStyle(fontWeight: FontWeight.w600),
               ),
             ),
           ],

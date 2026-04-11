@@ -20,7 +20,6 @@ class AppConstants {
 
   // ─── Route Paths ─────────────────────────────────────────────────
   static const String routeAuth = '/auth';
-  static const String routeRoleSelect = '/role-select';
 
   // Student
   static const String routeStudentDashboard = '/student/dashboard';
@@ -271,42 +270,6 @@ class AppConstants {
       route: routeMessaging,
     ),
   ];
-
-  // ── Demo Users (for auth screen) ──────────────────────────────
-  static const List<DemoUser> demoUsers = [
-    DemoUser(
-      email: 'student@unad.edu.do',
-      password: 'estudiante123',
-      role: roleStudent,
-      name: 'María E. Rodríguez',
-      photo:
-          'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face',
-    ),
-    DemoUser(
-      email: 'professor@unad.edu.do',
-      password: 'profesor123',
-      role: roleTeacher,
-      name: 'Dr. Carlos Martínez',
-      photo:
-          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
-    ),
-    DemoUser(
-      email: 'admin@unad.edu.do',
-      password: 'admin123',
-      role: roleAdmin,
-      name: 'Admin UNAD',
-      photo:
-          'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
-    ),
-    DemoUser(
-      email: 'registrar@unad.edu.do',
-      password: 'registrar123',
-      role: roleRegistrar,
-      name: 'Ana López',
-      photo:
-          'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face',
-    ),
-  ];
 }
 
 /// A single navigation item (used in bottom nav and drawer).
@@ -316,21 +279,4 @@ class NavItem {
   final String route;
 
   const NavItem({required this.label, required this.icon, required this.route});
-}
-
-/// Demo user credential for the login screen.
-class DemoUser {
-  final String email;
-  final String password;
-  final String role;
-  final String name;
-  final String? photo;
-
-  const DemoUser({
-    required this.email,
-    required this.password,
-    required this.role,
-    required this.name,
-    this.photo,
-  });
 }

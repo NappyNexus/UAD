@@ -361,7 +361,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         const SizedBox(height: 2),
                         Text(
                           roleSub1,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                             color: AppColors.primary,
@@ -463,7 +463,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ElevatedButton.icon(
               onPressed: () {
                 ref.read(authProvider.notifier).logout();
-                context.go(AppConstants.routeRoleSelect);
+                context.go(AppConstants.routeAuth);
               },
               icon: const Icon(LucideIcons.logOut, size: 18),
               label: const Text(
@@ -553,7 +553,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               InkWell(
                 onTap: () => setState(() => _editingProfile = true),
                 child: Row(
-                  children: const [
+                  children: [
                     Icon(LucideIcons.edit2, size: 14, color: AppColors.primary),
                     SizedBox(width: 4),
                     Text(
@@ -599,7 +599,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       ),
                       child: Row(
                         children: [
-                          Icon(LucideIcons.save, size: 14, color: AppColors.surface),
+                          Icon(
+                            LucideIcons.save,
+                            size: 14,
+                            color: AppColors.surface,
+                          ),
                           SizedBox(width: 4),
                           Text(
                             'Guardar',
@@ -1399,7 +1403,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   const SizedBox(width: 4),
                   Text(
                     _addingCard ? 'Cancelar' : 'Agregar',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: AppColors.primary,
@@ -1871,7 +1875,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       ),
                     ),
                     if (active)
-                      const Icon(
+                      Icon(
                         LucideIcons.checkCircle,
                         size: 16,
                         color: AppColors.primary,

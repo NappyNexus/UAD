@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_constants.dart';
 import '../../viewmodels/auth_viewmodel.dart';
-import '../../views/auth/role_select_screen.dart';
 import '../../views/auth/auth_screen.dart';
 import '../../views/shell/app_shell.dart';
 import '../../views/student/student_dashboard_screen.dart';
@@ -45,26 +44,20 @@ import '../../views/shared/settings_screen.dart';
 /// GoRouter configuration for the app.
 GoRouter createRouter(Ref ref) {
   return GoRouter(
-    initialLocation: AppConstants.routeRoleSelect,
+    initialLocation: AppConstants.routeAuth,
     redirect: (context, state) {
       final auth = ref.read(authProvider);
-      final isAuthRoute =
-          state.matchedLocation == AppConstants.routeAuth ||
-          state.matchedLocation == AppConstants.routeRoleSelect;
+      final isAuthRoute = state.matchedLocation == AppConstants.routeAuth;
 
-      // If not authenticated and not on auth route, redirect to role select
+      // If not authenticated and not on auth route, redirect to login
       if (!auth.isAuthenticated && !isAuthRoute) {
-        return AppConstants.routeRoleSelect;
+        return AppConstants.routeAuth;
       }
 
       return null;
     },
     routes: [
       // ── Auth Routes ──
-      GoRoute(
-        path: AppConstants.routeRoleSelect,
-        builder: (context, state) => const RoleSelectScreen(),
-      ),
       GoRoute(
         path: AppConstants.routeAuth,
         builder: (context, state) => const AuthScreen(),

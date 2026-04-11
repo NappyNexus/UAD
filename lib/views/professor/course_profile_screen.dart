@@ -72,7 +72,9 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                       width: 200,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: isSelected ? AppColors.primary : AppColors.surface,
+                        color: isSelected
+                            ? AppColors.primary
+                            : AppColors.surface,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
                           color: isSelected
@@ -356,7 +358,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                                 .take(2)
                                 .map((e) => e[0])
                                 .join(''),
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w700,
                               color: AppColors.primary,
@@ -456,7 +458,7 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
                                     child: Center(
                                       child: Text(
                                         '${e.key + 1}',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w700,
                                           color: AppColors.primary,

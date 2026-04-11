@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_color_scheme.dart';
+import 'package:go_router/go_router.dart';
+import '../../viewmodels/messaging_viewmodel.dart';
 
 /// Notification filter tabs.
 const _tabs = ['Todas', 'Sin leer', 'Mensajes', 'Notas', 'Calendario'];
@@ -23,6 +26,7 @@ class NotifItem {
   final Color iconBg;
   final Color iconColor;
   final String time;
+  final String? route;
   bool unread;
 
   NotifItem({
@@ -34,6 +38,7 @@ class NotifItem {
     required this.iconBg,
     required this.iconColor,
     required this.time,
+    this.route,
     this.unread = true,
   });
 }
@@ -49,29 +54,20 @@ final List<NotifItem> _mockNotifications = [
     iconBg: const Color(0xFFECFDF5),
     iconColor: const Color(0xFF047857),
     time: 'Hace 5 min',
+    route: '/student/grades',
     unread: true,
   ),
   NotifItem(
     id: '2',
     title: 'Pago pendiente',
     message:
-        'Tu matrícula de Ago-Dic 2024 tiene un saldo pendiente de RD\$45,000.',
+        'Tu matrícula de Ago-Dic 2024 tiene un saldo pendiente de RD\$ 45,000.',
     type: 'payment',
     icon: LucideIcons.creditCard,
     iconBg: const Color(0xFFFFFBEB),
     iconColor: const Color(0xFFB45309),
     time: 'Hace 2 horas',
-    unread: true,
-  ),
-  NotifItem(
-    id: '3',
-    title: 'Nuevo mensaje',
-    message: 'Ing. Ana Pérez te envió un mensaje sobre el proyecto final.',
-    type: 'message',
-    icon: LucideIcons.messageCircle,
-    iconBg: const Color(0xFFEFF6FF),
-    iconColor: const Color(0xFF1D4ED8),
-    time: 'Hace 3 horas',
+    route: '/student/payments',
     unread: true,
   ),
   NotifItem(
@@ -83,51 +79,28 @@ final List<NotifItem> _mockNotifications = [
     iconBg: const Color(0xFFF5F3FF),
     iconColor: const Color(0xFF7C3AED),
     time: 'Ayer',
-    unread: false,
-  ),
-  NotifItem(
-    id: '5',
-    title: 'Anuncio institucional',
-    message: 'El asueto del Día de la Constitución será el 6 de noviembre.',
-    type: 'announcement',
-    icon: LucideIcons.info,
-    iconBg: const Color(0xFFF9FAFB),
-    iconColor: const Color(0xFF6B7280),
-    time: 'Hace 2 días',
-    unread: false,
-  ),
-  NotifItem(
-    id: '6',
-    title: 'Solicitud completada',
-    message: 'Tu certificado de estudios REQ-001 está listo para recoger.',
-    type: 'request',
-    icon: LucideIcons.fileText,
-    iconBg: const Color(0xFFECFDF5),
-    iconColor: const Color(0xFF047857),
-    time: 'Hace 3 días',
+    route: '/student/schedule',
     unread: false,
   ),
 ];
 
-/// Right-sliding notifications panel, ported from NotificationsPanel.jsx.
-class NotificationsPanel extends StatefulWidget {
+class NotificationsPanel extends ConsumerStatefulWidget {
   final VoidCallback onClose;
 
   const NotificationsPanel({super.key, required this.onClose});
 
   @override
-  State<NotificationsPanel> createState() => _NotificationsPanelState();
+  ConsumerState<NotificationsPanel> createState() => _NotificationsPanelState();
 }
 
-class _NotificationsPanelState extends State<NotificationsPanel> {
+class _NotificationsPanelState extends ConsumerState<NotificationsPanel> {
   String _activeTab = 'Todas';
-  late List<NotifItem> _notifications;
+  late List<NotifItem> _localNotifications;
 
   @override
   void initState() {
     super.initState();
-    // Deep copy mock data so state is local
-    _notifications = _mockNotifications
+    _localNotifications = _mockNotifications
         .map(
           (n) => NotifItem(
             id: n.id,
@@ -138,56 +111,50 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
             iconBg: n.iconBg,
             iconColor: n.iconColor,
             time: n.time,
+            route: n.route,
             unread: n.unread,
           ),
         )
         .toList();
   }
 
-  int get _unreadCount => _notifications.where((n) => n.unread).length;
-
-  List<NotifItem> get _filtered {
-    if (_activeTab == 'Todas') return _notifications;
-    if (_activeTab == 'Sin leer') {
-      return _notifications.where((n) => n.unread).toList();
-    }
-    return _notifications
-        .where((n) => _typeTabMap[n.type] == _activeTab)
-        .toList();
-  }
-
-  void _markAllRead() {
-    setState(() {
-      for (final n in _notifications) {
-        n.unread = false;
-      }
-    });
-  }
-
-  void _markRead(String id) {
-    setState(() {
-      final n = _notifications.firstWhere((n) => n.id == id);
-      n.unread = false;
-    });
-  }
-
-  void _deleteNotification(String id) {
-    setState(() {
-      _notifications.removeWhere((n) => n.id == id);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
-    final filtered = _filtered;
+    final msgState = ref.watch(messagingProvider);
+
+    // Combine local notifications with dynamic message notifications
+    final allNotifications = [..._localNotifications];
+
+    for (final contact in msgState.contacts) {
+      if (contact.unreadCount > 0) {
+        allNotifications.insert(
+          0,
+          NotifItem(
+            id: 'msg-${contact.id}',
+            title: 'Nuevo mensaje de ${contact.name}',
+            message: contact.lastMessage,
+            type: 'message',
+            icon: LucideIcons.messageCircle,
+            iconBg: const Color(0xFFEFF6FF),
+            iconColor: const Color(0xFF1D4ED8),
+            time: 'Ahora',
+            route: '/messaging',
+            unread: true,
+          ),
+        );
+      }
+    }
+
+    final filtered = _getFiltered(allNotifications);
+    final unreadCount = allNotifications.where((n) => n.unread).length;
 
     return GestureDetector(
       onTap: widget.onClose,
       child: Container(
         color: Colors.black.withValues(alpha: 0.3),
         child: GestureDetector(
-          onTap: () {}, // Absorb taps on the panel
+          onTap: () {},
           child: Align(
             alignment: Alignment.centerRight,
             child: Container(
@@ -201,13 +168,13 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                   BoxShadow(
                     color: Colors.black26,
                     blurRadius: 20,
-                    offset: Offset(-4, 0),
+                    offset: const Offset(-4, 0),
                   ),
                 ],
               ),
               child: Column(
                 children: [
-                  // ── Header ──
+                  // Header
                   Container(
                     padding: EdgeInsets.only(
                       top: MediaQuery.of(context).padding.top + 12,
@@ -227,11 +194,11 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
-                                  color: AppColors.surface,
+                                  color: AppColors.white,
                                 ),
                               ),
                               Text(
-                                '$_unreadCount sin leer',
+                                '$unreadCount sin leer',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.white.withValues(alpha: 0.7),
@@ -260,17 +227,15 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                                   Icon(
                                     LucideIcons.checkCheck,
                                     size: 14,
-                                    color: AppColors.surface,
+                                    color: AppColors.white,
                                   ),
                                   const SizedBox(width: 4),
-                                  Text(
+                                  const Text(
                                     'Leídas',
                                     style: TextStyle(
                                       fontSize: 11,
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.white.withValues(
-                                        alpha: 0.9,
-                                      ),
+                                      color: Colors.white,
                                     ),
                                   ),
                                 ],
@@ -278,13 +243,13 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 4),
                         IconButton(
                           onPressed: widget.onClose,
                           icon: Icon(
                             LucideIcons.x,
                             size: 18,
-                            color: AppColors.surface,
+                            color: AppColors.white,
                           ),
                           style: IconButton.styleFrom(
                             backgroundColor: AppColors.surface.withValues(
@@ -299,7 +264,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                     ),
                   ),
 
-                  // ── Filter Tabs ──
+                  // Tabs
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,
@@ -342,7 +307,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                                       ),
                                     ),
                                     if (tab == 'Sin leer' &&
-                                        _unreadCount > 0) ...[
+                                        unreadCount > 0) ...[
                                       const SizedBox(width: 4),
                                       Container(
                                         padding: const EdgeInsets.symmetric(
@@ -358,7 +323,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                                           ),
                                         ),
                                         child: Text(
-                                          '$_unreadCount',
+                                          '$unreadCount',
                                           style: TextStyle(
                                             fontSize: 9,
                                             fontWeight: FontWeight.w700,
@@ -379,7 +344,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                     ),
                   ),
 
-                  // ── Notification List ──
+                  // List
                   Expanded(
                     child: filtered.isEmpty
                         ? Center(
@@ -426,7 +391,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                                   ),
                                 ),
                                 child: InkWell(
-                                  onTap: () => _markRead(notif.id),
+                                  onTap: () => _markRead(notif.id, allNotifications),
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 16,
@@ -530,25 +495,6 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                             },
                           ),
                   ),
-
-                  // ── Footer ──
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border(top: BorderSide(color: c.border)),
-                    ),
-                    child: Text(
-                      'Las notificaciones se actualizan en tiempo real',
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey.shade400,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -556,5 +502,51 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
         ),
       ),
     );
+  }
+
+  List<NotifItem> _getFiltered(List<NotifItem> all) {
+    if (_activeTab == 'Todas') return all;
+    if (_activeTab == 'Sin leer') {
+      return all.where((n) => n.unread).toList();
+    }
+    return all.where((n) => _typeTabMap[n.type] == _activeTab).toList();
+  }
+
+  void _markAllRead() {
+    setState(() {
+      for (final n in _localNotifications) {
+        n.unread = false;
+      }
+    });
+    // Message notifications are handled by the viewmodel (cleared when selecting chat)
+  }
+
+  void _markRead(String id, List<NotifItem> all) {
+    // Find the notification in the combined list
+    final notif = all.firstWhere((n) => n.id == id);
+    
+    // Perform navigation if route exists
+    if (notif.route != null) {
+      context.go(notif.route!);
+      widget.onClose();
+    }
+
+    if (id.startsWith('msg-')) {
+      final contactId = id.replaceFirst('msg-', '');
+      ref.read(messagingProvider.notifier).selectContact(contactId);
+    } else {
+      setState(() {
+        final n = _localNotifications.firstWhere((n) => n.id == id);
+        n.unread = false;
+      });
+    }
+  }
+
+  void _deleteNotification(String id) {
+    if (!id.startsWith('msg-')) {
+      setState(() {
+        _localNotifications.removeWhere((n) => n.id == id);
+      });
+    }
   }
 }

@@ -639,7 +639,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                                     .take(2)
                                     .map((e) => e[0])
                                     .join(''),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.primary,
