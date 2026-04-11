@@ -599,7 +599,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                 ],
               ),
               Text(
-                'Ver todos (4)',
+                'Ver todos (${announcements.length})',
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
@@ -883,7 +883,7 @@ class _AnnouncementCardState extends State<_AnnouncementCard> {
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             Text(
-                              ann['title'] as String,
+                              (ann['title'] ?? 'Sin título').toString(),
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w700,
@@ -927,7 +927,10 @@ class _AnnouncementCardState extends State<_AnnouncementCard> {
                                 ),
                                 SizedBox(width: 4),
                                 Text(
-                                  ann['courseName'] as String,
+                                  (ann['courseName'] ??
+                                          ann['courseId'] ??
+                                          'General')
+                                      .toString(),
                                   style: TextStyle(
                                     fontSize: 10,
                                     color: AppColors.textTertiary,
@@ -945,7 +948,7 @@ class _AnnouncementCardState extends State<_AnnouncementCard> {
                                 ),
                                 SizedBox(width: 4),
                                 Text(
-                                  ann['date'] as String,
+                                  (ann['date'] ?? '').toString(),
                                   style: TextStyle(
                                     fontSize: 10,
                                     color: AppColors.textTertiary,
@@ -963,7 +966,7 @@ class _AnnouncementCardState extends State<_AnnouncementCard> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
-                                ann['type'] as String,
+                                (ann['type'] ?? 'general').toString(),
                                 style: TextStyle(
                                   fontSize: 9,
                                   fontWeight: FontWeight.w600,
@@ -992,7 +995,7 @@ class _AnnouncementCardState extends State<_AnnouncementCard> {
                 ),
                 padding: EdgeInsets.fromLTRB(16, 12, 16, 16),
                 child: Text(
-                  ann['body'] as String,
+                  (ann['body'] ?? '').toString(),
                   style: TextStyle(
                     fontSize: 12,
                     color: AppColors.textSecondary,

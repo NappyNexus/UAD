@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/constants/app_constants.dart';
+import '../../viewmodels/auth_viewmodel.dart';
 import '../../widgets/common/page_header.dart';
 
-class SurveysScreen extends StatefulWidget {
+class SurveysScreen extends ConsumerStatefulWidget {
   const SurveysScreen({super.key});
 
   @override
-  State<SurveysScreen> createState() => _SurveysScreenState();
+  ConsumerState<SurveysScreen> createState() => _SurveysScreenState();
 }
 
 final List<Map<String, dynamic>> _courseQuestions = [
@@ -45,41 +48,67 @@ final List<Map<String, dynamic>> _courseQuestions = [
   {'id': 'q8', 'text': '¿Qué aspectos podrían mejorar?', 'type': 'text'},
 ];
 
-class _SurveysScreenState extends State<SurveysScreen> {
+class _SurveysScreenState extends ConsumerState<SurveysScreen> {
+  void showSurveyModal(Map<String, dynamic> survey) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _SurveyModal(
+        survey: survey,
+        onSubmit: () {
+          setState(() => survey['status'] = 'completed');
+        },
+      ),
+    );
+  }
+
   final List<Map<String, dynamic>> _surveys = [
     {
       'id': 1,
       'title': 'Evaluación Docente - Cálculo III',
       'description':
-          'Evalúa el desempeño de tu profesor durante el actual cuatrimestre.',
+          'Evalúa la calidad de la enseñanza, metodología y atención del profesor.',
       'professor': 'Dr. Carlos Martínez',
       'course': 'MAT-301',
       'type': 'course',
       'status': 'pending',
       'questions': 8,
-      'deadline': '25 Oct, 2024',
+      'deadline': '2026-04-15',
     },
     {
       'id': 2,
-      'title': 'Encuesta Satisfacción Estudiantil 2026',
+      'title': 'Evaluación Docente - Base de Datos II',
       'description':
-          'Encuesta general sobre los servicios de la universidad (biblioteca, cafetería, etc).',
-      'type': 'general',
+          'Evalúa la calidad de la enseñanza, metodología y atención del profesor.',
+      'professor': 'Ing. Ana Pérez',
+      'course': 'ING-305',
+      'type': 'course',
       'status': 'pending',
-      'questions': 15,
-      'deadline': '30 Nov, 2024',
+      'questions': 8,
+      'deadline': '2026-04-15',
     },
     {
       'id': 3,
+      'title': 'Encuesta Satisfacción Estudiantil 2026',
+      'description':
+          'Evaluación semestral sobre la experiencia general en la universidad, servicios y facilidades.',
+      'type': 'general',
+      'status': 'pending',
+      'questions': 15,
+      'deadline': '2026-04-30',
+    },
+    {
+      'id': 4,
       'title': 'Evaluación Docente - Ética Profesional',
       'description':
-          'Evalúa el desempeño de tu profesor durante el actual cuatrimestre.',
+          'Evalúa la calidad de la enseñanza, metodología y atención del profesor.',
       'professor': 'Lic. Carmen Sosa',
       'course': 'HUM-200',
       'type': 'course',
       'status': 'completed',
       'questions': 8,
-      'deadline': '10 Oct, 2024',
+      'deadline': '2026-03-01',
     },
   ];
 
@@ -93,8 +122,8 @@ class _SurveysScreenState extends State<SurveysScreen> {
         ? 0
         : (completed.length / _surveys.length * 100).round();
 
-    final isProfessor =
-        true; // Mocked for demonstration since we are in Professor Portal context
+    final auth = ref.watch(authProvider);
+    final isProfessor = auth.currentRole == AppConstants.roleTeacher;
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -109,30 +138,43 @@ class _SurveysScreenState extends State<SurveysScreen> {
     List<Map<String, dynamic>> completed,
     int responseRate,
   ) {
-    void showSurveyModal(Map<String, dynamic> survey) {
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (context) => _SurveyModal(
-          survey: survey,
-          onSubmit: () {
-            setState(() => survey['status'] = 'completed');
-          },
-        ),
-      );
-    }
-
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const PageHeader(
-            title: 'Encuestas',
-            subtitle: 'Tu opinión ayuda a mejorar UNAD',
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Encuestas y Evaluaciones',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.textPrimary,
+                        letterSpacing: -0.5,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Tu opinión ayuda a mejorar la calidad académica',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
+
+          // Stats - Match React grid
           Row(
             children: [
               Expanded(
@@ -140,72 +182,82 @@ class _SurveysScreenState extends State<SurveysScreen> {
                   title: 'Pendientes',
                   value: pending.length.toString(),
                   icon: LucideIcons.clock,
-                  iconColor: Colors.amber.shade600,
-                  bgColor: Colors.amber.shade50,
+                  iconColor: const Color(0xFFD97706),
+                  bgColor: const Color(0xFFFEF3C7),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 12),
               Expanded(
                 child: _StatCard(
                   title: 'Completadas',
                   value: completed.length.toString(),
-                  icon: LucideIcons.checkCircle,
-                  iconColor: Colors.green.shade600,
-                  bgColor: Colors.green.shade50,
+                  icon: LucideIcons.checkCircle2,
+                  iconColor: const Color(0xFF059669),
+                  bgColor: const Color(0xFFD1FAE5),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 12),
               Expanded(
                 child: _StatCard(
                   title: 'Tasa resp.',
                   value: '$responseRate%',
                   icon: LucideIcons.trendingUp,
-                  iconColor: Colors.blue.shade600,
-                  bgColor: Colors.blue.shade50,
+                  iconColor: const Color(0xFF2563EB),
+                  bgColor: const Color(0xFFDBEAFE),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
+
           if (pending.isNotEmpty) ...[
             Row(
               children: [
-                Icon(LucideIcons.clock, size: 14, color: Colors.amber.shade500),
-                SizedBox(width: 8),
+                Icon(
+                  LucideIcons.clock,
+                  size: 16,
+                  color: const Color(0xFFD97706),
+                ),
+                const SizedBox(width: 8),
                 Text(
-                  'Pendientes (${pending.length})',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                  'PENDIENTES (${pending.length})',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.textTertiary,
+                    letterSpacing: 1.2,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             ...pending.map(
               (s) => _SurveyPendingCard(s, onTap: () => showSurveyModal(s)),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
           ],
+
           if (completed.isNotEmpty) ...[
             Row(
               children: [
                 Icon(
-                  LucideIcons.checkCircle,
-                  size: 14,
-                  color: Colors.green.shade500,
+                  LucideIcons.checkCircle2,
+                  size: 16,
+                  color: const Color(0xFF059669),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Text(
-                  'Completadas (${completed.length})',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                  'COMPLETADAS (${completed.length})',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.textTertiary,
+                    letterSpacing: 1.2,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             ...completed.map((s) => _SurveyCompletedCard(s)),
           ],
         ],
@@ -499,145 +551,151 @@ class _SurveyPendingCard extends StatelessWidget {
     final isCourse = survey['type'] == 'course';
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(color: AppColors.border),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: isCourse
-                  ? AppColors.primary.withValues(alpha: 0.1)
-                  : Colors.blue.shade50,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Center(
-              child: Icon(
-                isCourse ? LucideIcons.star : LucideIcons.barChart3,
-                size: 18,
-                color: isCourse ? AppColors.primary : Colors.blue.shade600,
-              ),
-            ),
-          ),
-          SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  survey['title'],
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    height: 1.2,
-                  ),
-                ),
-                if (survey['professor'] != null)
-                  Padding(
-                    padding: EdgeInsets.only(top: 2),
-                    child: Text(
-                      survey['professor'],
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: AppColors.textSecondary,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: isCourse
+                          ? AppColors.primary.withValues(alpha: 0.1)
+                          : const Color(0xFFEFF6FF),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        isCourse ? LucideIcons.star : LucideIcons.barChart3,
+                        size: 20,
+                        color: isCourse
+                            ? AppColors.primary
+                            : const Color(0xFF2563EB),
                       ),
                     ),
                   ),
-                SizedBox(height: 4),
-                Text(
-                  survey['description'],
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textSecondary,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: 8),
-                Wrap(
-                  spacing: 12,
-                  runSpacing: 4,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          LucideIcons.messageSquare,
-                          size: 10,
-                          color: AppColors.textSecondary,
-                        ),
-                        SizedBox(width: 4),
                         Text(
-                          '${survey['questions']} preguntas',
+                          survey['title'],
                           style: TextStyle(
-                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                            color: AppColors.textPrimary,
+                            height: 1.3,
+                          ),
+                        ),
+                        if (survey['professor'] != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: Text(
+                              survey['professor'],
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                          ),
+                        const SizedBox(height: 6),
+                        Text(
+                          survey['description'],
+                          style: TextStyle(
+                            fontSize: 12,
                             color: AppColors.textSecondary,
+                            height: 1.4,
                           ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 12),
+                        Wrap(
+                          spacing: 16,
+                          runSpacing: 8,
+                          children: [
+                            _SurveyInfoTag(
+                              icon: LucideIcons.messageSquare,
+                              label: '${survey['questions']} preguntas',
+                            ),
+                            _SurveyInfoTag(
+                              icon: LucideIcons.clock,
+                              label: 'Vence: ${survey['deadline']}',
+                              color: const Color(0xFFD97706),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          LucideIcons.clock,
-                          size: 10,
-                          color: Colors.amber.shade600,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          'Vence: ${survey['deadline']}',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.amber.shade600,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
+                  ),
+                  const SizedBox(width: 12),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 12),
-          ElevatedButton(
-            onPressed: onTap,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                    child: const Icon(
+                      LucideIcons.chevronRight,
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                Text(
-                  'Iniciar',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-                ),
-                SizedBox(width: 4),
-                Icon(LucideIcons.chevronRight, size: 14),
-              ],
             ),
           ),
-        ],
+        ),
       ),
+    );
+  }
+}
+
+class _SurveyInfoTag extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color? color;
+
+  const _SurveyInfoTag({required this.icon, required this.label, this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    final effectiveColor = color ?? AppColors.textSecondary;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 12, color: effectiveColor),
+        const SizedBox(width: 4),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 11,
+            color: effectiveColor,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -725,29 +783,49 @@ class _SurveyModalState extends State<_SurveyModal> {
   Widget build(BuildContext context) {
     if (_submitted) {
       return Container(
-        height: 300,
+        height: 340,
+        width: double.infinity,
         decoration: BoxDecoration(
           color: AppColors.surface,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
         ),
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(LucideIcons.checkCircle, color: Colors.green, size: 64),
-              SizedBox(height: 16),
+              Container(
+                width: 80,
+                height: 80,
+                decoration: const BoxDecoration(
+                  color: Color(0xFFD1FAE5),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  LucideIcons.checkCircle2,
+                  color: Color(0xFF059669),
+                  size: 40,
+                ),
+              ),
+              const SizedBox(height: 24),
               Text(
-                '¡Evaluación enviada!',
+                '¡Gracias por tu evaluación!',
                 style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w800,
                   color: AppColors.textPrimary,
                 ),
               ),
-              SizedBox(height: 8),
-              Text(
-                'Gracias por tu aporte.',
-                style: TextStyle(color: AppColors.textSecondary),
+              const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Text(
+                  'Tu retroalimentación ayuda a mejorar la calidad académica de UNAD.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 14,
+                  ),
+                ),
               ),
             ],
           ),
@@ -755,194 +833,129 @@ class _SurveyModalState extends State<_SurveyModal> {
       );
     }
 
+    final answeredCount = _answers.keys
+        .where((k) => _answers[k] != null)
+        .length;
+    final totalCount = _courseQuestions.length;
+    final double progress = totalCount > 0 ? answeredCount / totalCount : 0.0;
+
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
       ),
       constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.9,
+        maxHeight: MediaQuery.of(context).size.height * 0.92,
       ),
       child: Column(
         children: [
           // Header
-          Container(
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: AppColors.borderMedium)),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.survey['title'],
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.survey['title'],
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                          if (widget.survey['professor'] != null) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              '${widget.survey['professor']} · ${widget.survey['course']}',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: AppColors.textSecondary,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      icon: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: AppColors.background,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(
+                          LucideIcons.x,
+                          size: 18,
+                          color: AppColors.textSecondary,
                         ),
                       ),
-                      if (widget.survey['professor'] != null) ...[
-                        SizedBox(height: 4),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                // Progress Bar - Match React
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         Text(
-                          widget.survey['professor'],
+                          '$answeredCount de $totalCount preguntas respondidas',
                           style: TextStyle(
                             fontSize: 12,
                             color: AppColors.textSecondary,
                           ),
                         ),
+                        Text(
+                          '${(progress * 100).toInt()}%',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primary,
+                          ),
+                        ),
                       ],
-                    ],
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(LucideIcons.x, size: 20),
-                  onPressed: () => Navigator.pop(context),
+                    ),
+                    const SizedBox(height: 8),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: LinearProgressIndicator(
+                        value: progress,
+                        backgroundColor: AppColors.background,
+                        valueColor: AlwaysStoppedAnimation(AppColors.primary),
+                        minHeight: 6,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
+          const Divider(height: 1),
 
-          // Content
+          // Questions
           Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.all(
-                20,
-              ).copyWith(bottom: MediaQuery.of(context).viewInsets.bottom + 20),
+                24,
+              ).copyWith(bottom: MediaQuery.of(context).viewInsets.bottom + 24),
               itemCount: _courseQuestions.length,
-              separatorBuilder: (_, _) => Padding(
-                padding: EdgeInsets.symmetric(vertical: 24),
-                child: Divider(height: 1, color: AppColors.borderMedium),
-              ),
+              separatorBuilder: (_, __) => const SizedBox(height: 32),
               itemBuilder: (ctx, i) {
                 final q = _courseQuestions[i];
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      q['text'],
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    if (q['type'] == 'rating')
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: List.generate(5, (index) {
-                          final value = index + 1;
-                          final isSelected = (_answers[q['id']] ?? 0) >= value;
-                          return InkWell(
-                            onTap: () =>
-                                setState(() => _answers[q['id']] = value),
-                            borderRadius: BorderRadius.circular(20),
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Icon(
-                                LucideIcons.star,
-                                size: 32,
-                                color: isSelected
-                                    ? Colors.amber
-                                    : Colors.grey.shade300,
-                              ),
-                            ),
-                          );
-                        }),
-                      ),
-                    if (q['type'] == 'rating')
-                      Padding(
-                        padding: EdgeInsets.only(top: 8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Muy malo',
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: AppColors.textSecondary,
-                              ),
-                            ),
-                            Text(
-                              'Excelente',
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: AppColors.textSecondary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                    if (q['type'] == 'yesno')
-                      Row(
-                        children: ['Sí', 'No'].map((opt) {
-                          final selected = _answers[q['id']] == opt;
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 12),
-                            child: InkWell(
-                              onTap: () =>
-                                  setState(() => _answers[q['id']] = opt),
-                              borderRadius: BorderRadius.circular(12),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                  vertical: 10,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: selected
-                                      ? AppColors.primary
-                                      : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: selected
-                                        ? AppColors.primary
-                                        : AppColors.borderMedium,
-                                    width: 2,
-                                  ),
-                                ),
-                                child: Text(
-                                  opt,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: selected
-                                        ? Colors.white
-                                        : AppColors.textPrimary,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-
-                    if (q['type'] == 'text')
-                      Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.background,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: TextField(
-                          maxLines: 3,
-                          onChanged: (v) =>
-                              setState(() => _answers[q['id']] = v),
-                          decoration: InputDecoration(
-                            hintText: 'Escribe tu respuesta aquí...',
-                            hintStyle: TextStyle(
-                              fontSize: 13,
-                              color: AppColors.textTertiary,
-                            ),
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(12),
-                          ),
-                        ),
-                      ),
-                  ],
+                return _SurveyQuestion(
+                  index: i + 1,
+                  question: q,
+                  value: _answers[q['id']],
+                  onChanged: (v) => setState(() => _answers[q['id']] = v),
                 );
               },
             ),
@@ -950,42 +963,199 @@ class _SurveyModalState extends State<_SurveyModal> {
 
           // Footer
           Container(
-            padding: EdgeInsets.only(
-              left: 20,
-              right: 20,
-              top: 16,
-              bottom: MediaQuery.of(context).padding.bottom + 16,
+            padding: EdgeInsets.fromLTRB(
+              24,
+              16,
+              24,
+              MediaQuery.of(context).padding.bottom + 24,
             ),
-            decoration: BoxDecoration(
-              border: Border(top: BorderSide(color: AppColors.borderMedium)),
-            ),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() => _submitted = true);
-                  Future.delayed(const Duration(seconds: 2), () {
-                    widget.onSubmit();
-                    if (context.mounted) Navigator.pop(context);
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() => _submitted = true);
+                Future.delayed(const Duration(seconds: 2), () {
+                  widget.onSubmit();
+                  if (context.mounted) Navigator.pop(context);
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.all(16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Text(
-                  'Enviar Evaluación',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+                elevation: 4,
+                shadowColor: AppColors.primary.withValues(alpha: 0.4),
+              ),
+              child: const Text(
+                'Enviar Evaluación',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _SurveyQuestion extends StatelessWidget {
+  final int index;
+  final Map<String, dynamic> question;
+  final dynamic value;
+  final ValueChanged<dynamic> onChanged;
+
+  const _SurveyQuestion({
+    required this.index,
+    required this.question,
+    required this.value,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: '$index. ',
+                style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 14,
+                  color: AppColors.primary,
+                ),
+              ),
+              TextSpan(
+                text: question['text'],
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        if (question['type'] == 'rating')
+          _StarRating(
+            value: (value as num?)?.toInt() ?? 0,
+            onChanged: onChanged,
+          ),
+        if (question['type'] == 'yesno')
+          Row(
+            children: ['Sí', 'No'].map((opt) {
+              final selected = value == opt;
+              return Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: InkWell(
+                  onTap: () => onChanged(opt),
+                  borderRadius: BorderRadius.circular(14),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: selected ? AppColors.primary : Colors.transparent,
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: selected ? AppColors.primary : AppColors.border,
+                        width: 2,
+                      ),
+                    ),
+                    child: Text(
+                      opt,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: selected
+                            ? Colors.white
+                            : AppColors.textSecondary,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        if (question['type'] == 'text')
+          TextField(
+            maxLines: 4,
+            onChanged: onChanged,
+            style: TextStyle(fontSize: 14, color: AppColors.textPrimary),
+            decoration: InputDecoration(
+              hintText: 'Escribe tu respuesta aquí...',
+              hintStyle: TextStyle(fontSize: 14, color: AppColors.textTertiary),
+              filled: true,
+              fillColor: AppColors.background,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: AppColors.border),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: AppColors.border),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: AppColors.primary),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _StarRating extends StatelessWidget {
+  final int value;
+  final ValueChanged<int> onChanged;
+
+  const _StarRating({required this.value, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: List.generate(5, (i) {
+            final starValue = i + 1;
+            final isHighlighted = starValue <= value;
+            return Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: InkWell(
+                onTap: () => onChanged(starValue),
+                child: Icon(
+                  LucideIcons.star,
+                  size: 32,
+                  color: isHighlighted
+                      ? const Color(0xFFFBBF24)
+                      : Colors.grey.shade300,
+                  fill: isHighlighted ? 1.0 : 0.0,
+                ),
+              ),
+            );
+          }),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Muy malo',
+              style: TextStyle(fontSize: 10, color: AppColors.textTertiary),
+            ),
+            Text(
+              'Excelente',
+              style: TextStyle(fontSize: 10, color: AppColors.textTertiary),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

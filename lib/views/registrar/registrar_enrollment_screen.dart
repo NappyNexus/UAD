@@ -183,11 +183,15 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      builder: (ctx) => Container(
-        padding: EdgeInsets.all(24),
-        child: SafeArea(
+      builder: (ctx) => DraggableScrollableSheet(
+        initialChildSize: 0.85,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) => SingleChildScrollView(
+          controller: scrollController,
+          padding: const EdgeInsets.all(24),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -198,9 +202,9 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                   color: AppColors.textPrimary,
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Container(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: AppColors.background,
                   borderRadius: BorderRadius.circular(16),
@@ -218,7 +222,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                             color: AppColors.textPrimary,
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           adm['cedula'],
                           style: TextStyle(
@@ -245,7 +249,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                 children: [
                   Expanded(child: _detailBox('Programa', adm['program'])),
                   const SizedBox(width: 8),
-                  Expanded(child: const SizedBox.shrink()),
+                  const Expanded(child: SizedBox.shrink()),
                 ],
               ),
               const SizedBox(height: 16),
@@ -331,16 +335,16 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                   ],
                 ),
                 if (adm['status'] == 'Pendiente') ...[
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   ElevatedButton.icon(
                     onPressed: () => _changeStatus(adm['id'], 'En revisión'),
                     icon: const Icon(LucideIcons.alertCircle, size: 16),
-                    label: Text('Marcar En Revisión'),
+                    label: const Text('Marcar En Revisión'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.surface,
                       foregroundColor: AppColors.textPrimary,
                       elevation: 0,
-                      minimumSize: Size(double.infinity, 45),
+                      minimumSize: const Size(double.infinity, 45),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                         side: BorderSide(color: AppColors.borderMedium),
@@ -375,7 +379,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                   contentPadding: const EdgeInsets.all(12),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
@@ -388,6 +392,7 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                 ),
                 child: const Text('Guardar Cambios'),
               ),
+              SizedBox(height: MediaQuery.of(context).padding.bottom + 16),
             ],
           ),
         ),
@@ -493,7 +498,13 @@ class _RegistrarEnrollmentScreenState extends State<RegistrarEnrollmentScreen> {
                     color: AppColors.textTertiary,
                   ),
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                  filled: true,
+                  fillColor: Colors.transparent,
+                  contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 12,
                   ),

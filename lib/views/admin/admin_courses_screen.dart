@@ -312,9 +312,11 @@ class _AdminCoursesScreenState extends State<AdminCoursesScreen> {
                     ),
                   ),
                   Container(
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFF9FAFB),
-                      borderRadius: BorderRadius.vertical(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? const Color(0xFFF9FAFB)
+                          : AppColors.surface.withValues(alpha: 0.5),
+                      borderRadius: const BorderRadius.vertical(
                         bottom: Radius.circular(16),
                       ),
                     ),

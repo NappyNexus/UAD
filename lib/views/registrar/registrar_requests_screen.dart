@@ -94,7 +94,10 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
   }
 
   void _showDetailModal(Map<String, dynamic> r) {
-    final s = allStudents.firstWhere((st) => st.id == r['studentId']);
+    final s = allStudents.firstWhere(
+      (st) => st.id == r['studentId'],
+      orElse: () => allStudents[0],
+    );
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -102,11 +105,15 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      builder: (ctx) => Container(
-        padding: EdgeInsets.all(24),
-        child: SafeArea(
+      builder: (ctx) => DraggableScrollableSheet(
+        initialChildSize: 0.85,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) => SingleChildScrollView(
+          controller: scrollController,
+          padding: const EdgeInsets.all(24),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -117,9 +124,9 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                   color: AppColors.textPrimary,
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Container(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: AppColors.background,
                   borderRadius: BorderRadius.circular(16),
@@ -142,7 +149,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                         StatusBadge(status: r['status']),
                       ],
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       '${r['id']} · ${r['date']}',
                       style: TextStyle(
@@ -159,7 +166,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                         color: AppColors.primary,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       r['details'],
                       style: TextStyle(
@@ -170,7 +177,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               Text(
                 'CAMBIAR ESTADO',
                 style: TextStyle(
@@ -179,7 +186,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                   color: AppColors.textTertiary,
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
@@ -241,6 +248,7 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                 ),
                 child: const Text('Guardar Cambios'),
               ),
+              SizedBox(height: MediaQuery.of(context).padding.bottom + 16),
             ],
           ),
         ),
@@ -289,7 +297,13 @@ class _RegistrarRequestsScreenState extends State<RegistrarRequestsScreen> {
                   ),
                   hintText: 'Buscar por tipo, ID...',
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                  filled: true,
+                  fillColor: Colors.transparent,
+                  contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 12,
                   ),

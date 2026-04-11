@@ -4,8 +4,10 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/constants/app_constants.dart';
 import '../../data/models/chat_model.dart';
 import '../../viewmodels/messaging_viewmodel.dart';
+import '../../viewmodels/auth_viewmodel.dart';
 
 class MessagingScreen extends ConsumerStatefulWidget {
   const MessagingScreen({super.key});
@@ -147,6 +149,8 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = ref.watch(authProvider);
+    final isAdmin = auth.currentRole == AppConstants.roleAdmin;
     final state = ref.watch(messagingProvider);
     final selectedContactId = state.selectedContactId;
     final selectedContact = selectedContactId != null
@@ -201,13 +205,42 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      selectedContact.name,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          selectedContact.name,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        if (isAdmin) ...[
+                          const SizedBox(width: 6),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.primary.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: AppColors.primary.withValues(alpha: 0.2),
+                              ),
+                            ),
+                            child: Text(
+                              'ADMIN',
+                              style: TextStyle(
+                                fontSize: 9,
+                                fontWeight: FontWeight.w900,
+                                color: AppColors.primary,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
                     Text(
                       selectedContact.role,
@@ -277,13 +310,17 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
                         color: AppColors.background,
-                        borderRadius: BorderRadius.circular(24),
+                        borderRadius: BorderRadius.circular(15),
                       ),
                       child: TextField(
                         controller: _msgCtrl,
                         decoration: const InputDecoration(
                           hintText: 'Escribe un mensaje...',
                           border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
                           hintStyle: TextStyle(fontSize: 13),
                         ),
                         style: const TextStyle(fontSize: 13),
@@ -361,6 +398,12 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
                           color: AppColors.textTertiary,
                         ),
                         border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        filled: true,
+                        fillColor: Colors.transparent,
                         isDense: true,
                         contentPadding: const EdgeInsets.symmetric(
                           vertical: 12,
@@ -528,18 +571,33 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: m.isMe ? AppColors.primary : AppColors.surface,
+          gradient: m.isMe
+              ? LinearGradient(
+                  colors: [
+                    AppColors.primary,
+                    Color.alphaBlend(
+                      Colors.black.withValues(alpha: 0.05),
+                      AppColors.primary,
+                    ),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                )
+              : null,
+          color: m.isMe ? null : AppColors.surface,
           borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(16),
-            topRight: const Radius.circular(16),
-            bottomLeft: Radius.circular(m.isMe ? 16 : 4),
-            bottomRight: Radius.circular(m.isMe ? 4 : 16),
+            topLeft: const Radius.circular(20),
+            topRight: const Radius.circular(20),
+            bottomLeft: Radius.circular(m.isMe ? 20 : 4),
+            bottomRight: Radius.circular(m.isMe ? 4 : 20),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 5,
-              offset: const Offset(0, 2),
+              color: (m.isMe ? AppColors.primary : Colors.black).withValues(
+                alpha: 0.08,
+              ),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
             ),
           ],
         ),

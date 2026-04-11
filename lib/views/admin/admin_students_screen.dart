@@ -146,34 +146,71 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(LucideIcons.edit3, size: 14),
-                      label: Text('Editar'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.surface,
-                        foregroundColor: AppColors.textPrimary,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: BorderSide(color: AppColors.borderMedium),
+                    child: Container(
+                      height: 48,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: ElevatedButton.icon(
+                        onPressed: () {},
+                        icon: Icon(LucideIcons.edit3, size: 16, color: AppColors.primary),
+                        label: Text(
+                          'Editar',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.surface,
+                          foregroundColor: AppColors.textPrimary,
+                          elevation: 0,
+                          padding: const EdgeInsets.symmetric(vertical: 0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            side: BorderSide(color: AppColors.primary.withValues(alpha: 0.3), width: 1.5),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 12),
                   Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(LucideIcons.ban, size: 14),
-                      label: const Text('Suspender'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.errorSurface,
-                        foregroundColor: AppColors.error,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: const BorderSide(color: Color(0xFFFECACA)),
+                    child: Container(
+                      height: 48,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.error.withValues(alpha: 0.1),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: ElevatedButton.icon(
+                        onPressed: () {},
+                        icon: const Icon(LucideIcons.ban, size: 16),
+                        label: const Text(
+                          'Suspender',
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.errorSurface.withValues(alpha: 0.9),
+                          foregroundColor: AppColors.error,
+                          elevation: 0,
+                          padding: const EdgeInsets.symmetric(vertical: 0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            side: BorderSide(color: AppColors.error.withValues(alpha: 0.2), width: 1.5),
+                          ),
                         ),
                       ),
                     ),
@@ -550,7 +587,6 @@ class _NewStudentFormState extends State<_NewStudentForm> {
                     ),
                     _input('Dirección', 'Dirección completa', maxLines: 2),
                     _input('Programa', 'Ing. en Sistemas'),
-                    _input('Cohorte', 'Ej. 2024-2'),
                     _input('Contacto de Emergencia', 'Nombre - Teléfono'),
                     const SizedBox(height: 16),
                     ElevatedButton(

@@ -29,9 +29,15 @@ class _CourseAnnouncementsScreenState
 
   void _handlePost() {
     if (_newTitle.trim().isEmpty || _newBody.trim().isEmpty) return;
+    final courseName = professorCourses.firstWhere(
+      (c) => c['id'] == _newCourseId,
+      orElse: () => {'name': 'General'},
+    )['name'];
+
     final newAnn = {
       'id': DateTime.now().millisecondsSinceEpoch,
       'courseId': _newCourseId,
+      'courseName': courseName,
       'title': _newTitle.trim(),
       'body': _newBody.trim(),
       'type': _newType,
@@ -308,10 +314,13 @@ class _CourseAnnouncementsScreenState
                     ),
                   ),
                   SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    runSpacing: 12,
                     children: [
                       Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           SizedBox(
                             width: 24,
@@ -323,7 +332,7 @@ class _CourseAnnouncementsScreenState
                               activeColor: AppColors.primary,
                             ),
                           ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Text(
                             'Fijar comunicado',
                             style: TextStyle(
@@ -334,6 +343,7 @@ class _CourseAnnouncementsScreenState
                         ],
                       ),
                       Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           TextButton(
                             onPressed: () => setState(() => _composing = false),
@@ -342,6 +352,7 @@ class _CourseAnnouncementsScreenState
                               style: TextStyle(color: AppColors.textSecondary),
                             ),
                           ),
+                          const SizedBox(width: 4),
                           ElevatedButton.icon(
                             onPressed:
                                 (_newTitle.trim().isEmpty ||
@@ -353,6 +364,7 @@ class _CourseAnnouncementsScreenState
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary,
                               foregroundColor: Colors.white,
+                              elevation: 0,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
