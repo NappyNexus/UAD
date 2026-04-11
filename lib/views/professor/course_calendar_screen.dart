@@ -151,10 +151,9 @@ class _CourseCalendarScreenState extends ConsumerState<CourseCalendarScreen> {
       return _daysUntil(date) >= 0;
     }).toList();
 
-    final filtered =
-        _filter == 'all'
-            ? events
-            : events.where((e) => e['courseId'] == _filter).toList();
+    final filtered = _filter == 'all'
+        ? events
+        : events.where((e) => e['courseId'] == _filter).toList();
 
     // Sort by date correctly
     final sorted = List<Map<String, dynamic>>.from(filtered);
@@ -569,16 +568,16 @@ class _CourseCalendarScreenState extends ConsumerState<CourseCalendarScreen> {
                 ),
                 ...group.value.map((ev) {
                   final dateValue = _parseDate(ev['date']);
-                  final style =
-                      _getTypeStyle((ev['type'] ?? 'otro').toString());
+                  final style = _getTypeStyle(
+                    (ev['type'] ?? 'otro').toString(),
+                  );
                   final diff = _daysUntil(dateValue);
                   final isPast = diff < 0;
                   final courseIdStr = (ev['courseId'] ?? '').toString();
-                  final cName =
-                      professorCourses.firstWhere(
-                        (c) => c['id'] == courseIdStr,
-                        orElse: () => {'name': courseIdStr},
-                      )['name'];
+                  final cName = professorCourses.firstWhere(
+                    (c) => c['id'] == courseIdStr,
+                    orElse: () => {'name': courseIdStr},
+                  )['name'];
 
                   return Opacity(
                     opacity: isPast ? 0.6 : 1.0,
@@ -681,7 +680,9 @@ class _CourseCalendarScreenState extends ConsumerState<CourseCalendarScreen> {
                                         ),
                                       ],
                                     ),
-                                    if ((ev['time'] ?? '').toString().isNotEmpty)
+                                    if ((ev['time'] ?? '')
+                                        .toString()
+                                        .isNotEmpty)
                                       Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [

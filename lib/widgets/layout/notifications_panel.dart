@@ -391,7 +391,8 @@ class _NotificationsPanelState extends ConsumerState<NotificationsPanel> {
                                   ),
                                 ),
                                 child: InkWell(
-                                  onTap: () => _markRead(notif.id, allNotifications),
+                                  onTap: () =>
+                                      _markRead(notif.id, allNotifications),
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 16,
@@ -524,7 +525,7 @@ class _NotificationsPanelState extends ConsumerState<NotificationsPanel> {
   void _markRead(String id, List<NotifItem> all) {
     // Find the notification in the combined list
     final notif = all.firstWhere((n) => n.id == id);
-    
+
     // Perform navigation if route exists
     if (notif.route != null) {
       context.go(notif.route!);

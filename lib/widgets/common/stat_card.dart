@@ -38,7 +38,8 @@ class StatCard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center, // Center content vertically if squeezed
+          mainAxisAlignment:
+              MainAxisAlignment.center, // Center content vertically if squeezed
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -72,7 +73,8 @@ class StatCard extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 value,
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith( // Reduced from headlineLarge
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  // Reduced from headlineLarge
                   fontWeight: FontWeight.w900,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),

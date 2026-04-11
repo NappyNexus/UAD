@@ -66,7 +66,9 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
       return {
         'name': cName,
         'grade': g,
-        'attendance': (s['attendance'] ?? 0) is num ? s['attendance'] as num : 0,
+        'attendance': (s['attendance'] ?? 0) is num
+            ? s['attendance'] as num
+            : 0,
         'atRisk': g < 70,
       };
     }).toList();
@@ -676,7 +678,9 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                                     value: g / 100,
                                     minHeight: 6,
                                     backgroundColor: AppColors.background,
-                                    valueColor: AlwaysStoppedAnimation(barColor),
+                                    valueColor: AlwaysStoppedAnimation(
+                                      barColor,
+                                    ),
                                   ),
                                 ),
                               ),

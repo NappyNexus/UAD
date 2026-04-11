@@ -12,6 +12,7 @@ final _dayMap = {
   'S': 'Sábado',
 };
 final _days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
 class ScheduleScreen extends StatelessWidget {
   const ScheduleScreen({super.key});
 
@@ -133,7 +134,10 @@ class ScheduleScreen extends StatelessWidget {
                 const SizedBox(height: 6),
                 ...courses.map((slot) {
                   final course = slot['course'];
-                  final clrs = _getCourseColors(slot['colorIdx'] as int, context);
+                  final clrs = _getCourseColors(
+                    slot['colorIdx'] as int,
+                    context,
+                  );
                   return Container(
                     margin: const EdgeInsets.only(bottom: 8),
                     padding: const EdgeInsets.all(14),

@@ -1029,7 +1029,9 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
                     color: _saveCard ? AppColors.primary : AppColors.surface,
                     borderRadius: BorderRadius.circular(4),
                     border: Border.all(
-                      color: _saveCard ? AppColors.primary : AppColors.borderMedium,
+                      color: _saveCard
+                          ? AppColors.primary
+                          : AppColors.borderMedium,
                     ),
                   ),
                   child: _saveCard
@@ -1122,10 +1124,7 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: AppColors.primary,
-                  width: 1.5,
-                ),
+                borderSide: BorderSide(color: AppColors.primary, width: 1.5),
               ),
             ),
           ),
@@ -1183,7 +1182,9 @@ class _PaymentModalContentState extends State<PaymentModalContent> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: isSelected ? AppColors.primary : AppColors.borderMedium,
+                  color: isSelected
+                      ? AppColors.primary
+                      : AppColors.borderMedium,
                   width: isSelected ? 5 : 1,
                 ),
               ),

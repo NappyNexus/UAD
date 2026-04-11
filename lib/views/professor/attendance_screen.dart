@@ -54,7 +54,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       final courseMap = _attendanceData.putIfAbsent(_selectedCourse, () => {});
       final dateMap = courseMap.putIfAbsent(_selectedDate, () => {});
       for (final s in professorStudents) {
-      dateMap[(s['id'] ?? '').toString()] = status;
+        dateMap[(s['id'] ?? '').toString()] = status;
       }
     });
   }
@@ -71,6 +71,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     }
     return ((present / total) * 100).round();
   }
+
   void _handleSave() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

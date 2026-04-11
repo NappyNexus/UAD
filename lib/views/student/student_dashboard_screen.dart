@@ -60,8 +60,6 @@ final _quickActions = [
   },
 ];
 
-
-
 class StudentDashboardScreen extends ConsumerWidget {
   const StudentDashboardScreen({super.key});
 
@@ -212,7 +210,9 @@ class StudentDashboardScreen extends ConsumerWidget {
             physics: const NeverScrollableScrollPhysics(),
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
-            childAspectRatio: size.width < 380 ? 1.4 : 1.5, // Taller boxes (1.5 instead of 1.6)
+            childAspectRatio: size.width < 380
+                ? 1.4
+                : 1.5, // Taller boxes (1.5 instead of 1.6)
             children: [
               StatCard(
                 icon: LucideIcons.trendingUp,
@@ -384,7 +384,9 @@ class StudentDashboardScreen extends ConsumerWidget {
             separatorBuilder: (_, _) => const SizedBox(height: 10),
             itemBuilder: (context, index) {
               final ev = events[index];
-              final date = ev['date'] is DateTime ? ev['date'] as DateTime : DateTime.parse(ev['date'] as String);
+              final date = ev['date'] is DateTime
+                  ? ev['date'] as DateTime
+                  : DateTime.parse(ev['date'] as String);
               final type = ev['type'] as String;
 
               Color typeBg;
@@ -495,7 +497,8 @@ class StudentDashboardScreen extends ConsumerWidget {
                                   ),
                                   SizedBox(width: 4),
                                   Text(
-                                    (ev['courseName'] ?? ev['courseId']) as String,
+                                    (ev['courseName'] ?? ev['courseId'])
+                                        as String,
                                     style: TextStyle(
                                       fontSize: 10,
                                       color: AppColors.textTertiary,

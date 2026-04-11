@@ -392,10 +392,9 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
           ...professorCourses.map((c) {
             final numDocs = _courseDocs(c['id'] as String).length;
             return InkWell(
-              onTap:
-                  () => context.push(
-                    '${AppConstants.routeCourseProfile}?courseId=${c['id']}',
-                  ),
+              onTap: () => context.push(
+                '${AppConstants.routeCourseProfile}?courseId=${c['id']}',
+              ),
               borderRadius: BorderRadius.circular(16),
               child: Container(
                 margin: const EdgeInsets.only(bottom: 12),
@@ -408,159 +407,159 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              c['name'] as String,
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.textPrimary,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                c['name'] as String,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.textPrimary,
+                                ),
                               ),
-                            ),
-                            Text(
-                              '${c['id']} · Sección ${c['section']}',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: AppColors.textSecondary,
+                              Text(
+                                '${c['id']} · Sección ${c['section']}',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.textSecondary,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      Icon(
-                        LucideIcons.chevronRight,
-                        size: 20,
-                        color: AppColors.primary,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Icon(
-                        LucideIcons.clock,
-                        size: 14,
-                        color: AppColors.textSecondary,
-                      ),
-                      SizedBox(width: 6),
-                      Text(
-                        c['schedule'] as String,
-                        style: TextStyle(
-                          fontSize: 12,
+                        Icon(
+                          LucideIcons.chevronRight,
+                          size: 20,
+                          color: AppColors.primary,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Icon(
+                          LucideIcons.clock,
+                          size: 14,
                           color: AppColors.textSecondary,
                         ),
-                      ),
-                      SizedBox(width: 16),
-                      Icon(
-                        LucideIcons.mapPin,
-                        size: 14,
-                        color: AppColors.textSecondary,
-                      ),
-                      SizedBox(width: 6),
-                      Text(
-                        c['room'] as String,
-                        style: TextStyle(
-                          fontSize: 12,
+                        SizedBox(width: 6),
+                        Text(
+                          c['schedule'] as String,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                        SizedBox(width: 16),
+                        Icon(
+                          LucideIcons.mapPin,
+                          size: 14,
                           color: AppColors.textSecondary,
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 4,
+                        SizedBox(width: 6),
+                        Text(
+                          c['room'] as String,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.textSecondary,
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                          color: AppColors.primarySurface,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              LucideIcons.users,
-                              size: 14,
-                              color: AppColors.primary,
-                            ),
-                            const SizedBox(width: 6),
-                            Text(
-                              '${c['enrolled']} estudiantes',
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: () => _showDocsModal(context, c),
-                        child: Container(
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 10,
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: AppColors.infoSurface,
+                            color: AppColors.primarySurface,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Row(
                             children: [
-                              const Icon(
-                                LucideIcons.fileText,
+                              Icon(
+                                LucideIcons.users,
                                 size: 14,
-                                color: AppColors.info,
+                                color: AppColors.primary,
                               ),
                               const SizedBox(width: 6),
-                              const Text(
-                                'Documentos ',
+                              Text(
+                                '${c['enrolled']} estudiantes',
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w600,
-                                  color: AppColors.info,
+                                  color: AppColors.primary,
                                 ),
                               ),
-                              if (numDocs > 0)
-                                Container(
-                                  width: 16,
-                                  height: 16,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.info,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      '$numDocs',
-                                      style: TextStyle(
-                                        fontSize: 9,
-                                        color: AppColors.surface,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ),
-                                ),
                             ],
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: () => _showDocsModal(context, c),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.infoSurface,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  LucideIcons.fileText,
+                                  size: 14,
+                                  color: AppColors.info,
+                                ),
+                                const SizedBox(width: 6),
+                                const Text(
+                                  'Documentos ',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.info,
+                                  ),
+                                ),
+                                if (numDocs > 0)
+                                  Container(
+                                    width: 16,
+                                    height: 16,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.info,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '$numDocs',
+                                        style: TextStyle(
+                                          fontSize: 9,
+                                          color: AppColors.surface,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
           const SizedBox(height: 8),
 
           // ═══ Quick Stats ═══

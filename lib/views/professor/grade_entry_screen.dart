@@ -614,14 +614,20 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
               ),
               const SizedBox(width: 8),
               _statBox(
-                _published ? LucideIcons.checkCircle : (_saved ? LucideIcons.fileText : LucideIcons.clock),
+                _published
+                    ? LucideIcons.checkCircle
+                    : (_saved ? LucideIcons.fileText : LucideIcons.clock),
                 'Estado',
                 _published ? '✓' : '—',
                 _published ? 'Publicado' : (_saved ? 'Borrador' : 'Pendiente'),
-                _published ? AppColors.success : (_saved ? AppColors.warning : AppColors.textTertiary),
-                _published 
-                    ? AppColors.success.withValues(alpha: 0.1) 
-                    : (_saved ? AppColors.warning.withValues(alpha: 0.1) : AppColors.background),
+                _published
+                    ? AppColors.success
+                    : (_saved ? AppColors.warning : AppColors.textTertiary),
+                _published
+                    ? AppColors.success.withValues(alpha: 0.1)
+                    : (_saved
+                          ? AppColors.warning.withValues(alpha: 0.1)
+                          : AppColors.background),
               ),
             ],
           ),

@@ -86,8 +86,9 @@ class _SurveysScreenState extends State<SurveysScreen> {
   @override
   Widget build(BuildContext context) {
     final pending = _surveys.where((s) => s['status'] == 'pending').toList();
-    final completed =
-        _surveys.where((s) => s['status'] == 'completed').toList();
+    final completed = _surveys
+        .where((s) => s['status'] == 'completed')
+        .toList();
     final responseRate = _surveys.isEmpty
         ? 0
         : (completed.length / _surveys.length * 100).round();
@@ -103,7 +104,11 @@ class _SurveysScreenState extends State<SurveysScreen> {
     );
   }
 
-  Widget _buildStudentView(List<Map<String, dynamic>> pending, List<Map<String, dynamic>> completed, int responseRate) {
+  Widget _buildStudentView(
+    List<Map<String, dynamic>> pending,
+    List<Map<String, dynamic>> completed,
+    int responseRate,
+  ) {
     void showSurveyModal(Map<String, dynamic> survey) {
       showModalBottomSheet(
         context: context,
@@ -169,22 +174,34 @@ class _SurveysScreenState extends State<SurveysScreen> {
                 SizedBox(width: 8),
                 Text(
                   'Pendientes (${pending.length})',
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
             const SizedBox(height: 12),
-            ...pending.map((s) => _SurveyPendingCard(s, onTap: () => showSurveyModal(s))),
+            ...pending.map(
+              (s) => _SurveyPendingCard(s, onTap: () => showSurveyModal(s)),
+            ),
             const SizedBox(height: 24),
           ],
           if (completed.isNotEmpty) ...[
             Row(
               children: [
-                Icon(LucideIcons.checkCircle, size: 14, color: Colors.green.shade500),
+                Icon(
+                  LucideIcons.checkCircle,
+                  size: 14,
+                  color: Colors.green.shade500,
+                ),
                 SizedBox(width: 8),
                 Text(
                   'Completadas (${completed.length})',
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -207,13 +224,16 @@ class _SurveysScreenState extends State<SurveysScreen> {
             subtitle: 'Reporte consolidado de retroalimentación estudiantil',
           ),
           const SizedBox(height: 16),
-          
+
           // Stats Card
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [AppColors.primary, AppColors.primary.withValues(alpha: 0.8)],
+                colors: [
+                  AppColors.primary,
+                  AppColors.primary.withValues(alpha: 0.8),
+                ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -250,18 +270,29 @@ class _SurveysScreenState extends State<SurveysScreen> {
                       ],
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
                         children: const [
-                          Icon(LucideIcons.trendingUp, color: Colors.white, size: 14),
+                          Icon(
+                            LucideIcons.trendingUp,
+                            color: Colors.white,
+                            size: 14,
+                          ),
                           SizedBox(width: 4),
                           Text(
                             '+0.3 vs cuat. ant.',
-                            style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ],
                       ),
@@ -292,7 +323,7 @@ class _SurveysScreenState extends State<SurveysScreen> {
             ),
           ),
           const SizedBox(height: 12),
-          
+
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -322,10 +353,16 @@ class _SurveysScreenState extends State<SurveysScreen> {
             ),
           ),
           const SizedBox(height: 12),
-          
-          _commentCard('Excelente profesor, explica muy bien y siempre está dispuesto a ayudar.'),
-          _commentCard('Las clases son muy dinámicas, aunque el material de apoyo podría ser más extenso.'),
-          _commentCard('Un gran dominio de la materia, hace que los temas difíciles parezcan fáciles.'),
+
+          _commentCard(
+            'Excelente profesor, explica muy bien y siempre está dispuesto a ayudar.',
+          ),
+          _commentCard(
+            'Las clases son muy dinámicas, aunque el material de apoyo podría ser más extenso.',
+          ),
+          _commentCard(
+            'Un gran dominio de la materia, hace que los temas difíciles parezcan fáciles.',
+          ),
         ],
       ),
     );
@@ -333,7 +370,14 @@ class _SurveysScreenState extends State<SurveysScreen> {
 
   Widget _miniStat(String val, String label) => Column(
     children: [
-      Text(val, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+      Text(
+        val,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      ),
       Text(label, style: const TextStyle(color: Colors.white60, fontSize: 10)),
     ],
   );
@@ -345,8 +389,18 @@ class _SurveysScreenState extends State<SurveysScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
-            Text(val.toString(), style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.primary)),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+            ),
+            Text(
+              val.toString(),
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: AppColors.primary,
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 6),
@@ -371,7 +425,11 @@ class _SurveysScreenState extends State<SurveysScreen> {
     ),
     child: Text(
       '"$text"',
-      style: TextStyle(fontSize: 12, color: AppColors.textSecondary, fontStyle: FontStyle.italic),
+      style: TextStyle(
+        fontSize: 12,
+        color: AppColors.textSecondary,
+        fontStyle: FontStyle.italic,
+      ),
     ),
   );
 }

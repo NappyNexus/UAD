@@ -305,7 +305,8 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
                               color: AppColors.warningSurface.withValues(
-                                alpha: Theme.of(context).brightness ==
+                                alpha:
+                                    Theme.of(context).brightness ==
                                         Brightness.dark
                                     ? 0.3
                                     : 1.0,
@@ -323,7 +324,8 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                                   style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w700,
-                                    color: Theme.of(context).brightness ==
+                                    color:
+                                        Theme.of(context).brightness ==
                                             Brightness.dark
                                         ? Colors.orangeAccent
                                         : AppColors.warningText,

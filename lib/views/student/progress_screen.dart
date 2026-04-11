@@ -630,9 +630,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                         value: pct / 100,
                         minHeight: 6,
                         backgroundColor: AppColors.border,
-                        valueColor: AlwaysStoppedAnimation(
-                          AppColors.primary,
-                        ),
+                        valueColor: AlwaysStoppedAnimation(AppColors.primary),
                       ),
                     ),
                     SizedBox(height: 10),

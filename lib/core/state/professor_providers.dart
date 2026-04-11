@@ -27,10 +27,10 @@ class AnnouncementsNotifier extends StateNotifier<List<Map<String, dynamic>>> {
 
 final announcementsProvider =
     StateNotifierProvider<AnnouncementsNotifier, List<Map<String, dynamic>>>((
-  ref,
-) {
-  return AnnouncementsNotifier();
-});
+      ref,
+    ) {
+      return AnnouncementsNotifier();
+    });
 
 // --- Calendar Events Provider ---
 
@@ -69,10 +69,10 @@ class CalendarEventsNotifier extends StateNotifier<List<Map<String, dynamic>>> {
 
 final calendarEventsProvider =
     StateNotifierProvider<CalendarEventsNotifier, List<Map<String, dynamic>>>((
-  ref,
-) {
-  return CalendarEventsNotifier();
-});
+      ref,
+    ) {
+      return CalendarEventsNotifier();
+    });
 
 // --- Grade Revisions Provider ---
 
@@ -113,30 +113,29 @@ class GradeRevisionsNotifier extends StateNotifier<List<Map<String, dynamic>>> {
 
 final gradeRevisionsProvider =
     StateNotifierProvider<GradeRevisionsNotifier, List<Map<String, dynamic>>>((
-  ref,
-) {
-  return GradeRevisionsNotifier();
-});
+      ref,
+    ) {
+      return GradeRevisionsNotifier();
+    });
 
 // --- Students Provider ---
 
-class ProfessorStudentsNotifier extends StateNotifier<List<Map<String, dynamic>>> {
+class ProfessorStudentsNotifier
+    extends StateNotifier<List<Map<String, dynamic>>> {
   ProfessorStudentsNotifier() : super(List.from(professorStudents));
 
   void updateGrade(String id, Map<String, dynamic> grades) {
     state = [
       for (final s in state)
-        if (s['id'] == id)
-          {...s, ...grades}
-        else
-          s,
+        if (s['id'] == id) {...s, ...grades} else s,
     ];
   }
 }
 
 final professorStudentsProvider =
-    StateNotifierProvider<ProfessorStudentsNotifier, List<Map<String, dynamic>>>((
-  ref,
-) {
-  return ProfessorStudentsNotifier();
-});
+    StateNotifierProvider<
+      ProfessorStudentsNotifier,
+      List<Map<String, dynamic>>
+    >((ref) {
+      return ProfessorStudentsNotifier();
+    });

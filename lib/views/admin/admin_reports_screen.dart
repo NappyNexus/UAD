@@ -293,9 +293,7 @@ class AdminReportsScreen extends StatelessWidget {
                         Container(
                           width: 24,
                           height: totalHeight * (c / maxVal),
-                          decoration: BoxDecoration(
-                            color: AppColors.primary,
-                          ),
+                          decoration: BoxDecoration(color: AppColors.primary),
                         ),
                         SizedBox(height: 4),
                         Text(

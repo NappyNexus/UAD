@@ -54,7 +54,9 @@ class AppColors {
   // ─── Dark-only constants (used internally) ──────────────────────
   static const Color darkBackground = Color(0xFF0F172A);
   static const Color darkSurface = Color(0xFF1E293B);
-  static const Color darkBorder = Color(0xFF475569); // Brighter than 334155 for better visibility
+  static const Color darkBorder = Color(
+    0xFF475569,
+  ); // Brighter than 334155 for better visibility
   static const Color darkTextPrimary = Color(0xFFFFFFFF);
   static const Color darkTextSecondary = Color(0xFF94A3B8);
   static const Color darkTextTertiary = Color(0xFF64748B);

@@ -26,7 +26,11 @@ class _CourseProfileScreenState extends State<CourseProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedCourse = widget.initialCourseId ?? (professorCourses.isNotEmpty ? professorCourses[0]['id'] as String : '');
+    _selectedCourse =
+        widget.initialCourseId ??
+        (professorCourses.isNotEmpty
+            ? professorCourses[0]['id'] as String
+            : '');
   }
 
   void _toggle(String section) {
