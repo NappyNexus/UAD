@@ -243,7 +243,7 @@ class _CourseCalendarScreenState extends ConsumerState<CourseCalendarScreen> {
                             SizedBox(height: 4),
                             DropdownButtonFormField<String>(
                               isExpanded: true,
-                              value: _newCourseId,
+                              initialValue: _newCourseId,
                               decoration: InputDecoration(
                                 isDense: true,
                                 border: OutlineInputBorder(
@@ -293,7 +293,7 @@ class _CourseCalendarScreenState extends ConsumerState<CourseCalendarScreen> {
                             SizedBox(height: 4),
                             DropdownButtonFormField<String>(
                               isExpanded: true,
-                              value: _newType,
+                              initialValue: _newType,
                               decoration: InputDecoration(
                                 isDense: true,
                                 border: OutlineInputBorder(

@@ -45,25 +45,35 @@ class AppPreferencesState {
 
 /// ViewModel that persists appearance preferences using SharedPreferences.
 class AppPreferencesNotifier extends StateNotifier<AppPreferencesState> {
-  AppPreferencesNotifier() : super(const AppPreferencesState()) {
-    _loadPreferences();
+  AppPreferencesNotifier([AppPreferencesState? initialState])
+    : super(initialState ?? const AppPreferencesState()) {
+    if (initialState == null) {
+      _loadPreferences();
+    }
   }
 
   static const _keyDarkMode = 'unad_dark_mode';
   static const _keyFontSize = 'unad_font_size';
   static const _keyAccentColor = 'unad_accent_color';
 
-  Future<void> _loadPreferences() async {
+  /// Static helper to load preferences directly from disk without creating a notifier.
+  /// Useful for pre-loading state in main().
+  static Future<AppPreferencesState> loadFromDisk() async {
     final prefs = await SharedPreferences.getInstance();
     final isDark = prefs.getBool(_keyDarkMode) ?? false;
     final fontSize = prefs.getInt(_keyFontSize) ?? 1;
     final accent = prefs.getString(_keyAccentColor) ?? '#026a45';
 
-    state = AppPreferencesState(
+    return AppPreferencesState(
       themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
       fontSizeIndex: fontSize,
       accentColorHex: accent,
     );
+  }
+
+  Future<void> _loadPreferences() async {
+    final loaded = await loadFromDisk();
+    state = loaded;
   }
 
   Future<void> setDarkMode(bool enabled) async {

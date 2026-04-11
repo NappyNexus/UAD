@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/constants/app_constants.dart';
 import '../../viewmodels/auth_viewmodel.dart';
 import '../../views/auth/auth_screen.dart';
+import '../../views/splash/splash_screen.dart';
 import '../../views/shell/app_shell.dart';
 import '../../views/student/student_dashboard_screen.dart';
 import '../../views/student/payments_screen.dart';
@@ -44,10 +45,14 @@ import '../../views/shared/settings_screen.dart';
 /// GoRouter configuration for the app.
 GoRouter createRouter(Ref ref) {
   return GoRouter(
-    initialLocation: AppConstants.routeAuth,
+    initialLocation: AppConstants.routeSplash,
     redirect: (context, state) {
       final auth = ref.read(authProvider);
       final isAuthRoute = state.matchedLocation == AppConstants.routeAuth;
+      final isSplashRoute = state.matchedLocation == AppConstants.routeSplash;
+
+      // If on splash, don't redirect
+      if (isSplashRoute) return null;
 
       // If not authenticated and not on auth route, redirect to login
       if (!auth.isAuthenticated && !isAuthRoute) {
@@ -57,6 +62,12 @@ GoRouter createRouter(Ref ref) {
       return null;
     },
     routes: [
+      // ── Splash Screen ──
+      GoRoute(
+        path: AppConstants.routeSplash,
+        builder: (context, state) => const SplashScreen(),
+      ),
+
       // ── Auth Routes ──
       GoRoute(
         path: AppConstants.routeAuth,

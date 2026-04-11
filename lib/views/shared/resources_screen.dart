@@ -250,7 +250,7 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: _categories.length,
-                      separatorBuilder: (_, __) => const SizedBox(width: 8),
+                      separatorBuilder: (_, _) => const SizedBox(width: 8),
                       itemBuilder: (ctx, i) {
                         final cat = _categories[i];
                         final isSelected = _categoryFilter == cat['key'];
@@ -303,7 +303,7 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: filtered.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 16),
+              separatorBuilder: (_, _) => const SizedBox(height: 16),
               itemBuilder: (ctx, i) {
                 final r = filtered[i];
                 return _ResourceCard(
@@ -367,7 +367,7 @@ class _ResourceCard extends StatelessWidget {
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
+                errorBuilder: (_, _, _) => Container(
                   height: 150,
                   color: AppColors.background,
                   child: Center(

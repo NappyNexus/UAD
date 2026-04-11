@@ -72,9 +72,12 @@ class AdminDashboardScreen extends StatelessWidget {
       }, // Orange
     ];
 
-    final enrollmentTrend = reportData['enrollmentTrend'] as List<dynamic>;
-    final studentsByProgram = reportData['studentsByProgram'] as List<dynamic>;
-    final statusBreakdown = reportData['statusBreakdown'] as List<dynamic>;
+    final enrollmentTrend =
+        (reportData['enrollmentTrend'] ?? []) as List<dynamic>;
+    final studentsByProgram =
+        (reportData['studentsByProgram'] ?? []) as List<dynamic>;
+    final statusBreakdown =
+        (reportData['statusBreakdown'] ?? []) as List<dynamic>;
 
     final recentActivity = [
       {
@@ -186,7 +189,7 @@ class AdminDashboardScreen extends StatelessWidget {
             itemBuilder: (ctx, i) {
               final mod = modules[i];
               return InkWell(
-                onTap: () => context.push(mod['route'] as String),
+                onTap: () => context.push((mod['route'] ?? '').toString()),
                 borderRadius: BorderRadius.circular(16),
                 child: Container(
                   padding: EdgeInsets.all(16),
@@ -210,18 +213,18 @@ class AdminDashboardScreen extends StatelessWidget {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: mod['color'] as Color,
+                          color: (mod['color'] ?? Colors.grey) as Color,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Icon(
-                          mod['icon'] as IconData,
+                          (mod['icon'] ?? LucideIcons.helpCircle) as IconData,
                           color: AppColors.surface,
                           size: 20,
                         ),
                       ),
                       SizedBox(height: 12),
                       Text(
-                        mod['label'] as String,
+                        (mod['label'] ?? '').toString(),
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -268,7 +271,9 @@ class AdminDashboardScreen extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: enrollmentTrend.map((t) {
-                      final val = t['students'] as int;
+                      final val = (t['students'] ?? 0) is num
+                          ? t['students'] as int
+                          : 0;
                       final minVal = 1200.0;
                       final maxVal = 1500.0;
                       final pct = ((val - minVal) / (maxVal - minVal)).clamp(
@@ -299,7 +304,7 @@ class AdminDashboardScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 4),
                             Text(
-                              t['period'] as String,
+                              (t['period'] ?? '').toString(),
                               style: TextStyle(
                                 fontSize: 9,
                                 color: AppColors.textSecondary,
@@ -338,7 +343,7 @@ class AdminDashboardScreen extends StatelessWidget {
                 SizedBox(height: 16),
                 ...studentsByProgram.map((p) {
                   final maxVal = 350.0;
-                  final val = p['value'] as int;
+                  final val = (p['value'] ?? 0) is num ? p['value'] as int : 0;
                   return Padding(
                     padding: EdgeInsets.only(bottom: 8.0),
                     child: Row(
@@ -346,7 +351,7 @@ class AdminDashboardScreen extends StatelessWidget {
                         SizedBox(
                           width: 80,
                           child: Text(
-                            p['name'] as String,
+                            (p['name'] ?? '').toString(),
                             style: TextStyle(
                               fontSize: 10,
                               color: AppColors.textSecondary,
@@ -425,10 +430,9 @@ class AdminDashboardScreen extends StatelessWidget {
                               try {
                                 cColor = Color(
                                   int.parse(
-                                    (s['color'] as String).replaceFirst(
-                                      '#',
-                                      '0xFF',
-                                    ),
+                                    (s['color'] ?? '#000000')
+                                        .toString()
+                                        .replaceFirst('#', '0xFF'),
                                   ),
                                 );
                               } catch (_) {
@@ -453,10 +457,9 @@ class AdminDashboardScreen extends StatelessWidget {
                           try {
                             cColor = Color(
                               int.parse(
-                                (s['color'] as String).replaceFirst(
-                                  '#',
-                                  '0xFF',
-                                ),
+                                (s['color'] ?? '#000000')
+                                    .toString()
+                                    .replaceFirst('#', '0xFF'),
                               ),
                             );
                           } catch (_) {
@@ -476,7 +479,7 @@ class AdminDashboardScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  s['name'] as String,
+                                  (s['name'] ?? '').toString(),
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: AppColors.textSecondary,

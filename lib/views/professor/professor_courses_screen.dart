@@ -42,7 +42,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
             'date': '07/04/2026',
           };
           _docs
-              .putIfAbsent(_docsModalCourse!['id'] as String, () => [])
+              .putIfAbsent((_docsModalCourse!['id'] ?? '').toString(), () => [])
               .add(newDoc);
         });
         setModalState(() {
@@ -71,7 +71,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
       ),
       builder: (ctx) => StatefulBuilder(
         builder: (context, setModalState) {
-          final numDocs = _courseDocs(course['id'] as String).length;
+          final numDocs = _courseDocs((course['id'] ?? '').toString()).length;
           return Padding(
             padding: EdgeInsets.only(
               left: 20,
@@ -95,7 +95,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                 ),
                 SizedBox(height: 16),
                 Text(
-                  'Documentos — ${course['name']}',
+                  'Documentos — ${course['name'] ?? ''}',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
@@ -232,9 +232,9 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                     ),
                   ),
                   SizedBox(height: 8),
-                  ..._courseDocs(course['id'] as String).asMap().entries.map((
-                    entry,
-                  ) {
+                  ..._courseDocs(
+                    (course['id'] ?? '').toString(),
+                  ).asMap().entries.map((entry) {
                     final i = entry.key;
                     final doc = entry.value;
                     return Container(
@@ -257,7 +257,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  doc['name'] as String,
+                                  (doc['name'] ?? '').toString(),
                                   style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w500,
@@ -265,7 +265,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                                   ),
                                 ),
                                 Text(
-                                  '${doc['type']} · ${doc['date']}',
+                                  '${doc['type'] ?? ''} · ${doc['date'] ?? ''}',
                                   style: TextStyle(
                                     fontSize: 10,
                                     color: AppColors.textSecondary,
@@ -276,7 +276,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                           ),
                           GestureDetector(
                             onTap: () => _handleDelete(
-                              course['id'] as String,
+                              (course['id'] ?? '').toString(),
                               i,
                               setModalState,
                             ),
@@ -309,7 +309,8 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
     final p = currentProfessor;
     final totalStudents = professorCourses.fold<int>(
       0,
-      (sum, c) => sum + (c['enrolled'] as int),
+      (sum, c) =>
+          sum + ((c['enrolled'] ?? 0) is num ? c['enrolled'] as int : 0),
     );
 
     return SingleChildScrollView(
@@ -343,7 +344,10 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: p['photo'] != null
-                        ? Image.network(p['photo'] as String, fit: BoxFit.cover)
+                        ? Image.network(
+                            (p['photo'] ?? '').toString(),
+                            fit: BoxFit.cover,
+                          )
                         : Container(
                             color: AppColors.surface.withValues(alpha: 0.2),
                           ),
@@ -362,7 +366,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                         ),
                       ),
                       Text(
-                        p['name'] as String,
+                        (p['name'] ?? '').toString(),
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
@@ -370,7 +374,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                         ),
                       ),
                       Text(
-                        p['department'] as String,
+                        (p['department'] ?? '').toString(),
                         style: TextStyle(
                           fontSize: 13,
                           color: AppColors.surface.withValues(alpha: 0.8),
@@ -390,7 +394,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
 
           // ═══ Courses Grid ═══
           ...professorCourses.map((c) {
-            final numDocs = _courseDocs(c['id'] as String).length;
+            final numDocs = _courseDocs((c['id'] ?? '').toString()).length;
             return InkWell(
               onTap: () => context.push(
                 '${AppConstants.routeCourseProfile}?courseId=${c['id']}',
@@ -415,7 +419,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                c['name'] as String,
+                                (c['name'] ?? '').toString(),
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
@@ -423,7 +427,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                                 ),
                               ),
                               Text(
-                                '${c['id']} · Sección ${c['section']}',
+                                '${c['id'] ?? ''} · Sección ${c['section'] ?? ''}',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: AppColors.textSecondary,
@@ -449,7 +453,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                         ),
                         SizedBox(width: 6),
                         Text(
-                          c['schedule'] as String,
+                          (c['schedule'] ?? '').toString(),
                           style: TextStyle(
                             fontSize: 12,
                             color: AppColors.textSecondary,
@@ -463,7 +467,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                         ),
                         SizedBox(width: 6),
                         Text(
-                          c['room'] as String,
+                          (c['room'] ?? '').toString(),
                           style: TextStyle(
                             fontSize: 12,
                             color: AppColors.textSecondary,
@@ -492,7 +496,7 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                               ),
                               const SizedBox(width: 6),
                               Text(
-                                '${c['enrolled']} estudiantes',
+                                '${c['enrolled'] ?? 0} estudiantes',
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w600,

@@ -14,7 +14,10 @@ class AnnouncementsNotifier extends StateNotifier<List<Map<String, dynamic>>> {
     state = [
       for (final ann in state)
         if (ann['id'] == id)
-          {...ann, 'pinned': !(ann['pinned'] as bool)}
+          {
+            ...ann,
+            'pinned': !(ann['pinned'] is bool ? ann['pinned'] as bool : false),
+          }
         else
           ann,
     ];

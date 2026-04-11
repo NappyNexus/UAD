@@ -210,7 +210,7 @@ class ProfilePanel extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     Text(
-                                      '${stat['value']}',
+                                      '${stat['value'] ?? ''}',
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w700,
@@ -365,7 +365,9 @@ class ProfilePanel extends StatelessWidget {
                                     child: InkWell(
                                       onTap: () {
                                         onClose();
-                                        context.go(link['route'] as String);
+                                        context.go(
+                                          (link['route'] ?? '').toString(),
+                                        );
                                       },
                                       borderRadius: BorderRadius.circular(12),
                                       child: Padding(
@@ -393,7 +395,8 @@ class ProfilePanel extends StatelessWidget {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    link['label'] as String,
+                                                    (link['label'] ?? '')
+                                                        .toString(),
                                                     style: TextStyle(
                                                       fontSize: 13,
                                                       fontWeight:
@@ -403,7 +406,8 @@ class ProfilePanel extends StatelessWidget {
                                                     ),
                                                   ),
                                                   Text(
-                                                    link['desc'] as String,
+                                                    (link['desc'] ?? '')
+                                                        .toString(),
                                                     style: TextStyle(
                                                       fontSize: 11,
                                                       color: AppColors

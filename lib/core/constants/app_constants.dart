@@ -19,6 +19,7 @@ class AppConstants {
   };
 
   // ─── Route Paths ─────────────────────────────────────────────────
+  static const String routeSplash = '/';
   static const String routeAuth = '/auth';
 
   // Student

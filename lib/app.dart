@@ -19,7 +19,7 @@ class UnadApp extends ConsumerWidget {
     AppColors.updateAccent(prefs.accentColor);
 
     return MaterialApp.router(
-      title: 'UniPortal ADU',
+      title: 'UNAD',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightWithAccent(prefs.accentColor),
       darkTheme: AppTheme.darkWithAccent(prefs.accentColor),

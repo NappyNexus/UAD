@@ -318,7 +318,7 @@ class StudentDashboardScreen extends ConsumerWidget {
             childAspectRatio: size.width < 380 ? 0.75 : 0.85,
             children: _quickActions.map((action) {
               return GestureDetector(
-                onTap: () => context.go(action['route'] as String),
+                onTap: () => context.go((action['route'] ?? '').toString()),
                 child: Container(
                   decoration: BoxDecoration(
                     color: AppColors.surface,
@@ -332,18 +332,19 @@ class StudentDashboardScreen extends ConsumerWidget {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: action['color'] as Color,
+                          color: (action['color'] ?? Colors.grey) as Color,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Icon(
-                          action['icon'] as IconData,
+                          (action['icon'] ?? LucideIcons.helpCircle)
+                              as IconData,
                           size: 18,
                           color: AppColors.surface,
                         ),
                       ),
                       SizedBox(height: 6),
                       Text(
-                        action['label'] as String,
+                        (action['label'] ?? '').toString(),
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
@@ -386,8 +387,9 @@ class StudentDashboardScreen extends ConsumerWidget {
               final ev = events[index];
               final date = ev['date'] is DateTime
                   ? ev['date'] as DateTime
-                  : DateTime.parse(ev['date'] as String);
-              final type = ev['type'] as String;
+                  : DateTime.tryParse((ev['date'] ?? '').toString()) ??
+                        DateTime.now();
+              final type = (ev['type'] ?? 'general').toString();
 
               Color typeBg;
               Color typeText;
@@ -474,7 +476,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            ev['title'] as String,
+                            (ev['title'] ?? '').toString(),
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w700,
@@ -497,8 +499,8 @@ class StudentDashboardScreen extends ConsumerWidget {
                                   ),
                                   SizedBox(width: 4),
                                   Text(
-                                    (ev['courseName'] ?? ev['courseId'])
-                                        as String,
+                                    (ev['courseName'] ?? ev['courseId'] ?? '')
+                                        .toString(),
                                     style: TextStyle(
                                       fontSize: 10,
                                       color: AppColors.textTertiary,
@@ -516,7 +518,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                                   ),
                                   SizedBox(width: 4),
                                   Text(
-                                    ev['time'] as String,
+                                    (ev['time'] ?? '').toString(),
                                     style: TextStyle(
                                       fontSize: 10,
                                       color: AppColors.textTertiary,
@@ -614,8 +616,10 @@ class StudentDashboardScreen extends ConsumerWidget {
             separatorBuilder: (_, _) => const SizedBox(height: 10),
             itemBuilder: (context, index) {
               final ann = announcements[index];
-              final pinned = ann['pinned'] as bool;
-              final type = ann['type'] as String;
+              final pinned = ann['pinned'] is bool
+                  ? ann['pinned'] as bool
+                  : false;
+              final type = (ann['type'] ?? 'general').toString();
 
               Color typeBg;
               Color typeText;

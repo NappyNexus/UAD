@@ -129,9 +129,9 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
   @override
   Widget build(BuildContext context) {
     final filtered = _users.where((u) {
-      final name = (u['name'] as String).toLowerCase();
-      final email = (u['email'] as String).toLowerCase();
-      final role = (u['role'] as String).toLowerCase();
+      final name = (u['name'] ?? '').toString().toLowerCase();
+      final email = (u['email'] ?? '').toString().toLowerCase();
+      final role = (u['role'] ?? '').toString().toLowerCase();
       final q = _searchQuery.toLowerCase();
       return name.contains(q) || email.contains(q) || role.contains(q);
     }).toList();
@@ -263,7 +263,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
 
           // User List
           ...filtered.map((u) {
-            final color = _getRoleColor(u['role'] as String);
+            final color = _getRoleColor((u['role'] ?? '').toString());
             return Container(
               margin: const EdgeInsets.only(bottom: 8),
               padding: EdgeInsets.all(16),
@@ -283,7 +283,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(
-                      _getRoleIcon(u['role'] as String),
+                      _getRoleIcon((u['role'] ?? '').toString()),
                       size: 18,
                       color: color,
                     ),
@@ -294,7 +294,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          u['name'] as String,
+                          (u['name'] ?? '').toString(),
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -303,7 +303,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                         ),
                         SizedBox(height: 2),
                         Text(
-                          u['email'] as String,
+                          (u['email'] ?? '').toString(),
                           style: TextStyle(
                             fontSize: 12,
                             color: AppColors.textSecondary,
@@ -316,7 +316,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      StatusBadge(status: u['status'] as String),
+                      StatusBadge(status: (u['status'] ?? 'Activo').toString()),
                       SizedBox(height: 4),
                       Text(
                         'Último: ${u['lastLogin']}',

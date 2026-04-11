@@ -19,7 +19,9 @@ class _CourseAnnouncementsScreenState
   String _filter = 'all';
   bool _composing = false;
 
-  String _newCourseId = professorCourses[0]['id'] as String;
+  String _newCourseId = professorCourses.isNotEmpty
+      ? (professorCourses[0]['id'] ?? '').toString()
+      : '';
   String _newType = 'general';
   String _newTitle = '';
   String _newBody = '';
@@ -40,7 +42,9 @@ class _CourseAnnouncementsScreenState
     ref.read(announcementsProvider.notifier).addAnnouncement(newAnn);
 
     setState(() {
-      _newCourseId = professorCourses[0]['id'] as String;
+      _newCourseId = professorCourses.isNotEmpty
+          ? (professorCourses[0]['id'] ?? '').toString()
+          : '';
       _newType = 'general';
       _newTitle = '';
       _newBody = '';
