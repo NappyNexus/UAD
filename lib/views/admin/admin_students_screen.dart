@@ -160,7 +160,11 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                       ),
                       child: ElevatedButton.icon(
                         onPressed: () {},
-                        icon: Icon(LucideIcons.edit3, size: 16, color: AppColors.primary),
+                        icon: Icon(
+                          LucideIcons.edit3,
+                          size: 16,
+                          color: AppColors.primary,
+                        ),
                         label: Text(
                           'Editar',
                           style: TextStyle(
@@ -175,7 +179,10 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                           padding: const EdgeInsets.symmetric(vertical: 0),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
-                            side: BorderSide(color: AppColors.primary.withValues(alpha: 0.3), width: 1.5),
+                            side: BorderSide(
+                              color: AppColors.primary.withValues(alpha: 0.3),
+                              width: 1.5,
+                            ),
                           ),
                         ),
                       ),
@@ -203,13 +210,18 @@ class _AdminStudentsScreenState extends State<AdminStudentsScreen> {
                           style: TextStyle(fontWeight: FontWeight.w700),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.errorSurface.withValues(alpha: 0.9),
+                          backgroundColor: AppColors.errorSurface.withValues(
+                            alpha: 0.9,
+                          ),
                           foregroundColor: AppColors.error,
                           elevation: 0,
                           padding: const EdgeInsets.symmetric(vertical: 0),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
-                            side: BorderSide(color: AppColors.error.withValues(alpha: 0.2), width: 1.5),
+                            side: BorderSide(
+                              color: AppColors.error.withValues(alpha: 0.2),
+                              width: 1.5,
+                            ),
                           ),
                         ),
                       ),
