@@ -136,7 +136,10 @@ GoRouter createRouter(Ref ref) {
           ),
           GoRoute(
             path: AppConstants.routeCourseProfile,
-            builder: (_, _) => const CourseProfileScreen(),
+            builder: (context, state) {
+              final courseId = state.uri.queryParameters['courseId'];
+              return CourseProfileScreen(initialCourseId: courseId);
+            },
           ),
           GoRoute(
             path: AppConstants.routeGradeRevisions,

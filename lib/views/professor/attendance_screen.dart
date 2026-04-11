@@ -54,7 +54,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       final courseMap = _attendanceData.putIfAbsent(_selectedCourse, () => {});
       final dateMap = courseMap.putIfAbsent(_selectedDate, () => {});
       for (final s in professorStudents) {
-        dateMap[s['id'] as String] = status;
+      dateMap[(s['id'] ?? '').toString()] = status;
       }
     });
   }
@@ -71,12 +71,29 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     }
     return ((present / total) * 100).round();
   }
+  void _handleSave() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(LucideIcons.checkCircle, color: Colors.white, size: 20),
+            const SizedBox(width: 12),
+            Text('Asistencia guardada para el $_selectedDate'),
+          ],
+        ),
+        backgroundColor: AppColors.success,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final cName =
-        (professorCourses.firstWhere((c) => c['id'] == _selectedCourse)['name']
-            as String);
+    final selectedCourseEntry = professorCourses.firstWhere(
+      (c) => c['id'] == _selectedCourse,
+      orElse: () => {'name': _selectedCourse},
+    );
+    final cName = (selectedCourseEntry['name'] ?? '').toString();
     final dayDict = _attendanceData[_selectedCourse]?[_selectedDate] ?? {};
     int present = 0, absent = 0, late = 0;
     for (final s in dayDict.values) {
@@ -106,7 +123,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isSelected
                           ? AppColors.primary
-                          : Colors.white,
+                          : AppColors.surface,
                       foregroundColor: isSelected
                           ? Colors.white
                           : AppColors.textSecondary,
@@ -119,7 +136,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       ),
                     ),
                     child: Text(
-                      c['name'] as String,
+                      (c['name'] ?? '').toString(),
                       style: const TextStyle(fontSize: 13),
                     ),
                   ),
@@ -319,8 +336,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       Divider(height: 1, color: AppColors.border),
                   itemBuilder: (ctx, i) {
                     final s = professorStudents[i];
-                    final id = s['id'] as String;
-                    final name = s['name'] as String;
+                    final id = (s['id'] ?? '').toString();
+                    final name = (s['name'] ?? '').toString();
                     final status = _getStatus(id);
                     final pct = _studentAttPct(id);
 
@@ -423,7 +440,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             width: double.infinity,
             height: 48,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: _handleSave,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,

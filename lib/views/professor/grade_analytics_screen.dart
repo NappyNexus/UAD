@@ -21,7 +21,7 @@ class GradeAnalyticsScreen extends StatefulWidget {
 }
 
 class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
-  String _selectedCourse = professorCourses[0]['id'] as String;
+  String _selectedCourse = (professorCourses[0]['id'] ?? '').toString();
 
   List<Map<String, dynamic>> _buildHistogram(List<int> grades) {
     final ranges = [
@@ -58,14 +58,15 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
 
     final studentData = professorStudents.asMap().entries.map((e) {
       final s = e.value;
-      final nameParts = (s['name'] as String).split(' ');
+      final rawName = (s['name'] ?? 'Estudiante').toString();
+      final nameParts = rawName.split(' ');
       final cName =
           '${nameParts[0]} ${nameParts.length > 2 ? nameParts[2] : ''}';
       final g = e.key < grades.length ? grades[e.key] : 0;
       return {
         'name': cName,
         'grade': g,
-        'attendance': s['attendance'],
+        'attendance': (s['attendance'] ?? 0) is num ? s['attendance'] as num : 0,
         'atRisk': g < 70,
       };
     }).toList();
@@ -89,7 +90,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: professorCourses.map((c) {
-                final id = c['id'] as String;
+                final id = (c['id'] ?? '').toString();
                 final isSelected = id == _selectedCourse;
                 return Padding(
                   padding: EdgeInsets.only(right: 8.0, bottom: 8.0),
@@ -98,7 +99,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isSelected
                           ? AppColors.primary
-                          : Colors.white,
+                          : AppColors.surface,
                       foregroundColor: isSelected
                           ? Colors.white
                           : AppColors.textSecondary,
@@ -111,7 +112,7 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                       ),
                     ),
                     child: Text(
-                      c['name'] as String,
+                      (c['name'] ?? '').toString(),
                       style: const TextStyle(fontSize: 13),
                     ),
                   ),
@@ -599,13 +600,8 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                   ),
                 ),
                 Divider(height: 1, color: AppColors.borderMedium),
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: studentData.length,
-                  separatorBuilder: (_, _) =>
-                      Divider(height: 1, color: AppColors.borderMedium),
-                  itemBuilder: (ctx, i) {
+                Column(
+                  children: List.generate(studentData.length, (i) {
                     final s = studentData[i];
                     final isRisk = s['atRisk'] as bool;
                     final g = s['grade'] as int;
@@ -615,92 +611,98 @@ class _GradeAnalyticsScreenState extends State<GradeAnalyticsScreen> {
                         ? AppColors.gold
                         : AppColors.error;
 
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      color: isRisk
-                          ? AppColors.error.withValues(alpha: 0.05)
-                          : Colors.transparent,
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 28,
-                            height: 28,
-                            decoration: BoxDecoration(
-                              color: AppColors.primarySurface,
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            child: Center(
-                              child: Text(
-                                (s['name'] as String)
-                                    .split(' ')
-                                    .take(2)
-                                    .map((e) => e[0])
-                                    .join(''),
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                            ),
+                    return Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
                           ),
-                          SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  s['name'] as String,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.textPrimary,
+                          color: isRisk
+                              ? AppColors.error.withValues(alpha: 0.05)
+                              : Colors.transparent,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 28,
+                                height: 28,
+                                decoration: BoxDecoration(
+                                  color: AppColors.primarySurface,
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    (s['name'] as String)
+                                        .split(' ')
+                                        .take(2)
+                                        .map((e) => e[0])
+                                        .join(''),
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.primary,
+                                    ),
                                   ),
                                 ),
-                                Text(
-                                  'Asistencia ${s['attendance']}%',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: AppColors.textTertiary,
+                              ),
+                              SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      s['name'] as String,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColors.textPrimary,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Asistencia ${s['attendance']}%',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: AppColors.textTertiary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 60,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(3),
+                                  child: LinearProgressIndicator(
+                                    value: g / 100,
+                                    minHeight: 6,
+                                    backgroundColor: AppColors.background,
+                                    valueColor: AlwaysStoppedAnimation(barColor),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: 60,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(3),
-                              child: LinearProgressIndicator(
-                                value: g / 100,
-                                minHeight: 6,
-                                backgroundColor: AppColors.background,
-                                valueColor: AlwaysStoppedAnimation(barColor),
                               ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          SizedBox(
-                            width: 28,
-                            child: Text(
-                              '$g',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                color: isRisk
-                                    ? AppColors.error
-                                    : AppColors.textPrimary,
+                              const SizedBox(width: 12),
+                              SizedBox(
+                                width: 28,
+                                child: Text(
+                                  '$g',
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    color: isRisk
+                                        ? AppColors.error
+                                        : AppColors.textPrimary,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                        if (i < studentData.length - 1)
+                          Divider(height: 1, color: AppColors.borderMedium),
+                      ],
                     );
-                  },
+                  }),
                 ),
               ],
             ),

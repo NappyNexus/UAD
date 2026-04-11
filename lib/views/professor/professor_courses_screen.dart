@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:go_router/go_router.dart';
+import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_colors.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
@@ -389,17 +391,23 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
           // ═══ Courses Grid ═══
           ...professorCourses.map((c) {
             final numDocs = _courseDocs(c['id'] as String).length;
-            return Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            return InkWell(
+              onTap:
+                  () => context.push(
+                    '${AppConstants.routeCourseProfile}?courseId=${c['id']}',
+                  ),
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -550,8 +558,9 @@ class _ProfessorCoursesScreenState extends State<ProfessorCoursesScreen> {
                   ),
                 ],
               ),
-            );
-          }),
+            ),
+          );
+        }),
           const SizedBox(height: 8),
 
           // ═══ Quick Stats ═══

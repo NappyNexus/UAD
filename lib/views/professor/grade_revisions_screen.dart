@@ -1,76 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import '../../core/state/professor_providers.dart';
 import '../../core/theme/app_colors.dart';
 import '../../widgets/common/page_header.dart';
 
-class GradeRevisionsScreen extends StatefulWidget {
+class GradeRevisionsScreen extends ConsumerStatefulWidget {
   const GradeRevisionsScreen({super.key});
 
   @override
-  State<GradeRevisionsScreen> createState() => _GradeRevisionsScreenState();
+  ConsumerState<GradeRevisionsScreen> createState() =>
+      _GradeRevisionsScreenState();
 }
 
-class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
-  final List<Map<String, dynamic>> _requests = [
-    {
-      'id': 1,
-      'studentId': 'STU-2024-001',
-      'studentName': 'María Elena Rodríguez',
-      'courseId': 'MAT-301',
-      'courseName': 'Cálculo III',
-      'partial': 'Parcial 1',
-      'currentGrade': 75,
-      'requestedGrade': 82,
-      'reason':
-          'Creo que mi ejercicio 3 fue corregido incorrectamente. La integral por partes estaba bien resuelta pero no se tomó en cuenta la constante de integración.',
-      'date': '2024-10-12',
-      'status': 'pending',
-      'response': null,
-    },
-    {
-      'id': 2,
-      'studentId': 'STU-2024-003',
-      'studentName': 'Ana Isabel Martínez',
-      'courseId': 'MAT-301',
-      'courseName': 'Cálculo III',
-      'partial': 'Parcial 2',
-      'currentGrade': 88,
-      'requestedGrade': 92,
-      'reason':
-          'El problema de series de Taylor fue marcado como incorrecto, pero verifiqué el procedimiento con el libro de texto y la respuesta coincide.',
-      'date': '2024-10-14',
-      'status': 'pending',
-      'response': null,
-    },
-    {
-      'id': 3,
-      'studentId': 'STU-2024-002',
-      'studentName': 'José Alberto Hernández',
-      'courseId': 'MAT-401',
-      'courseName': 'Ecuaciones Diferenciales',
-      'partial': 'Parcial 1',
-      'currentGrade': 68,
-      'requestedGrade': 75,
-      'reason':
-          'Me faltaron 3 puntos del ejercicio final. Creo que el procedimiento fue correcto aunque la respuesta numérica fue diferente.',
-      'date': '2024-10-08',
-      'status': 'approved',
-      'response':
-          'Revisé el ejercicio y tienes razón, el procedimiento es correcto. Se actualizó la nota a 74.',
-    },
-  ];
-
+class _GradeRevisionsScreenState extends ConsumerState<GradeRevisionsScreen> {
   int? _expandedId;
   String _filter = 'all';
   final Map<int, String> _responses = {};
 
   void _handleRespond(int id, String status) {
+    ref
+        .read(gradeRevisionsProvider.notifier)
+        .updateStatus(id, status, _responses[id]);
     setState(() {
-      final idx = _requests.indexWhere((r) => r['id'] == id);
-      if (idx >= 0) {
-        _requests[idx]['status'] = status;
-        _requests[idx]['response'] = _responses[id] ?? '';
-      }
       _expandedId = null;
     });
   }
@@ -110,10 +62,11 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final pending = _requests.where((r) => r['status'] == 'pending').length;
+    final requests = ref.watch(gradeRevisionsProvider);
+    final pending = requests.where((r) => r['status'] == 'pending').length;
     final filtered = _filter == 'all'
-        ? _requests
-        : _requests.where((r) => r['status'] == _filter).toList();
+        ? requests
+        : requests.where((r) => r['status'] == _filter).toList();
 
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
@@ -134,7 +87,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
               const SizedBox(width: 8),
               _summaryBox(
                 'Aprobadas',
-                _requests
+                requests
                     .where((r) => r['status'] == 'approved')
                     .length
                     .toString(),
@@ -143,7 +96,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
               const SizedBox(width: 8),
               _summaryBox(
                 'Rechazadas',
-                _requests
+                requests
                     .where((r) => r['status'] == 'rejected')
                     .length
                     .toString(),
@@ -512,7 +465,7 @@ class _GradeRevisionsScreenState extends State<GradeRevisionsScreen> {
       child: ElevatedButton(
         onPressed: () => setState(() => _filter = value),
         style: ElevatedButton.styleFrom(
-          backgroundColor: isSelected ? AppColors.primary : Colors.white,
+          backgroundColor: isSelected ? AppColors.primary : AppColors.surface,
           foregroundColor: isSelected ? Colors.white : AppColors.textSecondary,
           elevation: 0,
           side: isSelected ? null : BorderSide(color: AppColors.borderMedium),

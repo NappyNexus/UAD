@@ -54,7 +54,7 @@ class AppColors {
   // ─── Dark-only constants (used internally) ──────────────────────
   static const Color darkBackground = Color(0xFF0F172A);
   static const Color darkSurface = Color(0xFF1E293B);
-  static const Color darkBorder = Color(0xFF334155);
+  static const Color darkBorder = Color(0xFF475569); // Brighter than 334155 for better visibility
   static const Color darkTextPrimary = Color(0xFFFFFFFF);
   static const Color darkTextSecondary = Color(0xFF94A3B8);
   static const Color darkTextTertiary = Color(0xFF64748B);
@@ -260,11 +260,9 @@ class AppColors {
 
     if (_isDark) {
       return StatusBadgeColors(
-        base.text.withValues(alpha: 0.15),
-        base.text.withAlpha(
-          200,
-        ), // Slightly subdued white-ish if we prefer or just text tone
-        base.text.withValues(alpha: 0.3),
+        base.text.withValues(alpha: 0.25), // More visible than 0.15
+        base.text.withAlpha(255), // Full opacity for text on dark
+        base.text.withValues(alpha: 0.5), // More visible border
       );
     }
 

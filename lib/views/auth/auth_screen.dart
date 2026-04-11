@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/constants/app_constants.dart';
 import '../../data/mock/mock_data.dart';
+import '../../core/theme/app_colors.dart';
 import '../../data/models/demo_user.dart';
 import '../../viewmodels/auth_viewmodel.dart';
 
@@ -178,7 +179,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                       constraints: const BoxConstraints(maxWidth: 400),
                       padding: const EdgeInsets.all(32),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AppColors.surface,
                         borderRadius: BorderRadius.circular(32),
                         boxShadow: [
                           BoxShadow(
@@ -191,20 +192,20 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Iniciar Sesión',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xFF111827),
+                              color: AppColors.textPrimary,
                             ),
                           ),
                           const SizedBox(height: 4),
-                          const Text(
+                          Text(
                             'Accede con tus credenciales institucionales',
                             style: TextStyle(
                               fontSize: 14,
-                              color: Color(0xFF9CA3AF),
+                              color: AppColors.textTertiary,
                             ),
                           ),
                           const SizedBox(height: 24),
@@ -238,13 +239,13 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                                 vertical: 10,
                               ),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFFEF2F2),
+                                color: AppColors.errorSurface,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
                                 _error!,
-                                style: const TextStyle(
-                                  color: Color(0xFFEF4444),
+                                style: TextStyle(
+                                  color: AppColors.error,
                                   fontSize: 13,
                                 ),
                               ),
@@ -303,25 +304,29 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: const Color(
-                                0xFFF9C029,
-                              ).withValues(alpha: 0.1),
+                              color: AppColors.warningSurface.withValues(
+                                alpha: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? 0.3
+                                    : 1.0,
+                              ),
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(
-                                color: const Color(
-                                  0xFFF9C029,
-                                ).withValues(alpha: 0.2),
+                                color: AppColors.warning.withValues(alpha: 0.4),
                               ),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
+                                Text(
                                   'Credenciales de demo — clic para autocompletar',
                                   style: TextStyle(
                                     fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFFB45309),
+                                    fontWeight: FontWeight.w700,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.orangeAccent
+                                        : AppColors.warningText,
                                   ),
                                 ),
                                 const SizedBox(height: 8),
@@ -363,21 +368,21 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF4B5563),
+            color: AppColors.textSecondary,
           ),
         ),
         const SizedBox(height: 6),
         TextField(
           controller: controller,
           obscureText: obscure,
-          style: const TextStyle(fontSize: 14),
+          style: TextStyle(fontSize: 14, color: AppColors.textPrimary),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: const TextStyle(color: Color(0xFFD1D5DB)),
-            prefixIcon: Icon(icon, size: 16, color: const Color(0xFF9CA3AF)),
+            hintStyle: TextStyle(color: AppColors.textTertiary),
+            prefixIcon: Icon(icon, size: 16, color: AppColors.textTertiary),
             suffixIcon: isPassword
                 ? IconButton(
                     icon: Icon(
@@ -402,10 +407,10 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
     );
   }
 
-  OutlineInputBorder _outlineBorder({Color color = const Color(0xFFE5E7EB)}) {
+  OutlineInputBorder _outlineBorder({Color? color}) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(color: color, width: 1),
+      borderSide: BorderSide(color: color ?? AppColors.border, width: 1),
     );
   }
 
@@ -423,17 +428,18 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
               children: [
                 Text(
                   user.role.toUpperCase(),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF374151),
+                    color: AppColors.textSecondary,
                   ),
                 ),
                 Text(
                   user.cedula,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 10,
-                    color: Color(0xFF9CA3AF),
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.textPrimary,
                   ),
                 ),
               ],
@@ -441,15 +447,15 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               decoration: BoxDecoration(
-                color: const Color(0xFFF3F4F6),
+                color: AppColors.background,
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
                 user.password,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 10,
                   fontFamily: 'monospace',
-                  color: Color(0xFF9CA3AF),
+                  color: AppColors.textTertiary,
                 ),
               ),
             ),

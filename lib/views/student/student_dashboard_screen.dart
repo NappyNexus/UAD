@@ -6,6 +6,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/utils/formatters.dart';
 import '../../data/mock/mock_data.dart';
+import '../../core/state/professor_providers.dart';
 import '../../widgets/common/stat_card.dart';
 
 final _quickActions = [
@@ -59,80 +60,7 @@ final _quickActions = [
   },
 ];
 
-final _mockDeadlines = [
-  {
-    'id': 1,
-    'courseId': 'MAT-301',
-    'courseName': 'Cálculo III',
-    'title': 'Segundo Parcial',
-    'type': 'examen',
-    'date': '2024-10-25',
-    'time': '8:00 AM',
-  },
-  {
-    'id': 2,
-    'courseId': 'ING-310',
-    'courseName': 'Ingeniería de Software',
-    'title': 'Entrega Avance Proyecto',
-    'type': 'entrega',
-    'date': '2024-10-28',
-    'time': '11:59 PM',
-  },
-  {
-    'id': 3,
-    'courseId': 'ING-315',
-    'courseName': 'Redes de Computadoras',
-    'title': 'Quiz Capítulo 5',
-    'type': 'entrega',
-    'date': '2024-10-18',
-    'time': '8:00 AM',
-  },
-  {
-    'id': 4,
-    'courseId': 'ING-305',
-    'courseName': 'Base de Datos II',
-    'title': 'Proyecto Final',
-    'type': 'proyecto',
-    'date': '2024-11-10',
-    'time': '11:59 PM',
-  },
-];
 
-final _mockAnnouncements = [
-  {
-    'id': 1,
-    'courseId': 'MAT-301',
-    'courseName': 'Cálculo III',
-    'title': 'Cambio de horario — 18 oct',
-    'body':
-        'La clase del viernes 18 de octubre se moverá al jueves 17 a las 10:00 AM en el aula A-202.',
-    'date': '2024-10-14',
-    'type': 'aviso',
-    'pinned': true,
-  },
-  {
-    'id': 2,
-    'courseId': 'ING-305',
-    'courseName': 'Base de Datos II',
-    'title': 'Material del Parcial 2 disponible',
-    'body':
-        'El resumen de los temas del segundo parcial ya está disponible en la plataforma. Incluye funciones vectoriales y campos escalares.',
-    'date': '2024-10-13',
-    'type': 'material',
-    'pinned': false,
-  },
-  {
-    'id': 3,
-    'courseId': 'ING-310',
-    'courseName': 'Ingeniería de Software',
-    'title': 'Recordatorio: Proyecto Final',
-    'body':
-        'El proyecto final es individual y debe entregarse antes del 10 de noviembre.',
-    'date': '2024-10-10',
-    'type': 'entrega',
-    'pinned': false,
-  },
-];
 
 class StudentDashboardScreen extends ConsumerWidget {
   const StudentDashboardScreen({super.key});
@@ -140,6 +68,8 @@ class StudentDashboardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = currentStudent;
+    final announcements = ref.watch(announcementsProvider);
+    final events = ref.watch(calendarEventsProvider);
     final size = MediaQuery.of(context).size;
 
     return SingleChildScrollView(
@@ -450,11 +380,11 @@ class StudentDashboardScreen extends ConsumerWidget {
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: _mockDeadlines.length,
+            itemCount: events.length,
             separatorBuilder: (_, _) => const SizedBox(height: 10),
             itemBuilder: (context, index) {
-              final ev = _mockDeadlines[index];
-              final date = DateTime.parse(ev['date'] as String);
+              final ev = events[index];
+              final date = ev['date'] is DateTime ? ev['date'] as DateTime : DateTime.parse(ev['date'] as String);
               final type = ev['type'] as String;
 
               Color typeBg;
@@ -565,7 +495,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                                   ),
                                   SizedBox(width: 4),
                                   Text(
-                                    ev['courseName'] as String,
+                                    (ev['courseName'] ?? ev['courseId']) as String,
                                     style: TextStyle(
                                       fontSize: 10,
                                       color: AppColors.textTertiary,
@@ -677,10 +607,10 @@ class StudentDashboardScreen extends ConsumerWidget {
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: _mockAnnouncements.length,
+            itemCount: announcements.length > 3 ? 3 : announcements.length,
             separatorBuilder: (_, _) => const SizedBox(height: 10),
             itemBuilder: (context, index) {
-              final ann = _mockAnnouncements[index];
+              final ann = announcements[index];
               final pinned = ann['pinned'] as bool;
               final type = ann['type'] as String;
 

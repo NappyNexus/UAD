@@ -1,56 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import '../../core/state/professor_providers.dart';
 import '../../core/theme/app_colors.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 
-class CourseCalendarScreen extends StatefulWidget {
+class CourseCalendarScreen extends ConsumerStatefulWidget {
   const CourseCalendarScreen({super.key});
 
   @override
-  State<CourseCalendarScreen> createState() => _CourseCalendarScreenState();
+  ConsumerState<CourseCalendarScreen> createState() =>
+      _CourseCalendarScreenState();
 }
 
-class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
-  final List<Map<String, dynamic>> _events = [
-    {
-      'id': 1,
-      'courseId': 'MAT-301',
-      'title': 'Segundo Parcial',
-      'type': 'examen',
-      'date': '2024-10-25',
-      'time': '8:00 AM',
-      'notes': 'Temas: integrales dobles y triples',
-    },
-    {
-      'id': 2,
-      'courseId': 'MAT-401',
-      'title': 'Entrega Proyecto Final',
-      'type': 'proyecto',
-      'date': '2024-11-10',
-      'time': '11:59 PM',
-      'notes': 'Subir a la plataforma en PDF',
-    },
-    {
-      'id': 3,
-      'courseId': 'MAT-201',
-      'title': 'Examen Final',
-      'type': 'examen',
-      'date': '2024-12-05',
-      'time': '2:00 PM',
-      'notes': '',
-    },
-    {
-      'id': 4,
-      'courseId': 'MAT-301',
-      'title': 'Quiz Capítulo 5',
-      'type': 'entrega',
-      'date': '2024-10-18',
-      'time': '8:00 AM',
-      'notes': '15 minutos al inicio de la clase',
-    },
-  ];
-
+class _CourseCalendarScreenState extends ConsumerState<CourseCalendarScreen> {
   final List<Map<String, dynamic>> _eventTypes = [
     {
       'value': 'examen',
@@ -96,16 +60,18 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
 
   void _handleAdd() {
     if (_newTitle.isEmpty || _newDate.isEmpty) return;
+    final newEvent = {
+      'id': 'EVT-${DateTime.now().millisecondsSinceEpoch}',
+      'courseId': _newCourseId,
+      'title': _newTitle,
+      'type': _newType,
+      'date': DateTime.tryParse(_newDate) ?? DateTime.now(),
+      'time': _newTime,
+      'notes': _newNotes,
+    };
+    ref.read(calendarEventsProvider.notifier).addEvent(newEvent);
+
     setState(() {
-      _events.add({
-        'id': DateTime.now().millisecondsSinceEpoch,
-        'courseId': _newCourseId,
-        'title': _newTitle,
-        'type': _newType,
-        'date': _newDate,
-        'time': _newTime,
-        'notes': _newNotes,
-      });
       _adding = false;
       _newTitle = '';
       _newDate = '';
@@ -114,8 +80,8 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
     });
   }
 
-  void _deleteEvent(int id) {
-    setState(() => _events.removeWhere((e) => e['id'] == id));
+  void _deleteEvent(String id) {
+    ref.read(calendarEventsProvider.notifier).deleteEvent(id);
   }
 
   Map<String, dynamic> _getTypeStyle(String type) => _eventTypes.firstWhere(
@@ -123,19 +89,15 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
     orElse: () => _eventTypes.last,
   );
 
-  int _daysUntil(String dateStr) {
+  DateTime _parseDate(dynamic d) {
+    if (d is DateTime) return d;
+    if (d is String) return DateTime.tryParse(d) ?? DateTime(2024, 10, 15);
+    return DateTime(2024, 10, 15);
+  }
+
+  int _daysUntil(DateTime date) {
     final cur = DateTime(2024, 10, 15);
-    try {
-      final parts = dateStr.split('-');
-      final d = DateTime(
-        int.parse(parts[0]),
-        int.parse(parts[1]),
-        int.parse(parts[2]),
-      );
-      return d.difference(cur).inDays;
-    } catch (_) {
-      return -1;
-    }
+    return date.difference(cur).inDays;
   }
 
   String _daysUntilLabel(int diff) {
@@ -145,56 +107,69 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
     return 'En $diff días';
   }
 
-  String _getMonthLabel(String dateStr) {
-    try {
-      final parts = dateStr.split('-');
-      final m = int.parse(parts[1]);
-      final months = [
-        'Enero',
-        'Febrero',
-        'Marzo',
-        'Abril',
-        'Mayo',
-        'Junio',
-        'Julio',
-        'Agosto',
-        'Septiembre',
-        'Octubre',
-        'Noviembre',
-        'Diciembre',
-      ];
-      return '${months[m - 1]} ${parts[0]}';
-    } catch (_) {
-      return '';
-    }
+  String _getMonthLabel(DateTime date) {
+    final months = [
+      'Enero',
+      'Febrero',
+      'Marzo',
+      'Abril',
+      'Mayo',
+      'Junio',
+      'Julio',
+      'Agosto',
+      'Septiembre',
+      'Octubre',
+      'Noviembre',
+      'Diciembre',
+    ];
+    return '${months[date.month - 1]} ${date.year}';
   }
 
-  String _getDayLabel(String dateStr) {
-    try {
-      return dateStr.split('-')[2];
-    } catch (_) {
-      return '';
-    }
+  String _getMonth(int m) {
+    final months = [
+      'Ene',
+      'Feb',
+      'Mar',
+      'Abr',
+      'May',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dic',
+    ];
+    return months[m - 1];
   }
 
   @override
   Widget build(BuildContext context) {
-    final filtered = _filter == 'all'
-        ? _events
-        : _events.where((e) => e['courseId'] == _filter).toList();
-    filtered.sort(
-      (a, b) => (a['date'] as String).compareTo(b['date'] as String),
-    );
+    final events = ref.watch(calendarEventsProvider);
+    final upcomingList = events.where((e) {
+      final date = _parseDate(e['date']);
+      return _daysUntil(date) >= 0;
+    }).toList();
 
-    final upcomingCount = _events
-        .where((e) => _daysUntil(e['date'] as String) >= 0)
-        .length;
+    final filtered =
+        _filter == 'all'
+            ? events
+            : events.where((e) => e['courseId'] == _filter).toList();
+
+    // Sort by date correctly
+    final sorted = List<Map<String, dynamic>>.from(filtered);
+    sorted.sort((a, b) {
+      final da = _parseDate(a['date']);
+      final db = _parseDate(b['date']);
+      return da.compareTo(db);
+    });
 
     // Grouping
     final Map<String, List<Map<String, dynamic>>> grouped = {};
-    for (final ev in filtered) {
-      final m = _getMonthLabel(ev['date'] as String);
-      grouped.putIfAbsent(m, () => []).add(ev);
+    for (final ev in sorted) {
+      final date = _parseDate(ev['date']);
+      final label = _getMonthLabel(date);
+      grouped.putIfAbsent(label, () => []).add(ev);
     }
 
     return SingleChildScrollView(
@@ -207,7 +182,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
               Expanded(
                 child: PageHeader(
                   title: 'Calendario',
-                  subtitle: '$upcomingCount eventos próximos',
+                  subtitle: '${upcomingList.length} eventos próximos',
                 ),
               ),
               ElevatedButton.icon(
@@ -269,7 +244,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                             SizedBox(height: 4),
                             DropdownButtonFormField<String>(
                               isExpanded: true,
-                              initialValue: _newCourseId,
+                              value: _newCourseId,
                               decoration: InputDecoration(
                                 isDense: true,
                                 border: OutlineInputBorder(
@@ -319,7 +294,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                             SizedBox(height: 4),
                             DropdownButtonFormField<String>(
                               isExpanded: true,
-                              initialValue: _newType,
+                              value: _newType,
                               decoration: InputDecoration(
                                 isDense: true,
                                 border: OutlineInputBorder(
@@ -593,13 +568,17 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                   ),
                 ),
                 ...group.value.map((ev) {
-                  final style = _getTypeStyle(ev['type'] as String);
-                  final diff = _daysUntil(ev['date'] as String);
+                  final dateValue = _parseDate(ev['date']);
+                  final style =
+                      _getTypeStyle((ev['type'] ?? 'otro').toString());
+                  final diff = _daysUntil(dateValue);
                   final isPast = diff < 0;
-                  final cName = professorCourses.firstWhere(
-                    (c) => c['id'] == ev['courseId'],
-                    orElse: () => {'name': ev['courseId']},
-                  )['name'];
+                  final courseIdStr = (ev['courseId'] ?? '').toString();
+                  final cName =
+                      professorCourses.firstWhere(
+                        (c) => c['id'] == courseIdStr,
+                        orElse: () => {'name': courseIdStr},
+                      )['name'];
 
                   return Opacity(
                     opacity: isPast ? 0.6 : 1.0,
@@ -625,7 +604,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  _getDayLabel(ev['date'] as String),
+                                  dateValue.day.toString(),
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w800,
@@ -656,7 +635,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        ev['title'] as String,
+                                        (ev['title'] ?? '').toString(),
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w700,
@@ -666,7 +645,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                     ),
                                     InkWell(
                                       onTap: () =>
-                                          _deleteEvent(ev['id'] as int),
+                                          _deleteEvent(ev['id'].toString()),
                                       child: Padding(
                                         padding: EdgeInsets.all(4.0),
                                         child: Icon(
@@ -694,7 +673,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                         ),
                                         SizedBox(width: 4),
                                         Text(
-                                          cName as String,
+                                          (cName ?? '').toString(),
                                           style: TextStyle(
                                             fontSize: 11,
                                             color: AppColors.textSecondary,
@@ -702,7 +681,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                         ),
                                       ],
                                     ),
-                                    if ((ev['time'] as String).isNotEmpty)
+                                    if ((ev['time'] ?? '').toString().isNotEmpty)
                                       Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
@@ -713,7 +692,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                           ),
                                           SizedBox(width: 4),
                                           Text(
-                                            ev['time'] as String,
+                                            (ev['time'] ?? '').toString(),
                                             style: TextStyle(
                                               fontSize: 11,
                                               color: AppColors.textSecondary,
@@ -740,7 +719,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                           ),
                                           const SizedBox(width: 4),
                                           Text(
-                                            style['label'] as String,
+                                            (style['label'] ?? '').toString(),
                                             style: TextStyle(
                                               fontSize: 10,
                                               fontWeight: FontWeight.w600,
@@ -774,11 +753,11 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
                                     ),
                                   ],
                                 ),
-                                if ((ev['notes'] as String).isNotEmpty)
+                                if ((ev['notes'] ?? '').toString().isNotEmpty)
                                   Padding(
                                     padding: EdgeInsets.only(top: 6),
                                     child: Text(
-                                      ev['notes'] as String,
+                                      (ev['notes'] ?? '').toString(),
                                       style: TextStyle(
                                         fontSize: 12,
                                         fontStyle: FontStyle.italic,
@@ -809,7 +788,7 @@ class _CourseCalendarScreenState extends State<CourseCalendarScreen> {
       child: ElevatedButton(
         onPressed: () => setState(() => _filter = value),
         style: ElevatedButton.styleFrom(
-          backgroundColor: isSelected ? AppColors.primary : Colors.white,
+          backgroundColor: isSelected ? AppColors.primary : AppColors.surface,
           foregroundColor: isSelected ? Colors.white : AppColors.textSecondary,
           elevation: 0,
           side: isSelected ? null : BorderSide(color: AppColors.borderMedium),

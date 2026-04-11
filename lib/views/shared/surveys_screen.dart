@@ -86,13 +86,24 @@ class _SurveysScreenState extends State<SurveysScreen> {
   @override
   Widget build(BuildContext context) {
     final pending = _surveys.where((s) => s['status'] == 'pending').toList();
-    final completed = _surveys
-        .where((s) => s['status'] == 'completed')
-        .toList();
+    final completed =
+        _surveys.where((s) => s['status'] == 'completed').toList();
     final responseRate = _surveys.isEmpty
         ? 0
         : (completed.length / _surveys.length * 100).round();
 
+    final isProfessor =
+        true; // Mocked for demonstration since we are in Professor Portal context
+
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: isProfessor
+          ? _buildProfessorView()
+          : _buildStudentView(pending, completed, responseRate),
+    );
+  }
+
+  Widget _buildStudentView(List<Map<String, dynamic>> pending, List<Map<String, dynamic>> completed, int responseRate) {
     void showSurveyModal(Map<String, dynamic> survey) {
       showModalBottomSheet(
         context: context,
@@ -107,109 +118,262 @@ class _SurveysScreenState extends State<SurveysScreen> {
       );
     }
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const PageHeader(
-              title: 'Encuestas y Evaluaciones',
-              subtitle:
-                  'Tu opinión ayuda a mejorar la calidad académica de UNAD',
-            ),
-            const SizedBox(height: 16),
-
-            // Stats
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const PageHeader(
+            title: 'Encuestas',
+            subtitle: 'Tu opinión ayuda a mejorar UNAD',
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: _StatCard(
+                  title: 'Pendientes',
+                  value: pending.length.toString(),
+                  icon: LucideIcons.clock,
+                  iconColor: Colors.amber.shade600,
+                  bgColor: Colors.amber.shade50,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _StatCard(
+                  title: 'Completadas',
+                  value: completed.length.toString(),
+                  icon: LucideIcons.checkCircle,
+                  iconColor: Colors.green.shade600,
+                  bgColor: Colors.green.shade50,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _StatCard(
+                  title: 'Tasa resp.',
+                  value: '$responseRate%',
+                  icon: LucideIcons.trendingUp,
+                  iconColor: Colors.blue.shade600,
+                  bgColor: Colors.blue.shade50,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          if (pending.isNotEmpty) ...[
             Row(
               children: [
-                Expanded(
-                  child: _StatCard(
-                    title: 'Pendientes',
-                    value: pending.length.toString(),
-                    icon: LucideIcons.clock,
-                    iconColor: Colors.amber.shade600,
-                    bgColor: Colors.amber.shade50,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: _StatCard(
-                    title: 'Completadas',
-                    value: completed.length.toString(),
-                    icon: LucideIcons.checkCircle,
-                    iconColor: Colors.green.shade600,
-                    bgColor: Colors.green.shade50,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: _StatCard(
-                    title: 'Tasa resp.',
-                    value: '$responseRate%',
-                    icon: LucideIcons.trendingUp,
-                    iconColor: Colors.blue.shade600,
-                    bgColor: Colors.blue.shade50,
-                  ),
+                Icon(LucideIcons.clock, size: 14, color: Colors.amber.shade500),
+                SizedBox(width: 8),
+                Text(
+                  'Pendientes (${pending.length})',
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
+            const SizedBox(height: 12),
+            ...pending.map((s) => _SurveyPendingCard(s, onTap: () => showSurveyModal(s))),
             const SizedBox(height: 24),
-
-            if (pending.isNotEmpty) ...[
-              Row(
-                children: [
-                  Icon(
-                    LucideIcons.clock,
-                    size: 14,
-                    color: Colors.amber.shade500,
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    'Pendientes (${pending.length})',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              ...pending.map(
-                (s) => _SurveyPendingCard(s, onTap: () => showSurveyModal(s)),
-              ),
-              const SizedBox(height: 24),
-            ],
-
-            if (completed.isNotEmpty) ...[
-              Row(
-                children: [
-                  Icon(
-                    LucideIcons.checkCircle,
-                    size: 14,
-                    color: Colors.green.shade500,
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    'Completadas (${completed.length})',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              ...completed.map((s) => _SurveyCompletedCard(s)),
-            ],
           ],
-        ),
+          if (completed.isNotEmpty) ...[
+            Row(
+              children: [
+                Icon(LucideIcons.checkCircle, size: 14, color: Colors.green.shade500),
+                SizedBox(width: 8),
+                Text(
+                  'Completadas (${completed.length})',
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            ...completed.map((s) => _SurveyCompletedCard(s)),
+          ],
+        ],
       ),
     );
   }
+
+  Widget _buildProfessorView() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const PageHeader(
+            title: 'Resultados de Evaluación',
+            subtitle: 'Reporte consolidado de retroalimentación estudiantil',
+          ),
+          const SizedBox(height: 16),
+          
+          // Stats Card
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppColors.primary, AppColors.primary.withValues(alpha: 0.8)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withValues(alpha: 0.3),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          'Puntaje General',
+                          style: TextStyle(color: Colors.white70, fontSize: 12),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          '4.8 / 5.0',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        children: const [
+                          Icon(LucideIcons.trendingUp, color: Colors.white, size: 14),
+                          SizedBox(width: 4),
+                          Text(
+                            '+0.3 vs cuat. ant.',
+                            style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _miniStat('85%', 'Tasa Respuesta'),
+                    _miniStat('42', 'Estudiantes'),
+                    _miniStat('Top 5%', 'Ranking Depto.'),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          Text(
+            'DETALLE POR CRITERIO',
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              color: AppColors.textTertiary,
+              letterSpacing: 1.2,
+            ),
+          ),
+          const SizedBox(height: 12),
+          
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AppColors.border),
+            ),
+            child: Column(
+              children: [
+                _ratingRow('Dominio del tema', 4.9),
+                _ratingRow('Claridad explicativa', 4.7),
+                _ratingRow('Puntualidad', 4.8),
+                _ratingRow('Efectividad en dudas', 4.9),
+                _ratingRow('Calidad de materiales', 4.6),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          Text(
+            'COMENTARIOS RECIENTES',
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              color: AppColors.textTertiary,
+              letterSpacing: 1.2,
+            ),
+          ),
+          const SizedBox(height: 12),
+          
+          _commentCard('Excelente profesor, explica muy bien y siempre está dispuesto a ayudar.'),
+          _commentCard('Las clases son muy dinámicas, aunque el material de apoyo podría ser más extenso.'),
+          _commentCard('Un gran dominio de la materia, hace que los temas difíciles parezcan fáciles.'),
+        ],
+      ),
+    );
+  }
+
+  Widget _miniStat(String val, String label) => Column(
+    children: [
+      Text(val, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+      Text(label, style: const TextStyle(color: Colors.white60, fontSize: 10)),
+    ],
+  );
+
+  Widget _ratingRow(String label, double val) => Padding(
+    padding: const EdgeInsets.only(bottom: 12),
+    child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
+            Text(val.toString(), style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.primary)),
+          ],
+        ),
+        const SizedBox(height: 6),
+        LinearProgressIndicator(
+          value: val / 5.0,
+          backgroundColor: AppColors.background,
+          borderRadius: BorderRadius.circular(4),
+          minHeight: 6,
+          valueColor: AlwaysStoppedAnimation(AppColors.primary),
+        ),
+      ],
+    ),
+  );
+
+  Widget _commentCard(String text) => Container(
+    margin: const EdgeInsets.only(bottom: 8),
+    padding: const EdgeInsets.all(12),
+    decoration: BoxDecoration(
+      color: AppColors.surface,
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(color: AppColors.border),
+    ),
+    child: Text(
+      '"$text"',
+      style: TextStyle(fontSize: 12, color: AppColors.textSecondary, fontStyle: FontStyle.italic),
+    ),
+  );
 }
 
 class _StatCard extends StatelessWidget {

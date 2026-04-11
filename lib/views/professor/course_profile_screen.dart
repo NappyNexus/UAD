@@ -12,15 +12,22 @@ const Map<String, List<int>> _mockGrades = {
 };
 
 class CourseProfileScreen extends StatefulWidget {
-  const CourseProfileScreen({super.key});
+  final String? initialCourseId;
+  const CourseProfileScreen({super.key, this.initialCourseId});
 
   @override
   State<CourseProfileScreen> createState() => _CourseProfileScreenState();
 }
 
 class _CourseProfileScreenState extends State<CourseProfileScreen> {
-  String _selectedCourse = professorCourses[0]['id'] as String;
+  late String _selectedCourse;
   String _expandedSection = 'students';
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedCourse = widget.initialCourseId ?? (professorCourses.isNotEmpty ? professorCourses[0]['id'] as String : '');
+  }
 
   void _toggle(String section) {
     setState(() {

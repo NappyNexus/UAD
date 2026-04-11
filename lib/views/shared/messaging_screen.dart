@@ -24,6 +24,16 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
     _msgCtrl.clear();
   }
 
+  void _handleNewChat() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Función de "Nuevo Chat" estará disponible pronto'),
+        backgroundColor: AppColors.primary,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
   Future<void> _pickImage(ImageSource source) async {
     final XFile? image = await _picker.pickImage(source: source);
     if (image != null) {
@@ -321,11 +331,8 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    LucideIcons.plusCircle,
-                    color: AppColors.primary,
-                  ),
+                  onPressed: _handleNewChat,
+                  icon: Icon(LucideIcons.plusCircle, color: AppColors.primary),
                 ),
               ],
             ),

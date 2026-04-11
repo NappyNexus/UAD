@@ -43,7 +43,7 @@ class GradeEntryScreen extends StatefulWidget {
 }
 
 class _GradeEntryScreenState extends State<GradeEntryScreen> {
-  String _selectedCourse = professorCourses[0]['id'] as String;
+  String _selectedCourse = (professorCourses[0]['id'] ?? '').toString();
   List<LocalStudent> _students = [];
   bool _published = false;
   bool _saved = false;
@@ -58,12 +58,12 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
     _students = (professorStudents as List<dynamic>)
         .map(
           (s) => LocalStudent(
-            id: s['id'] as String,
-            name: s['name'] as String,
+            id: (s['id'] ?? '').toString(),
+            name: (s['name'] ?? '').toString(),
             midterm1: s['midterm1'] as num?,
             midterm2: s['midterm2'] as num?,
             finalExam: s['final'] as num?,
-            attendance: s['attendance'] as int,
+            attendance: s['attendance'] is int ? s['attendance'] as int : 0,
           ),
         )
         .toList();
@@ -126,6 +126,19 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
     Future.delayed(const Duration(seconds: 5), () {
       if (mounted) setState(() => _showPublishedBanner = false);
     });
+  }
+
+  void _handleSave() {
+    setState(() {
+      _saved = true;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Calificaciones guardadas como borrador'),
+        backgroundColor: AppColors.primary,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 
   void _showGradeModal(BuildContext context, LocalStudent student, int index) {
@@ -388,9 +401,11 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
           )
         : '—';
     final passing = avgs.where((a) => a >= 70).length;
-    final courseName =
-        (professorCourses.firstWhere((c) => c['id'] == _selectedCourse)['name']
-            as String);
+    final selectedCourseEntry = professorCourses.firstWhere(
+      (c) => c['id'] == _selectedCourse,
+      orElse: () => {'name': _selectedCourse},
+    );
+    final courseName = (selectedCourseEntry['name'] ?? '').toString();
 
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
@@ -447,7 +462,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
               ),
               const SizedBox(width: 12),
               ElevatedButton.icon(
-                onPressed: () => setState(() => _saved = true),
+                onPressed: _handleSave,
                 icon: Icon(
                   _saved ? LucideIcons.check : LucideIcons.save,
                   size: 12,
@@ -477,7 +492,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: professorCourses.map((c) {
-                final id = c['id'] as String;
+                final id = (c['id'] ?? '').toString();
                 final isSelected = id == _selectedCourse;
                 return Padding(
                   padding: EdgeInsets.only(right: 8.0, bottom: 8.0),
@@ -490,7 +505,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isSelected
                           ? AppColors.primary
-                          : Colors.white,
+                          : AppColors.surface,
                       foregroundColor: isSelected
                           ? Colors.white
                           : AppColors.textSecondary,
@@ -502,7 +517,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: Text(c['name'] as String),
+                    child: Text((c['name'] ?? '').toString()),
                   ),
                 );
               }).toList(),
@@ -599,14 +614,14 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
               ),
               const SizedBox(width: 8),
               _statBox(
-                LucideIcons.award,
+                _published ? LucideIcons.checkCircle : (_saved ? LucideIcons.fileText : LucideIcons.clock),
                 'Estado',
                 _published ? '✓' : '—',
-                _published ? 'Publicado' : 'Borrador',
-                _published ? AppColors.success : AppColors.textTertiary,
-                _published
-                    ? AppColors.success.withValues(alpha: 0.1)
-                    : AppColors.background,
+                _published ? 'Publicado' : (_saved ? 'Borrador' : 'Pendiente'),
+                _published ? AppColors.success : (_saved ? AppColors.warning : AppColors.textTertiary),
+                _published 
+                    ? AppColors.success.withValues(alpha: 0.1) 
+                    : (_saved ? AppColors.warning.withValues(alpha: 0.1) : AppColors.background),
               ),
             ],
           ),
@@ -695,7 +710,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
               decoration: BoxDecoration(
                 color: isLow
                     ? AppColors.errorSurface.withValues(alpha: 0.5)
-                    : Colors.white,
+                    : AppColors.surface,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                   color: isLow ? const Color(0xFFFECACA) : AppColors.border,
@@ -710,7 +725,7 @@ class _GradeEntryScreenState extends State<GradeEntryScreen> {
                         height: 32,
                         decoration: BoxDecoration(
                           color: isLow
-                              ? const Color(0xFFFEE2E2)
+                              ? AppColors.errorSurface
                               : AppColors.primarySurface,
                           borderRadius: BorderRadius.circular(16),
                         ),

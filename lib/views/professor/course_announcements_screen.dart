@@ -1,51 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import '../../core/state/professor_providers.dart';
 import '../../core/theme/app_colors.dart';
 import '../../data/mock/mock_data.dart';
 import '../../widgets/common/page_header.dart';
 
-class CourseAnnouncementsScreen extends StatefulWidget {
+class CourseAnnouncementsScreen extends ConsumerStatefulWidget {
   const CourseAnnouncementsScreen({super.key});
 
   @override
-  State<CourseAnnouncementsScreen> createState() =>
+  ConsumerState<CourseAnnouncementsScreen> createState() =>
       _CourseAnnouncementsScreenState();
 }
 
-class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
-  final List<Map<String, dynamic>> _announcements = [
-    {
-      'id': 1,
-      'courseId': 'MAT-301',
-      'title': 'Cambio de horario — 18 oct',
-      'body':
-          'La clase del viernes 18 de octubre se moverá al jueves 17 a las 10:00 AM en el aula A-202. Por favor confirmar asistencia.',
-      'date': '2024-10-14',
-      'pinned': true,
-      'type': 'aviso',
-    },
-    {
-      'id': 2,
-      'courseId': 'MAT-401',
-      'title': 'Material del Parcial 2 disponible',
-      'body':
-          'El resumen de los temas del segundo parcial ya está disponible en la plataforma. Incluye funciones vectoriales y campos escalares.',
-      'date': '2024-10-13',
-      'pinned': false,
-      'type': 'material',
-    },
-    {
-      'id': 3,
-      'courseId': 'MAT-201',
-      'title': 'Recordatorio: Proyecto Final',
-      'body':
-          'Recuerden que el proyecto final es individual y debe entregarse antes del 10 de noviembre. Más detalles próximamente.',
-      'date': '2024-10-10',
-      'pinned': false,
-      'type': 'entrega',
-    },
-  ];
-
+class _CourseAnnouncementsScreenState
+    extends ConsumerState<CourseAnnouncementsScreen> {
   String _filter = 'all';
   bool _composing = false;
 
@@ -57,17 +27,19 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
 
   void _handlePost() {
     if (_newTitle.trim().isEmpty || _newBody.trim().isEmpty) return;
+    final newAnn = {
+      'id': DateTime.now().millisecondsSinceEpoch,
+      'courseId': _newCourseId,
+      'title': _newTitle.trim(),
+      'body': _newBody.trim(),
+      'type': _newType,
+      'pinned': _newPinned,
+      'date':
+          '${DateTime.now().year}-${DateTime.now().month.toString().padLeft(2, '0')}-${DateTime.now().day.toString().padLeft(2, '0')}',
+    };
+    ref.read(announcementsProvider.notifier).addAnnouncement(newAnn);
+
     setState(() {
-      _announcements.insert(0, {
-        'id': DateTime.now().millisecondsSinceEpoch,
-        'courseId': _newCourseId,
-        'title': _newTitle.trim(),
-        'body': _newBody.trim(),
-        'type': _newType,
-        'pinned': _newPinned,
-        'date':
-            '${DateTime.now().year}-${DateTime.now().month.toString().padLeft(2, '0')}-${DateTime.now().day.toString().padLeft(2, '0')}',
-      });
       _newCourseId = professorCourses[0]['id'] as String;
       _newType = 'general';
       _newTitle = '';
@@ -78,19 +50,11 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
   }
 
   void _togglePin(int id) {
-    setState(() {
-      final idx = _announcements.indexWhere((a) => a['id'] == id);
-      if (idx >= 0) {
-        _announcements[idx]['pinned'] =
-            !(_announcements[idx]['pinned'] as bool);
-      }
-    });
+    ref.read(announcementsProvider.notifier).togglePin(id);
   }
 
   void _deleteAnn(int id) {
-    setState(() {
-      _announcements.removeWhere((a) => a['id'] == id);
-    });
+    ref.read(announcementsProvider.notifier).deleteAnnouncement(id);
   }
 
   Color _getTypeColor(String type) {
@@ -121,9 +85,10 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final announcements = ref.watch(announcementsProvider);
     final filtered = _filter == 'all'
-        ? _announcements
-        : _announcements.where((a) => a['courseId'] == _filter).toList();
+        ? announcements
+        : announcements.where((a) => a['courseId'] == _filter).toList();
     filtered.sort((a, b) {
       final pA = a['pinned'] as bool;
       final pB = b['pinned'] as bool;
@@ -615,7 +580,7 @@ class _CourseAnnouncementsScreenState extends State<CourseAnnouncementsScreen> {
       child: ElevatedButton(
         onPressed: () => setState(() => _filter = value),
         style: ElevatedButton.styleFrom(
-          backgroundColor: isSelected ? AppColors.primary : Colors.white,
+          backgroundColor: isSelected ? AppColors.primary : AppColors.surface,
           foregroundColor: isSelected ? Colors.white : AppColors.textSecondary,
           elevation: 0,
           side: isSelected ? null : BorderSide(color: AppColors.borderMedium),
