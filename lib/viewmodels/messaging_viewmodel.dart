@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uad/data/models/chat_model.dart';
-import 'package:uad/data/mock/mock_data.dart';
-import 'package:uad/viewmodels/auth_viewmodel.dart';
 
 class MessagingState {
   final List<ChatContact> contacts;

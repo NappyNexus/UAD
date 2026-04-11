@@ -6,7 +6,6 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_color_scheme.dart';
 import '../../core/constants/app_constants.dart';
 import 'package:uad/viewmodels/messaging_viewmodel.dart';
-import 'package:uad/data/models/chat_model.dart';
 
 /// Full-height navigation drawer, ported from AppDrawer.jsx.
 class AppDrawer extends ConsumerWidget {
@@ -28,7 +27,7 @@ class AppDrawer extends ConsumerWidget {
     final msgState = ref.watch(messagingProvider);
     final int totalUnread = msgState.contacts.fold<int>(
       0,
-      (sum, contact) => sum + (contact.unreadCount as int),
+      (sum, contact) => sum + (contact.unreadCount),
     );
 
     return Drawer(
